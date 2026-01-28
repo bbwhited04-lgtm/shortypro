@@ -1,59 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-<script>
-  // ===============================
-  // Shorty Pro – Stripe Product IDs
-  // ===============================
-
-  // Backend base URL (Render)
-  const BACKEND_BASE = "https://shortypro.onrender.com";
-
-  // Stripe Price IDs (LIVE / TEST depending on key)
-  const PRICE_IDS = {
-    starter: "price_1SuNTiKC49F2A9OzFrSyGVgv", // $19 / month
-    pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",     // $49 / month
-    agency: "price_1SuNclKC49F2A9OzqI4kLooj"  // $149 / month
-  };
-
-  // ===============================
-  // Checkout helper
-  // ===============================
-  async function startCheckout(planKey) {
-    const priceId = PRICE_IDS[planKey];
-
-    if (!priceId) {
-      alert("Pricing not configured yet. Please try again later.");
-      return;
-    }
-
-    try {
-      const res = await fetch(`${BACKEND_BASE}/stripe/create-checkout-session`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          priceId,
-          successUrl: `${window.location.origin}/success.html`,
-          cancelUrl: `${window.location.origin}/cancel.html`
-        })
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err || "Checkout failed");
-      }
-
-      const data = await res.json();
-      if (!data.url) throw new Error("No checkout URL returned");
-
-      window.location.href = data.url;
-    } catch (err) {
-      console.error("Stripe checkout error:", err);
-      alert("Unable to start checkout. Please try again.");
-    }
-  }
-</script>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shorty Pro — Turn one video into a week of content</title>
