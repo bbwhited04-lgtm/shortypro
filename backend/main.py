@@ -4,12 +4,12 @@ from fastapi import FastAPI, HTTPException, Depends, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
 from dotenv import load_dotenv
-
+from stripe_webhook import router as stripe_webhook_router
 from db import get_pool, close_pool
 from security import hash_password, verify_password, create_access_token, decode_token
 
 load_dotenv()
-
+app.include_router(stripe_webhook_router)
 APP_NAME = os.getenv("APP_NAME", "ShortyPro")
 
 def cors_origins():
