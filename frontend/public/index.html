@@ -503,55 +503,45 @@
       }
     }
 
-    async function startCheckout(planKey){
-      const apiBase = getApiBase();
-      const priceId = getPriceId(planKey);
+    <script>
+async function startCheckout(planKey) {
+  console.log("Checkout clicked:", planKey);
 
-      if (!apiBase){
-        toast("Missing API base", "Set SHORTYPRO.API_BASE_URL in the script at the top of the file.");
-        return;
-      }
+  const priceId = window.SHORTYPRO?.PRICES?.[planKey];
+  if (!priceId || !priceId.startsWith("price_")) {
+    alert("Invalid or missing Stripe price ID");
+    console.error("Bad priceId:", priceId);
+    return;
+  }
 
-      if (!priceId || !String(priceId).startsWith("price_")){
-        console.error("Bad priceId:", planKey, priceId);
-        toast("Missing priceId", price_1SuNclKC49F2A9OzqI4kLooj");
-        return;
-      }
+  try {
+    const res = await fetch("https://shortypro.onrender.com/stripe/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        priceId,
+        successUrl: window.location.origin + "/index.html?checkout=success",
+        cancelUrl: window.location.origin + "/index.html?checkout=cancel"
+      })
+    });
 
-      const endpoint = apiBase + "/stripe/create-checkout-session";
+    const data = await res.json();
+    console.log("Stripe response:", data);
 
-      try{
-        const res = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type":"application/json" },
-          body: JSON.stringify({
-            priceId,
-            successUrl: window.location.origin + "/index.html?checkout=success",
-            cancelUrl: window.location.origin + "/index.html?checkout=cancel"
-          })
-        });
-
-        const data = await res.json().catch(()=> ({}));
-        if (!res.ok){
-          console.error("Checkout failed:", res.status, data);
-          toast("Checkout failed", "Backend returned an error. Open console + Render logs.");
-          return;
-        }
-
-        const url = data.url || data.checkout_url;
-        if (!url){
-          console.error("No checkout url returned:", data);
-          toast("No redirect URL", "Backend did not return { url }. Fix your Stripe endpoint response.");
-          return;
-        }
-
-        // Redirect
-        window.location.href = url;
-      } catch(err){
-        console.error("Checkout request error:", err);
-        toast("Network error", "Could not call backend. Check API_BASE_URL and CORS.");
-      }
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert("Checkout failed — no redirect URL");
     }
+  } catch (err) {
+    console.error("Checkout error:", err);
+    alert("Network error — see console");
+  }
+}
+
+window.startCheckout = startCheckout;
+</script>
+
 
     async function copyPriceId(planKey){
       const id = getPriceId(planKey) || "";
