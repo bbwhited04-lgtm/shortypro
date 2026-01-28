@@ -35,6 +35,7 @@
     }
     a{color:inherit; text-decoration:none}
     .container{max-width:var(--max); margin:0 auto; padding:0 18px}
+
     .topbar{
       position:sticky; top:0; z-index:30;
       backdrop-filter: blur(14px);
@@ -53,6 +54,15 @@
       box-shadow: var(--shadow2);
       display:inline-block;
     }
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background: rgba(255,255,255,.03);
+      font-size:13px;
+      white-space:nowrap;
+    }
     .navlinks{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
     .navlinks a{
       color:var(--muted);
@@ -60,6 +70,7 @@
       transition: all .15s ease;
     }
     .navlinks a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
       gap:10px; padding:12px 14px;
@@ -81,22 +92,8 @@
     }
     .btn.primary:hover{border-color: rgba(115,241,200,.55)}
     .btn.danger{border-color: rgba(255,107,107,.45)}
-    .pill{
-      display:inline-flex; gap:8px; align-items:center;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid var(--line);
-      color:var(--muted);
-      background: rgba(255,255,255,.03);
-      font-size:13px;
-    }
-    header.hero{padding:58px 0 26px}
-    .heroGrid{
-      display:grid; grid-template-columns: 1.15fr .85fr; gap:20px;
-      align-items:stretch;
-    }
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns:1fr; }
-    }
+
+    header.hero{padding:44px 0 10px}
     h1{
       margin:14px 0 10px;
       font-size: clamp(34px, 3.8vw, 52px);
@@ -107,44 +104,44 @@
       color:var(--muted);
       font-size:16px;
       line-height:1.6;
-      max-width: 56ch;
+      max-width: 70ch;
     }
     .heroActions{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-    }
-    .cardPad{padding:18px}
-    .kpis{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    .kpi{
-      border:1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(15,22,39,.6);
-      padding:14px;
-    }
-    .kpi .num{font-weight:900; font-size:22px}
-    .kpi .lab{color:var(--muted); margin-top:4px; font-size:13px}
-    .note{color:var(--muted); font-size:13px; margin-top:10px}
+
     .section{padding:28px 0}
     .section h2{
       margin:0 0 10px;
       font-size: clamp(22px, 2.6vw, 30px);
       letter-spacing:-.2px;
     }
+
     .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
     @media (max-width: 980px){ .grid3{grid-template-columns:1fr} }
+
     .feature{
       border:1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(18,26,43,.55);
       padding:16px;
+      overflow:hidden;
     }
     .feature b{display:block; margin:2px 0 6px}
     .feature p{margin:0; color:var(--muted); line-height:1.6}
+
+    .vid{
+      width:100%;
+      margin-top:10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.25);
+      display:block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
     .pricingWrap{display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-top:12px}
     @media (max-width: 980px){ .pricingWrap{grid-template-columns:1fr} }
+
     .priceCard{
       border:1px solid var(--line);
       border-radius: var(--radius);
@@ -172,12 +169,14 @@
     .per{color:var(--muted); font-size:13px}
     ul{margin:12px 0 0; padding-left:18px; color:var(--muted); line-height:1.7}
     .priceActions{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
+
     .footer{
       padding:28px 0 40px;
       border-top: 1px solid var(--line);
       color: var(--muted);
       font-size: 13px;
     }
+
     .toast{
       position: fixed; left: 50%; transform: translateX(-50%);
       bottom: 18px; z-index: 60;
@@ -202,26 +201,20 @@
       color: var(--text);
     }
   </style>
+
+  <script>
+    window.SHORTYPRO = {
+      API_BASE_URL: "https://shortypro.onrender.com",
+      PRICES: {
+        starter: "price_1SuNTiKC49F2A9OzFrSyGVgv",
+        pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",
+        agency: "price_1SuNclKC49F2A9OzqI4kLooj"
+      }
+    };
+  </script>
 </head>
 
 <body>
-  <!--
-    IMPORTANT: Paste your REAL Stripe price IDs here.
-    You said you already had them earlier — put them in this one block.
-  -->
-  <script>
-    window.SHORTYPRO = {
-      // Backend base URL (Render)
-      API_BASE_URL: "https://shortypro.onrender.com",
-
-      // Stripe Price IDs (replace with your real values)
-      PRICES: {
-        starter: "price_REprice",
-        pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",
-        agency: "price_1SuNclKC49F2A9OzqI4kLooj"
-      }};
-  </script>
-
   <div class="topbar">
     <div class="container">
       <div class="nav">
@@ -236,7 +229,7 @@
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
           <a class="btn" href="https://shortypro-c64p.vercel.app" target="_blank" rel="noopener noreferrer">App</a>
-          <button class="btn primary" onclick="scrollToPricing()">Get Started</button>
+          <button class="btn primary" type="button" onclick="scrollToPricing()">Get Started</button>
         </div>
       </div>
     </div>
@@ -244,51 +237,16 @@
 
   <header class="hero">
     <div class="container">
-      <div class="heroGrid">
-        <div>
-          <div class="pill">Clean • Modern • Trustworthy</div>
-          <h1>Short links that actually make you money.</h1>
-          <p class="sub">
-            ShortyPro is built for creators and businesses who need clean short links, click tracking,
-            and Stripe checkout that just works.
-          </p>
-          <div class="heroActions">
-            <button class="btn primary" onclick="scrollToPricing()">See Plans</button>
-            <a class="btn" href="https://www.shortypro.com" target="_blank" rel="noopener noreferrer">shortypro.com</a>
-            <a class="btn" href="https://shortypro.onrender.com" target="_blank" rel="noopener noreferrer">Render API</a>
-          </div>
-
-          <p class="note">
-            Tip: if checkout buttons don’t redirect, open DevTools Console — this page will show you exactly what’s missing.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="cardPad">
-            <div class="priceTop" style="margin-bottom:10px">
-              <div>
-                <div class="plan">Live Status</div>
-                <div class="per">Frontend + Backend connectivity</div>
-              </div>
-              <button class="btn" onclick="runHealthCheck()">Run Check</button>
-            </div>
-
-            <div class="kpis">
-              <div class="kpi">
-                <div class="num" id="kpi-api">—</div>
-                <div class="lab">API Health</div>
-              </div>
-              <div class="kpi">
-                <div class="num" id="kpi-price">—</div>
-                <div class="lab">Price IDs</div>
-              </div>
-            </div>
-
-            <div class="note">
-              API Base: <code class="inline" id="apiBaseLabel">—</code>
-            </div>
-          </div>
-        </div>
+      <div class="pill">Clean • Modern • Trustworthy</div>
+      <h1>Shorty videos that actually make you money.</h1>
+      <p class="sub">
+        ShortyPro is built for creators and businesses who need clean short videos, click tracking,
+        and Stripe checkout that just works. Converting more customers than your average bear.
+      </p>
+      <div class="heroActions">
+        <button class="btn primary" type="button" onclick="scrollToPricing()">See Plans</button>
+        <a class="btn" href="https://www.shortypro.com" target="_blank" rel="noopener noreferrer">shortypro.com</a>
+        <a class="btn" href="https://shortypro.onrender.com" target="_blank" rel="noopener noreferrer">Render API</a>
       </div>
     </div>
   </header>
@@ -296,34 +254,42 @@
   <section class="section" id="features">
     <div class="container">
       <h2>What you get</h2>
+
       <div class="grid3">
         <div class="feature">
           <b>Fast short links</b>
           <p>Create clean short videos that look professional across social platforms.</p>
+          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid2.mp4"></video>
         </div>
+
         <div class="feature">
           <b>Click tracking</b>
           <p>Know what’s working: views, clicks, and referrers in one place.</p>
+          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/vid1.mp4"></video>
         </div>
+
         <div class="feature">
           <b>Stripe checkout</b>
           <p>Turn traffic into revenue with simple plan buttons wired to Stripe.</p>
+          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid3.mp4"></video>
         </div>
+
         <div class="feature">
-          <b>Video Conversion Tips & Tricks</b>
-          <p>TLearn from the best in the business, training the way you need it, when you want it, to help aid in Monetization of Tiktok Instagram Facebook, Youtube, Threads and X</p>
+          <b>Video Conversion Tips &amp; Tricks</b>
+          <p>Learn from the best in the business to help monetize your content.</p>
+          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid4.mp4"></video>
         </div>
+
         <div class="feature">
-          <b>Posting Times never the same across all platforms and dont know when to post?</b>
-          <p>We post for you, directly within our dashboard, we take a 4 min video, make 20-30 shorts and put them on the platform for you to publish</p>
+          <b>Smart Posting</b>
+          <p>We post for you directly within our dashboard, turning a 4 min video into 20–30 shorts.</p>
+          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid5.mp4"></video>
         </div>
+
         <div class="feature">
-          <b>Join our Private Facebook Group?</b>
-          <p>Become a part of the world's fastest growing filmmaking and marketing community. Surround yourself with people who are committed to growth. Ask questions and get immediate answers from industry pros and veterans, including Paul & Anthony! We do weekly live videos in the facebook group where you can interact with our CEO.  </p>
-        </div>
-        <div class="feature">
-          <b>The Reels, TikTok and Shorts Solution with Shorty Pro</b>
-          <p>If you're aiming to achieve viral success on Instagram, TikTok, and YouTube Shorts, this program is perfect for you! In this course, we will thoroughly explore the essential strategies you need to create content that the algorithm will promote to millions globally.</p>
+          <b>Join our Private Facebook Group</b>
+          <p>Become part of a growing filmmaking and marketing community.</p>
+          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid6.mp4"></video>
         </div>
       </div>
     </div>
@@ -347,11 +313,8 @@
             <li>Email support</li>
           </ul>
           <div class="priceActions">
-            <button class="btn primary" onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
-              Buy Starter
-          </button>
-
-            <button class="btn" onclick="copyPriceId('starter')">Copy priceId</button>
+            <button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('starter');">Buy Starter</button>
+            <button class="btn" type="button" onclick="copyPriceId('starter')">Copy priceId</button>
           </div>
         </div>
 
@@ -368,12 +331,8 @@
             <li>Priority support</li>
           </ul>
           <div class="priceActions">
-          <button class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('pro');">
-  Buy Pro
-</button>
-
-            <button class="btn" onclick="copyPriceId('pro')">Copy priceId</button>
+            <button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('pro');">Buy Pro</button>
+            <button class="btn" type="button" onclick="copyPriceId('pro')">Copy priceId</button>
           </div>
         </div>
 
@@ -389,18 +348,15 @@
             <li>White-glove onboarding</li>
           </ul>
           <div class="priceActions">
-           <button class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('agency');">
-  Buy Agency
-</button>
-
-            <button class="btn" onclick="copyPriceId('agency')">Copy priceId</button>
+            <button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('agency');">Buy Agency</button>
+            <button class="btn" type="button" onclick="copyPriceId('agency')">Copy priceId</button>
           </div>
         </div>
       </div>
 
-      <div class="note">
-        Checkout endpoint expected: <code class="inline">POST /stripe/create-checkout-session</code> with body <code class="inline">{ "priceId": "price_..." }</code>
+      <div style="margin-top:12px; color: var(--muted); font-size:13px">
+        Checkout endpoint expected: <code class="inline">POST /stripe/create-checkout-session</code>
+        with body <code class="inline">{ "priceId": "price_..." }</code>
       </div>
     </div>
   </section>
@@ -408,30 +364,31 @@
   <section class="section" id="faq">
     <div class="container">
       <h2>FAQ</h2>
+
       <div class="grid3">
         <div class="feature">
           <b>Become a Content Creator In The Fastest Timeframe Possible!</b>
-          <p>Purchase our 30 day starter to get started, Make money from short 10 second videos, we do all the hard work</p>
+          <p>Purchase our 30 day starter to get started. Make money from short 10 second videos — we do all the hard work.</p>
         </div>
         <div class="feature">
           <b>Content Creators</b>
-          <p>Just picked up a camera for the first time? Or maybe you're looking to start shooting professional-looking content with your smartphone? We can help you learn in just 14 days!</p>
+          <p>Just picked up a camera for the first time? Or maybe you're looking to start shooting professional-looking content with your smartphone? We can help you learn fast.</p>
         </div>
         <div class="feature">
-          <b>Freelance Videographers? </b>
-          <p>You're looking to turn content creation into a fulltime career, or maybe you've already started but you want to SCALE your business well beyond 6 figures. We've helped hundreds of videographers do this.</p>
+          <b>Freelance Videographers?</b>
+          <p>Want to turn content creation into a full-time career (or scale past 6 figures)? We've helped hundreds of videographers do it.</p>
         </div>
-         <div class="feature">
-          <b>Online Entreprenuers wanting to get paid from Tiktok?</b>
-          <p>2025 is an amazing time to break free from corporate employment and start an online business that provides a sense of FREEDOM! The "30 Day Pro Membership" Program is what you need. </p>
+        <div class="feature">
+          <b>Online Entrepreneurs wanting to get paid from TikTok?</b>
+          <p>2025 is a great time to break free from corporate employment and build an online business that provides freedom. The “30 Day Pro Membership” is what you need.</p>
         </div>
-         <div class="feature">
-          <b>How can shorty save you time?</b>
-          <p>By using Shorty Pro, we do all the hard work for you</p>
+        <div class="feature">
+          <b>How can Shorty save you time?</b>
+          <p>By using ShortyPro, we do all the hard work for you.</p>
         </div>
-         <div class="feature">
-          <b>Convert Videos from long form to short form with Shorty Pro?</b>
-          <p>We offer a  premium service for this based on three models above</p>
+        <div class="feature">
+          <b>Convert long-form to short-form with ShortyPro?</b>
+          <p>We offer a premium service for this based on the three models above.</p>
         </div>
       </div>
     </div>
@@ -458,7 +415,9 @@
   <script>
     document.getElementById("year").textContent = String(new Date().getFullYear());
 
-    function scrollToPricing(){ document.getElementById("pricing").scrollIntoView({behavior:"smooth", block:"start"}); }
+    function scrollToPricing(){
+      document.getElementById("pricing").scrollIntoView({behavior:"smooth", block:"start"});
+    }
 
     function toast(title, body){
       const t = document.getElementById("toast");
@@ -478,148 +437,83 @@
       return window.SHORTYPRO?.PRICES?.[planKey];
     }
 
-    function validatePrices(){
-      const keys = ["starter","pro","agency"];
-      const missing = keys.filter(k => !getPriceId(k) || !String(getPriceId(k)).startsWith("price_"));
-      return { ok: missing.length === 0, missing };
-    }
-
-    async function runHealthCheck(){
-      const apiBase = getApiBase();
-      document.getElementById("apiBaseLabel").textContent = apiBase || "NOT SET";
-
-      const priceStatus = validatePrices();
-      document.getElementById("kpi-price").textContent = priceStatus.ok ? "OK" : "MISSING";
-      if (!priceStatus.ok){
-        console.warn("Missing/invalid price IDs for:", priceStatus.missing);
-        toast("Price IDs missing", "Open index.html and replace price_REPLACE_ME_* with your real Stripe price IDs.");
+    async function copyPriceId(planKey){
+      const priceId = getPriceId(planKey);
+      if (!priceId){
+        toast("Missing priceId", "No priceId found for " + planKey);
+        return;
       }
+      try{
+        await navigator.clipboard.writeText(String(priceId));
+        toast("Copied", planKey + " priceId copied to clipboard.");
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = String(priceId);
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast("Copied", planKey + " priceId copied (fallback).");
+      }
+    }
+    window.copyPriceId = copyPriceId;
+
+    async function startCheckout(planKey){
+      const apiBase = getApiBase();
+      const priceId = getPriceId(planKey);
 
       if (!apiBase){
-        document.getElementById("kpi-api").textContent = "NO BASE";
-        toast("API Base not set", "Set SHORTYPRO.API_BASE_URL at the top of this file to your Render backend URL.");
+        toast("Missing API base", "Set SHORTYPRO.API_BASE_URL at the top of the file.");
         return;
       }
+      if (!priceId || !String(priceId).startsWith("price_")){
+        console.error("Bad priceId:", planKey, priceId);
+        toast("Invalid priceId", "Fix your SHORTYPRO.PRICES block (must start with price_).");
+        return;
+      }
+
+      const endpoint = apiBase + "/stripe/create-checkout-session";
 
       try{
-        const r = await fetch(apiBase + "/health", { method:"GET" });
-        if (r.ok){
-          document.getElementById("kpi-api").textContent = "OK";
-          toast("API OK", "Backend /health responded successfully.");
-        } else {
-          document.getElementById("kpi-api").textContent = "ERR";
-          toast("API error", "Backend responded but not OK. Check Render logs + route exists: /health");
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type":"application/json" },
+          body: JSON.stringify({
+            priceId,
+            successUrl: window.location.origin + "/index.html?checkout=success",
+            cancelUrl: window.location.origin + "/index.html?checkout=cancel"
+          })
+        });
+
+        const data = await res.json().catch(()=> ({}));
+
+        if (!res.ok){
+          console.error("Checkout failed:", res.status, data);
+          toast("Checkout failed", data.detail || ("Backend returned " + res.status));
+          return;
         }
-      } catch(e){
-        console.error("Health check failed:", e);
-        document.getElementById("kpi-api").textContent = "DOWN";
-        toast("API unreachable", "Frontend could not reach Render. Confirm API_BASE_URL + CORS + service is running.");
+
+        const url = data.url || data.checkout_url;
+        if (!url){
+          console.error("No checkout url returned:", data);
+          toast("No redirect URL", "Backend did not return { url }.");
+          return;
+        }
+
+        window.location.href = url;
+      }catch(err){
+        console.error("Checkout request error:", err);
+        toast("Network error", "Could not call backend. Check Render + CORS.");
       }
     }
+    window.startCheckout = startCheckout;
 
-    <script>
-async function startCheckout(planKey) {
-  console.log("Checkout clicked:", planKey);
-
-  const priceId = window.SHORTYPRO?.PRICES?.[planKey];
-  if (!priceId || !priceId.startsWith("price_")) {
-    alert("Invalid or missing Stripe price ID");
-    console.error("Bad priceId:", priceId);
-    return;
-  }
-
-  try {
-    const res = await fetch("https://shortypro.onrender.com/stripe/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        priceId,
-        successUrl: window.location.origin + "/index.html?checkout=success",
-        cancelUrl: window.location.origin + "/index.html?checkout=cancel"
-      })
-    });
-
-    const data = await res.json();
-    console.log("Stripe response:", data);
-
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Checkout failed — no redirect URL");
-    }
-  } catch (err) {
-    console.error("Checkout error:", err);
-    alert("Network error — see console");
-  }
-}
-
-window.startCheckout = startCheckout;
- <script>
-  async function startCheckout(planKey){
-    const apiBase = getApiBase();
-    const priceId = getPriceId(planKey);
-
-    console.log("Checkout clicked:", planKey, priceId);
-
-    if (!apiBase){
-      toast("Missing API base", "Set SHORTYPRO.API_BASE_URL at the top of the file.");
-      return;
-    }
-
-    if (!priceId || !String(priceId).startsWith("price_")){
-      console.error("Bad priceId:", planKey, priceId);
-      toast("Missing priceId", "Fix your SHORTYPRO.PRICES block.");
-      return;
-    }
-
-    const endpoint = apiBase + "/stripe/create-checkout-session";
-
-    try{
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({
-          priceId,
-          successUrl: window.location.origin + "/index.html?checkout=success",
-          cancelUrl: window.location.origin + "/index.html?checkout=cancel"
-        })
-      });
-
-      const data = await res.json().catch(()=> ({}));
-
-      if (!res.ok){
-        console.error("Checkout failed:", res.status, data);
-        toast("Checkout failed", data.detail || "Backend returned an error.");
-        return;
-      }
-
-      const url = data.url || data.checkout_url;
-      if (!url){
-        console.error("No checkout url returned:", data);
-        toast("No redirect URL", "Backend did not return { url }.");
-        return;
-      }
-
-      window.location.href = url;
-    } catch(err){
-      console.error("Checkout request error:", err);
-      toast("Network error", "Could not call backend. Check Render + CORS.");
-    }
-  }
-
-  window.startCheckout = startCheckout;
-</script>
-  <script>
-  window.SHORTYPRO = {
-    API_BASE_URL: "https://shortypro.onrender.com",
-    PRICES: {
-      starter: "price_1SuNTiKC49F2A9OzFrSyGVgv",
-      pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",
-      agency: "price_1SuNclKC49F2A9OzqI4kLooj"
-    }
-  };
-<script>
-  window.startCheckout = startCheckout;
-</script>
+    (function(){
+      const qp = new URLSearchParams(window.location.search);
+      const c = qp.get("checkout");
+      if (c === "success") toast("Success", "Thanks! Checkout completed.");
+      if (c === "cancel") toast("Canceled", "Checkout was canceled.");
+    })();
+  </script>
 </body>
 </html>
