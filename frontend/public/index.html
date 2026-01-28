@@ -366,8 +366,17 @@
             <li>White-glove onboarding</li>
           </ul>
           <div class="priceActions">
-            <button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('agency');">Buy Agency</button>
-            <button class="btn" type="button" onclick="copyPriceId('agency')">Copy priceId</button>
+            #<button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('agency');">Buy Agency</button>
+            #<button class="btn" type="button" onclick="copyPriceId('agency')">Copy priceId</button>
+          <script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
+
+<stripe-buy-button
+  buy-button-id="buy_btn_1SuTBnKC49F2A9OzKhdowMw5"
+  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
+>
+</stripe-buy-button>
           </div>
         </div>
       </div>
