@@ -130,10 +130,11 @@
     </div>
   </section>
 
-  <section class="section" id="pricing">
+<section class="section" id="pricing">
     <div class="container">
       <h2>Pricing</h2>
-      <p class="sub">Choose a plan. Checkout will open in a new tab using your Render backend.</p>
+      <p class="sub">Choose a plan. Checkout will open in a new tab (or redirect) using your Render backend.</p>
+
       <div class="pricingWrap">
         <div class="priceCard">
           <div class="plan">Starter</div>
@@ -146,8 +147,15 @@
             <li>Light tracking</li>
             <li>Email support</li>
           </ul>
-          <button class="btn primary" onclick="startCheckout('starter')">Buy Starter</button>
+          <div class="priceActions">
+            <button class="btn primary" onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
+              Buy Starter
+          </button>
+
+            <button class="btn" onclick="copyPriceId('starter')">Copy priceId</button>
+          </div>
         </div>
+
         <div class="priceCard reco">
           <div class="badge">Most Popular</div>
           <div class="plan">Pro</div>
@@ -160,8 +168,16 @@
             <li>Better analytics</li>
             <li>Priority support</li>
           </ul>
-          <button class="btn primary" onclick="startCheckout('pro')">Buy Pro</button>
+          <div class="priceActions">
+          <button class="btn primary"
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('pro');">
+  Buy Pro
+</button>
+
+            <button class="btn" onclick="copyPriceId('pro')">Copy priceId</button>
+          </div>
         </div>
+
         <div class="priceCard">
           <div class="plan">Agency</div>
           <div class="priceTop">
@@ -173,11 +189,21 @@
             <li>Advanced tracking</li>
             <li>White-glove onboarding</li>
           </ul>
-          <button class="btn primary" onclick="startCheckout('agency')">Buy Agency</button>
+          <div class="priceActions">
+           <button class="btn primary"
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('agency');">
+  Buy Agency
+</button>
+
+            <button class="btn" onclick="copyPriceId('agency')">Copy priceId</button>
+          </div>
         </div>
       </div>
+
+      <div class="note">
+        Checkout endpoint expected: <code class="inline">POST /stripe/create-checkout-session</code> with body <code class="inline">{ "priceId": "price_..." }</code>
+      </div>
     </div>
-  </section>
 
   <section class="section" id="faq">
     <div class="container">
