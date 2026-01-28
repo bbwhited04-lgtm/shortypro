@@ -331,7 +331,10 @@
             <li>Email support</li>
           </ul>
           <div class="priceActions">
-            <button class="btn primary" onclick="startCheckout('starter')">Buy Starter</button>
+            <button class="btn primary" onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
+              Buy Starter
+          </button>
+
             <button class="btn" onclick="copyPriceId('starter')">Copy priceId</button>
           </div>
         </div>
@@ -349,7 +352,12 @@
             <li>Priority support</li>
           </ul>
           <div class="priceActions">
-            <button class="btn primary" onclick="startCheckout('pro')">Buy Pro</button>
+            <button
+  class="btn primary"
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
+  Buy Pro
+</button>
+
             <button class="btn" onclick="copyPriceId('pro')">Copy priceId</button>
           </div>
         </div>
@@ -366,7 +374,12 @@
             <li>White-glove onboarding</li>
           </ul>
           <div class="priceActions">
-            <button class="btn primary" onclick="startCheckout('agency')">Buy Agency</button>
+            <button
+  class="btn primary"
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
+  Buy Agency
+</button>
+
             <button class="btn" onclick="copyPriceId('agency')">Copy priceId</button>
           </div>
         </div>
