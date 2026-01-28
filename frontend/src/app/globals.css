@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-body { @apply bg-slate-950 text-slate-100; }
-a { @apply text-sky-300 hover:text-sky-200; }
+/* Fix for “white site” / invisible content due to global background overrides */
+:root { color-scheme: light; }
+html, body { height: 100%; }
+body { background: #0b0f14; color: #e8eef7; }
+
+/* Fix click issues where a full-card overlay blocks the top buttons */
+[data-click-shield="true"] { pointer-events: none; }

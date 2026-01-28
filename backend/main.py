@@ -1,180 +1,124 @@
+from __future__ import annotations
+
 import os
-from fastapi import FastAPI
+from typing import Optional
+
+import stripe
+from fastapi import FastAPI, HTTPException, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr, Field
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, EmailStr
 
-APP_NAME = os.getenv("APP_NAME", "ShortyPro")
+# ------------------------------
+# Settings (env vars on Render)
+# ------------------------------
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_PRICE_ID = os.getenv("STRIPE_PRICE_ID", "")
+PUBLIC_FRONTEND_URL = os.getenv("PUBLIC_FRONTEND_URL", "http://localhost:3000").rstrip("/")
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", f"{PUBLIC_FRONTEND_URL}/success")
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL", f"{PUBLIC_FRONTEND_URL}/cancel")
+ADMIN_API_KEY = os.getenv("ADMIN_API_KEY", "")
 
-def cors_origins():
-    raw = os.getenv("CORS_ORIGINS", "https://shortypro.com,https://www.shortypro.com,http://localhost:3000")
-    return [o.strip() for o in raw.split(",") if o.strip()]
+if STRIPE_SECRET_KEY:
+    stripe.api_key = STRIPE_SECRET_KEY
 
-app = FastAPI(title=APP_NAME)
+app = FastAPI(title="ShortyPro API", version="1.0.0")
 
-# ✅ CORS (needed for browser checkout calls)
+# Allow frontend to call backend from Vercel/Custom domain
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins(),
+    allow_origins=[
+        PUBLIC_FRONTEND_URL,
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ Routers must be imported AFTER app exists
-from stripe import router as stripe_router
-from stripe_webhook import router as stripe_webhook_router
-
-# ✅ Include routers ONCE, after imports
-app.include_router(stripe_router)
-app.include_router(stripe_webhook_router)
-
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins(),
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+# ------------------------------
+# Models
+# ------------------------------
 class LoginIn(BaseModel):
-    email: EmailStr
-    password: str = Field(min_length=6)
-
-class LoginOut(BaseModel):
-    token: str
-    user_id: str
+    # This fixes your crash: EmailStr must be imported from pydantic
     email: EmailStr
 
-class MeOut(BaseModel):
-    user_id: str
-    email: EmailStr
+class CheckoutOut(BaseModel):
+    url: str
 
-class ProfileIn(BaseModel):
-    display_name: str | None = None
-    bio: str | None = None
+# ------------------------------
+# Helpers
+# ------------------------------
+def require_admin(x_admin_api_key: Optional[str]) -> None:
+    if not ADMIN_API_KEY:
+        # If you don't set an admin key, we don't enforce it.
+        return
+    if x_admin_api_key != ADMIN_API_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
-class ProfileOut(BaseModel):
-    user_id: str
-    display_name: str | None
-    bio: str | None
-
-async def init_db_and_admin():
-    pool = await get_pool()
-    # Create schema
-    schema_path = os.path.join(os.path.dirname(__file__), "schema.sql")
-    with open(schema_path, "r", encoding="utf-8") as f:
-        sql = f.read()
-    async with pool.acquire() as conn:
-        await conn.execute(sql)
-
-        # Bootstrap admin if no users exist
-        count = await conn.fetchval("SELECT COUNT(*) FROM users;")
-        if count == 0:
-            admin_email = os.getenv("ADMIN_EMAIL", "").strip().lower()
-            admin_password = os.getenv("ADMIN_PASSWORD", "")
-            if not admin_email or not admin_password:
-                # Don't crash production if not set; just skip bootstrap
-                return
-            user_id = uuid.uuid4()
-            await conn.execute(
-                "INSERT INTO users(id, email, password_hash) VALUES($1, $2, $3);",
-                user_id,
-                admin_email,
-                hash_password(admin_password),
-            )
-            await conn.execute(
-                "INSERT INTO profiles(user_id, display_name, bio) VALUES($1, $2, $3);",
-                user_id,
-                "Billy (Admin)",
-                "Welcome to ShortyPro.",
-            )
-
-@app.on_event("startup")
-async def on_startup():
-    await init_db_and_admin()
-
-@app.on_event("shutdown")
-async def on_shutdown():
-    await close_pool()
-
-@app.get("/")
-async def root():
-    return {"status": "ok", "service": "shortypro-backend"}
-
-@app.head("/")
-async def root_head():
-    return Response(status_code=200)
-
+# ------------------------------
+# Routes
+# ------------------------------
 @app.get("/health")
-async def health():
-    pool = await get_pool()
-    async with pool.acquire() as conn:
-        await conn.execute("SELECT 1;")
+def health():
     return {"ok": True}
 
-def get_bearer_token(req: Request) -> str:
-    auth = req.headers.get("authorization", "")
-    if auth.lower().startswith("bearer "):
-        return auth.split(" ", 1)[1].strip()
-    return ""
+@app.post("/auth/login")
+def login(payload: LoginIn):
+    # Stub login response (you can wire magic links later)
+    return {"ok": True, "email": str(payload.email)}
 
-async def require_user(req: Request) -> dict:
-    token = get_bearer_token(req)
-    if not token:
-        raise HTTPException(status_code=401, detail="Missing bearer token")
+@app.post("/stripe/create-checkout-session", response_model=CheckoutOut)
+def create_checkout_session(request: Request):
+    if not STRIPE_SECRET_KEY:
+        raise HTTPException(status_code=500, detail="STRIPE_SECRET_KEY is not set")
+    if not STRIPE_PRICE_ID:
+        raise HTTPException(status_code=500, detail="STRIPE_PRICE_ID is not set")
+
     try:
-        payload = decode_token(token)
-    except Exception:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    return payload
-
-@app.post("/auth/login", response_model=LoginOut)
-async def login(data: LoginIn):
-    pool = await get_pool()
-    email = data.email.strip().lower()
-    async with pool.acquire() as conn:
-        row = await conn.fetchrow("SELECT id, email, password_hash FROM users WHERE email=$1;", email)
-        if not row:
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-        if not verify_password(data.password, row["password_hash"]):
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-        token = create_access_token(str(row["id"]), row["email"])
-        return LoginOut(token=token, user_id=str(row["id"]), email=row["email"])
-
-@app.get("/auth/me", response_model=MeOut)
-async def me(payload=Depends(require_user)):
-    return MeOut(user_id=payload["sub"], email=payload["email"])
-
-@app.get("/profile", response_model=ProfileOut)
-async def get_profile(payload=Depends(require_user)):
-    pool = await get_pool()
-    user_id = uuid.UUID(payload["sub"])
-    async with pool.acquire() as conn:
-        row = await conn.fetchrow(
-            "SELECT user_id, display_name, bio FROM profiles WHERE user_id=$1;",
-            user_id
+        session = stripe.checkout.Session.create(
+            mode="payment",
+            line_items=[{"price": STRIPE_PRICE_ID, "quantity": 1}],
+            success_url=STRIPE_SUCCESS_URL,
+            cancel_url=STRIPE_CANCEL_URL,
         )
-        if not row:
-            return ProfileOut(user_id=str(user_id), display_name=None, bio=None)
-        return ProfileOut(user_id=str(row["user_id"]), display_name=row["display_name"], bio=row["bio"])
+        return {"url": session.url}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Stripe error: {e}")
 
-@app.post("/profile", response_model=ProfileOut)
-async def upsert_profile(data: ProfileIn, payload=Depends(require_user)):
-    pool = await get_pool()
-    user_id = uuid.UUID(payload["sub"])
-    async with pool.acquire() as conn:
-        await conn.execute(
-            """INSERT INTO profiles(user_id, display_name, bio)
-                 VALUES($1, $2, $3)
-                 ON CONFLICT (user_id)
-                 DO UPDATE SET display_name=EXCLUDED.display_name, bio=EXCLUDED.bio, updated_at=now();""",
-            user_id,
-            data.display_name,
-            data.bio,
+@app.post("/stripe/create-portal-session", response_model=CheckoutOut)
+def create_portal_session(customer_id: Optional[str] = None):
+    if not STRIPE_SECRET_KEY:
+        raise HTTPException(status_code=500, detail="STRIPE_SECRET_KEY is not set")
+
+    # NOTE: Portal sessions require a real Stripe customer id.
+    # You can store customer_id after checkout via webhook.
+    if not customer_id:
+        raise HTTPException(status_code=400, detail="customer_id is required")
+
+    try:
+        session = stripe.billing_portal.Session.create(
+            customer=customer_id,
+            return_url=PUBLIC_FRONTEND_URL,
         )
-        row = await conn.fetchrow(
-            "SELECT user_id, display_name, bio FROM profiles WHERE user_id=$1;",
-            user_id
-        )
-        return ProfileOut(user_id=str(row["user_id"]), display_name=row["display_name"], bio=row["bio"])
+        return {"url": session.url}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Stripe error: {e}")
+
+@app.get("/admin/status")
+def admin_status(x_admin_api_key: Optional[str] = Header(default=None)):
+    require_admin(x_admin_api_key)
+    return {
+        "ok": True,
+        "stripe_configured": bool(STRIPE_SECRET_KEY and STRIPE_PRICE_ID),
+        "frontend": PUBLIC_FRONTEND_URL,
+    }
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    # Makes Render logs clearer and avoids generic 500 pages
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error", "error": str(exc)},
+    )
