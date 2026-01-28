@@ -1,27 +1,32 @@
 import os
-import uuid
-from fastapi import FastAPI, HTTPException, Depends, Response, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr, Field
-from dotenv import load_dotenv
-from stripe_webhook import router as stripe_webhook_router
-from db import get_pool, close_pool
-from security import hash_password, verify_password, create_access_token, decode_token
 
-load_dotenv()
-app.include_router(stripe_webhook_router)
 APP_NAME = os.getenv("APP_NAME", "ShortyPro")
 
 def cors_origins():
-    raw = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+    raw = os.getenv("CORS_ORIGINS", "https://shortypro.com,https://www.shortypro.com,http://localhost:3000")
     return [o.strip() for o in raw.split(",") if o.strip()]
 
 app = FastAPI(title=APP_NAME)
+
+# ✅ CORS (needed for browser checkout calls)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins(),
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ✅ Routers must be imported AFTER app exists
 from stripe import router as stripe_router
 from stripe_webhook import router as stripe_webhook_router
 
+# ✅ Include routers ONCE, after imports
 app.include_router(stripe_router)
 app.include_router(stripe_webhook_router)
+
 
 app.add_middleware(
     CORSMiddleware,
