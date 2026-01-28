@@ -3,537 +3,179 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ShortyPro — Short Links that Sell</title>
-  <meta name="description" content="ShortyPro helps creators and businesses shorten links, track clicks, and sell with Stripe-powered checkout." />
-  <meta name="theme-color" content="#0b0f19" />
-
-  <style>
-    :root{
-      --bg:#0b0f19; --card:#121a2b; --card2:#0f1627;
-      --text:#e8eefc; --muted:#aab6d6; --line:rgba(255,255,255,.10);
-      --accent:#6ea8ff; --accent2:#73f1c8; --warn:#ffcc66; --danger:#ff6b6b;
-      --radius:18px;
-      --shadow: 0 20px 50px rgba(0,0,0,.35);
-      --shadow2: 0 10px 30px rgba(0,0,0,.25);
-      --max: 1100px;
-      font-synthesis-weight: none;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(1100px 600px at 20% -10%, rgba(110,168,255,.25), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(115,241,200,.18), transparent 60%),
-        radial-gradient(1200px 800px at 50% 110%, rgba(110,168,255,.10), transparent 55%),
-        var(--bg);
-      color:var(--text);
-    }
-    a{color:inherit; text-decoration:none}
-    .container{max-width:var(--max); margin:0 auto; padding:0 18px}
-
-    .topbar{
-      position:sticky; top:0; z-index:30;
-      backdrop-filter: blur(14px);
-      background: rgba(11,15,25,.72);
-      border-bottom:1px solid var(--line);
-    }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-      gap:14px;
-    }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
-    .logo{
-      width:34px; height:34px; border-radius:12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: var(--shadow2);
-      display:inline-block;
-    }
-    .pill{
-      display:inline-flex; gap:8px; align-items:center;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid var(--line);
-      color:var(--muted);
-      background: rgba(255,255,255,.03);
-      font-size:13px;
-      white-space:nowrap;
-    }
-    .navlinks{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
-    .navlinks a{
-      color:var(--muted);
-      padding:9px 10px; border-radius:12px;
-      transition: all .15s ease;
-    }
-    .navlinks a:hover{background:rgba(255,255,255,.06); color:var(--text)}
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px; padding:12px 14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      font-weight:700;
-      cursor:pointer;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .btn:hover{background:rgba(255,255,255,.10)}
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      border-color: rgba(110,168,255,.45);
-      background: linear-gradient(135deg, rgba(110,168,255,.22), rgba(115,241,200,.16));
-    }
-    .btn.primary:hover{border-color: rgba(115,241,200,.55)}
-    .btn.danger{border-color: rgba(255,107,107,.45)}
-
-    header.hero{padding:44px 0 10px}
-    h1{
-      margin:14px 0 10px;
-      font-size: clamp(34px, 3.8vw, 52px);
-      line-height:1.04;
-      letter-spacing:-.6px;
-    }
-    .sub{
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.6;
-      max-width: 70ch;
-    }
-    .heroActions{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
-
-    .section{padding:28px 0}
-    .section h2{
-      margin:0 0 10px;
-      font-size: clamp(22px, 2.6vw, 30px);
-      letter-spacing:-.2px;
-    }
-
-    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
-    @media (max-width: 980px){ .grid3{grid-template-columns:1fr} }
-
-    .feature{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(18,26,43,.55);
-      padding:16px;
-      overflow:hidden;
-    }
-    .feature b{display:block; margin:2px 0 6px}
-    .feature p{margin:0; color:var(--muted); line-height:1.6}
-
-    .vid{
-      width:100%;
-      margin-top:10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.25);
-      display:block;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-    }
-
-    .pricingWrap{display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-top:12px}
-    @media (max-width: 980px){ .pricingWrap{grid-template-columns:1fr} }
-
-    .priceCard{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(18,26,43,.60);
-      padding:16px;
-      position:relative;
-      overflow:hidden;
-    }
-    .priceCard.reco{
-      border-color: rgba(115,241,200,.35);
-      box-shadow: 0 20px 60px rgba(115,241,200,.10);
-    }
-    .badge{
-      position:absolute; top:14px; right:14px;
-      font-size:12px; font-weight:800;
-      padding:7px 10px;
-      border-radius:999px;
-      background: rgba(115,241,200,.12);
-      border:1px solid rgba(115,241,200,.30);
-      color:var(--text);
-    }
-    .priceTop{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
-    .plan{font-weight:900; font-size:18px}
-    .price{font-weight:900; font-size:26px}
-    .per{color:var(--muted); font-size:13px}
-    ul{margin:12px 0 0; padding-left:18px; color:var(--muted); line-height:1.7}
-    .priceActions{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
-
-    .footer{
-      padding:28px 0 40px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .toast{
-      position: fixed; left: 50%; transform: translateX(-50%);
-      bottom: 18px; z-index: 60;
-      max-width: min(680px, 92vw);
-      background: rgba(15,22,39,.92);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px 14px;
-      box-shadow: var(--shadow);
-      display:none;
-    }
-    .toast.show{display:block}
-    .toast b{color:var(--text)}
-    .toast .muted{color:var(--muted)}
-    code.inline{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-    }
-  </style>
-
-  <script>
-    window.SHORTYPRO = {
-      API_BASE_URL: "https://shortypro.onrender.com",
-      PRICES: {
-        starter: "price_1SuNTiKC49F2A9OzFrSyGVgv",
-        pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",
-        agency: "price_1SuNclKC49F2A9OzqI4kLooj"
-      }
-    };
-  </script>
+  <title>ShortyPro — Turn long videos into shorts (and schedule everywhere)</title>
+  <meta name="description" content="Upload long videos. We turn them into scroll-stopping shorts, then you schedule & post to every major platform from one dashboard." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/shared/brand.css" />
 </head>
+<body class="bg-slate-50 text-slate-900">
+  <!-- Shared header/footer -->
+  <script src="/shared/brand.js"></script>
+  <script>DeadAppCorpBrand.mount({ dba:"ShortyPro", links:{ primaryCtaLabel:"Open dashboard", primaryCtaHref:"/dashboard/" } });</script>
 
-<body>
-  <div class="topbar">
-    <div class="container">
-      <div class="nav">
-        <div class="brand">
-          <span class="logo" aria-hidden="true"></span>
-          <span>ShortyPro</span>
-          <span class="pill">short links • tracking • stripe</span>
+  <main class="mx-auto max-w-6xl px-4 py-10">
+    <section class="grid gap-8 md:grid-cols-2 md:items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+          <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+          Built on open-source, freely available web tech
+        </div>
+        <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+          Turn long videos into shorts—then schedule everywhere.
+        </h1>
+        <p class="mt-4 text-lg text-slate-700">
+          Upload a long video. We generate short clips, add titles/captions (optional), and drop them into your dashboard.
+          From there, schedule and post to your social accounts—Sprout-style, without the bloat.
+        </p>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+             href="/dashboard/">Open dashboard</a>
+          <a class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+             href="#how">See how it works</a>
         </div>
 
-        <div class="navlinks">
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#faq">FAQ</a>
-          <a class="btn" href="https://shortypro-c64p.vercel.app" target="_blank" rel="noopener noreferrer">App</a>
-          <button class="btn primary" type="button" onclick="scrollToPricing()">Get Started</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <header class="hero">
-    <div class="container">
-      <div class="pill">Clean • Modern • Trustworthy</div>
-      <h1>Shorty videos that actually make you money.</h1>
-      <p class="sub">
-        ShortyPro is built for creators and businesses who need clean short videos, click tracking,
-        and Stripe checkout that just works. Converting more customers than your average bear.
-      </p>
-      <div class="heroActions">
-        <button class="btn primary" type="button" onclick="scrollToPricing()">See Plans</button>
-        <a class="btn" href="https://www.shortypro.com" target="_blank" rel="noopener noreferrer">shortypro.com</a>
-        <a class="btn" href="https://shortypro.onrender.com" target="_blank" rel="noopener noreferrer">Render API</a>
-      </div>
-    </div>
-  </header>
-
-  <section class="section" id="features">
-    <div class="container">
-      <h2>What you get</h2>
-
-      <div class="grid3">
-        <div class="feature">
-          <b>Fast short links</b>
-          <p>Create clean short videos that look professional across social platforms.</p>
-          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid2.mp4"></video>
-        </div>
-
-        <div class="feature">
-          <b>Click tracking</b>
-          <p>Know what’s working: views, clicks, and referrers in one place.</p>
-          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/vid1.mp4"></video>
-        </div>
-
-        <div class="feature">
-          <b>Stripe checkout</b>
-          <p>Turn traffic into revenue with simple plan buttons wired to Stripe.</p>
-          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid3.mp4"></video>
-        </div>
-
-        <div class="feature">
-          <b>Video Conversion Tips &amp; Tricks</b>
-          <p>Learn from the best in the business to help monetize your content.</p>
-          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid4.mp4"></video>
-        </div>
-
-        <div class="feature">
-          <b>Smart Posting</b>
-          <p>We post for you directly within our dashboard, turning a 4 min video into 20–30 shorts.</p>
-          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid5.mp4"></video>
-        </div>
-
-        <div class="feature">
-          <b>Join our Private Facebook Group</b>
-          <p>Become part of a growing filmmaking and marketing community.</p>
-          <video class="vid" controls playsinline preload="metadata" src="https://shortypro.com/shortypro/shortyprovid6.mp4"></video>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="pricing">
-    <div class="container">
-      <h2>Pricing</h2>
-      <p class="sub">Choose a plan.</p>
-
-      <div class="pricingWrap">
-        <div class="priceCard">
-          <div class="plan">Starter</div>
-          <div class="priceTop">
-            <div class="price">$19</div>
-            <div class="per">per month</div>
+        <div class="mt-6 grid grid-cols-3 gap-4 text-center text-sm">
+          <div class="rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="text-2xl font-bold">1</div>
+            <div class="mt-1 text-slate-600">Upload</div>
           </div>
-          <ul>
-            <li>Basic short links</li>
-            <li>Light tracking</li>
-            <li>Email support</li>
+          <div class="rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="text-2xl font-bold">2</div>
+            <div class="mt-1 text-slate-600">Approve shorts</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="text-2xl font-bold">3</div>
+            <div class="mt-1 text-slate-600">Schedule posts</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div class="text-sm font-semibold">Preview: Your Shorts Queue</div>
+          <div class="text-xs text-slate-500">Demo UI</div>
+        </div>
+        <div class="mt-4 space-y-3">
+          <div class="flex items-center gap-3 rounded-2xl border border-slate-200 p-3">
+            <div class="h-12 w-20 rounded-xl bg-slate-100"></div>
+            <div class="min-w-0 flex-1">
+              <div class="truncate text-sm font-semibold">Clip 01 — Best moment</div>
+              <div class="text-xs text-slate-500">9–18s · 1080×1920 · Ready</div>
+            </div>
+            <button class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white">Schedule</button>
+          </div>
+          <div class="flex items-center gap-3 rounded-2xl border border-slate-200 p-3">
+            <div class="h-12 w-20 rounded-xl bg-slate-100"></div>
+            <div class="min-w-0 flex-1">
+              <div class="truncate text-sm font-semibold">Clip 02 — Hook + payoff</div>
+              <div class="text-xs text-slate-500">15–28s · 1080×1920 · Needs review</div>
+            </div>
+            <button class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800">Review</button>
+          </div>
+          <div class="flex items-center gap-3 rounded-2xl border border-slate-200 p-3">
+            <div class="h-12 w-20 rounded-xl bg-slate-100"></div>
+            <div class="min-w-0 flex-1">
+              <div class="truncate text-sm font-semibold">Clip 03 — Call to action</div>
+              <div class="text-xs text-slate-500">20–32s · 1080×1920 · Ready</div>
+            </div>
+            <button class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white">Schedule</button>
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-2xl bg-slate-50 p-4 text-xs text-slate-600">
+          <div class="font-semibold text-slate-800">Open-source only (front-end)</div>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>Tailwind CDN (MIT) for styling</li>
+            <li>Vanilla JS for interactions (no proprietary SDKs required)</li>
+            <li>Optional: FullCalendar (MIT) if you want a richer scheduler</li>
           </ul>
-          <div class="priceActions">
-           
-
-<stripe-buy-button
-  buy-button-id="buy_btn_1SuT6SKC49F2A9OzddETNOJJ"
-  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
->
-</stripe-buy-button>
-   <!--#<button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('starter');">Buy Starter</button>
---><!--#<button class="btn" type="button" onclick="copyPriceId('starter')">Copy priceId</button>
---></div>
         </div>
+      </div>
+    </section>
 
-        <div class="priceCard reco">
-          <div class="badge">Most Popular</div>
-          <div class="plan">Pro</div>
-          <div class="priceTop">
-            <div class="price">$49</div>
-            <div class="per">per month</div>
-          </div>
-          <ul>
-            <li>Everything in Starter</li>
-            <li>Better analytics</li>
-            <li>Priority support</li>
+    <section id="how" class="mt-14">
+      <h2 class="text-2xl font-bold tracking-tight">How it works</h2>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-sm font-semibold">1) Upload</div>
+          <p class="mt-2 text-sm text-slate-600">Drop in a long video or paste a link. Add optional notes: tone, target platform, hashtags.</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-sm font-semibold">2) We cut shorts</div>
+          <p class="mt-2 text-sm text-slate-600">Clips are created and appear in your dashboard. Approve, rename, or request another cut.</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-sm font-semibold">3) Schedule & post</div>
+          <p class="mt-2 text-sm text-slate-600">Pick times, attach captions, and publish across platforms from one place.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="mt-14">
+      <h2 class="text-2xl font-bold tracking-tight">Pricing</h2>
+      <p class="mt-2 text-slate-700">Edit the plan names and Stripe links in <code class="rounded bg-white px-1.5 py-0.5 text-sm border border-slate-200">/dashboard/config.js</code>.</p>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-sm font-semibold">Starter</div>
+          <div class="mt-2 text-3xl font-bold">$19<span class="text-base font-semibold text-slate-500">/mo</span></div>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600">
+            <li>• Up to 30 shorts / month</li>
+            <li>• 1 brand preset</li>
+            <li>• Basic scheduler</li>
           </ul>
-          <div class="priceActions">
-            <!--#<button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('pro');">Buy Pro</button>
-          --><!--#<button class="btn" type="button" onclick="copyPriceId('pro')">Copy priceId</button>
-          --><script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
-
-<stripe-buy-button
-  buy-button-id="buy_btn_1SuTAIKC49F2A9Ozh0nbJKWo"
-  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
->
-</stripe-buy-button>
-          </div>
+          <a class="mt-5 inline-flex w-full justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800" href="/dashboard/billing.html">Buy Starter</a>
         </div>
 
-        <div class="priceCard">
-          <div class="plan">Agency</div>
-          <div class="priceTop">
-            <div class="price">$149</div>
-            <div class="per">per month</div>
-          </div>
-          <ul>
-            <li>Multiple brands/projects</li>
-            <li>Advanced tracking</li>
-            <li>White-glove onboarding</li>
+        <div class="rounded-3xl border border-slate-900 bg-white p-6 shadow-sm">
+          <div class="text-sm font-semibold">Pro</div>
+          <div class="mt-2 text-3xl font-bold">$49<span class="text-base font-semibold text-slate-500">/mo</span></div>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600">
+            <li>• Up to 150 shorts / month</li>
+            <li>• Scheduling to multiple platforms</li>
+            <li>• Team seats (2)</li>
           </ul>
-          <div class="priceActions">
-            <!--#<button class="btn primary" type="button" onclick="event.preventDefault(); startCheckout('agency');">Buy Agency</button>
-            --><!--#<button class="btn" type="button" onclick="copyPriceId('agency')">Copy priceId</button>
-          --><script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
+          <a class="mt-5 inline-flex w-full justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800" href="/dashboard/billing.html">Buy Pro</a>
+        </div>
 
-<stripe-buy-button
-  buy-button-id="buy_btn_1SuTBnKC49F2A9OzKhdowMw5"
-  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
->
-</stripe-buy-button>
-          </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-sm font-semibold">Business</div>
+          <div class="mt-2 text-3xl font-bold">$99<span class="text-base font-semibold text-slate-500">/mo</span></div>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600">
+            <li>• Up to 400 shorts / month</li>
+            <li>• Team seats (5)</li>
+            <li>• Priority turnaround</li>
+          </ul>
+          <a class="mt-5 inline-flex w-full justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800" href="/dashboard/billing.html">Buy Business</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section" id="faq">
-    <div class="container">
-      <h2>FAQ</h2>
-
-      <div class="grid3">
-        <div class="feature">
-          <b>Become a Content Creator In The Fastest Timeframe Possible!</b>
-          <p>Purchase our 30 day starter to get started. Make money from short 10 second videos — we do all the hard work.</p>
-        </div>
-        <div class="feature">
-          <b>Content Creators</b>
-          <p>Just picked up a camera for the first time? Or maybe you're looking to start shooting professional-looking content with your smartphone? We can help you learn fast.</p>
-        </div>
-        <div class="feature">
-          <b>Freelance Videographers?</b>
-          <p>Want to turn content creation into a full-time career (or scale past 6 figures)? We've helped hundreds of videographers do it.</p>
-        </div>
-        <div class="feature">
-          <b>Online Entrepreneurs wanting to get paid from TikTok?</b>
-          <p>2025 is a great time to break free from corporate employment and build an online business that provides freedom. The “30 Day Pro Membership” is what you need.</p>
-        </div>
-        <div class="feature">
-          <b>How can Shorty save you time?</b>
-          <p>By using ShortyPro, we do all the hard work for you.</p>
-        </div>
-        <div class="feature">
-          <b>Convert long-form to short-form with ShortyPro?</b>
-          <p>We offer a premium service for this based on the three models above.</p>
-        </div>
+    <section id="faq" class="mt-14">
+      <h2 class="text-2xl font-bold tracking-tight">FAQ</h2>
+      <div class="mt-6 space-y-3">
+        <details class="rounded-2xl border border-slate-200 bg-white p-4">
+          <summary class="cursor-pointer text-sm font-semibold">Do you post for me automatically?</summary>
+          <p class="mt-2 text-sm text-slate-600">ShortyPro is built around an approval + scheduling flow. You decide what posts, where, and when.</p>
+        </details>
+        <details class="rounded-2xl border border-slate-200 bg-white p-4">
+          <summary class="cursor-pointer text-sm font-semibold">Is this built on open-source code?</summary>
+          <p class="mt-2 text-sm text-slate-600">Yes: the UI uses open-source libraries (e.g., Tailwind). You can self-host the front-end and swap in your own backend endpoints.</p>
+        </details>
+        <details class="rounded-2xl border border-slate-200 bg-white p-4">
+          <summary class="cursor-pointer text-sm font-semibold">Can I connect multiple brands?</summary>
+          <p class="mt-2 text-sm text-slate-600">Yes—use brand presets (logos, fonts, caption style) in the dashboard.</p>
+        </details>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="footer">
-    <div class="container" style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
-      <div>© <span id="year"></span> ShortyPro</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap">
-        <a class="pill" href="https://www.instagram.com/shortypro2" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a class="pill" href="https://x.com/shortypro2" target="_blank" rel="noopener noreferrer">X</a>
-        <a class="pill" href="https://www.threads.com/@shortypro2" target="_blank" rel="noopener noreferrer">Threads</a>
-        <a class="pill" href="https://www.facebook.com/profile.php?id=61587277436466" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a class="pill" href="https://www.youtube.com/channel/UCmbX7LCkJK_8YmuRwUKfKGQ" target="_blank" rel="noopener noreferrer">YouTube</a>
+    <section id="contact" class="mt-14">
+      <div class="rounded-3xl border border-slate-200 bg-white p-6">
+        <h2 class="text-xl font-bold">Contact</h2>
+        <p class="mt-2 text-sm text-slate-600">Email support anytime: <a class="underline" href="mailto:billy@deadapp.info">billy@deadapp.info</a></p>
       </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast">
-    <div><b id="toastTitle">Notice</b></div>
-    <div class="muted" id="toastBody"></div>
-  </div>
-
-  <script>
-    document.getElementById("year").textContent = String(new Date().getFullYear());
-
-    function scrollToPricing(){
-      document.getElementById("pricing").scrollIntoView({behavior:"smooth", block:"start"});
-    }
-
-    function toast(title, body){
-      const t = document.getElementById("toast");
-      document.getElementById("toastTitle").textContent = title;
-      document.getElementById("toastBody").textContent = body;
-      t.classList.add("show");
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(()=>t.classList.remove("show"), 5200);
-    }
-
-    function getApiBase(){
-      const base = (window.SHORTYPRO && window.SHORTYPRO.API_BASE_URL) ? window.SHORTYPRO.API_BASE_URL : "";
-      return String(base || "").replace(/\/+$/,"");
-    }
-
-    function getPriceId(planKey){
-      return window.SHORTYPRO?.PRICES?.[planKey];
-    }
-
-    async function copyPriceId(planKey){
-      const priceId = getPriceId(planKey);
-      if (!priceId){
-        toast("Missing priceId", "No priceId found for " + planKey);
-        return;
-      }
-      try{
-        await navigator.clipboard.writeText(String(priceId));
-        toast("Copied", planKey + " priceId copied to clipboard.");
-      }catch(e){
-        const ta = document.createElement("textarea");
-        ta.value = String(priceId);
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        toast("Copied", planKey + " priceId copied (fallback).");
-      }
-    }
-    window.copyPriceId = copyPriceId;
-
-    async function startCheckout(planKey){
-      const apiBase = getApiBase();
-      const priceId = getPriceId(planKey);
-
-      if (!apiBase){
-        toast("Missing API base", "Set SHORTYPRO.API_BASE_URL at the top of the file.");
-        return;
-      }
-      if (!priceId || !String(priceId).startsWith("price_")){
-        console.error("Bad priceId:", planKey, priceId);
-        toast("Invalid priceId", "Fix your SHORTYPRO.PRICES block (must start with price_).");
-        return;
-      }
-
-      const endpoint = apiBase + "/stripe/create-checkout-session";
-
-      try{
-        const res = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type":"application/json" },
-          body: JSON.stringify({
-            priceId,
-            successUrl: window.location.origin + "/index.html?checkout=success",
-            cancelUrl: window.location.origin + "/index.html?checkout=cancel"
-          })
-        });
-
-        const data = await res.json().catch(()=> ({}));
-
-        if (!res.ok){
-          console.error("Checkout failed:", res.status, data);
-          toast("Checkout failed", data.detail || ("Backend returned " + res.status));
-          return;
-        }
-
-        const url = data.url || data.checkout_url;
-        if (!url){
-          console.error("No checkout url returned:", data);
-          toast("No redirect URL", "Backend did not return { url }.");
-          return;
-        }
-
-        window.location.href = url;
-      }catch(err){
-        console.error("Checkout request error:", err);
-        toast("Network error", "Could not call backend. Check Render + CORS.");
-      }
-    }
-    window.startCheckout = startCheckout;
-
-    (function(){
-      const qp = new URLSearchParams(window.location.search);
-      const c = qp.get("checkout");
-      if (c === "success") toast("Success", "Thanks! Checkout completed.");
-      if (c === "cancel") toast("Canceled", "Checkout was canceled.");
-    })();
-  </script>
+    </section>
+  </main>
 </body>
 </html>
