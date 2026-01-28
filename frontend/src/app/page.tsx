@@ -1,3 +1,9 @@
+import { redirect } from "next/navigation";
+
+export default function Home() {
+  redirect("/index.html");
+}
+
 "use client";
 
 import { useMemo, useState } from "react";
