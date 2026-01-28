@@ -368,9 +368,8 @@
             <li>Priority support</li>
           </ul>
           <div class="priceActions">
-            <button
-  class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
+          <button class="btn primary"
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('pro');">
   Buy Pro
 </button>
 
@@ -390,9 +389,8 @@
             <li>White-glove onboarding</li>
           </ul>
           <div class="priceActions">
-            <button
-  class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
+           <button class="btn primary"
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('agency');">
   Buy Agency
 </button>
 
@@ -556,22 +554,61 @@ async function startCheckout(planKey) {
 }
 
 window.startCheckout = startCheckout;
-</script>
+ <script>
+  async function startCheckout(planKey){
+    const apiBase = getApiBase();
+    const priceId = getPriceId(planKey);
 
+    console.log("Checkout clicked:", planKey, priceId);
 
-    async function copyPriceId(planKey){
-      const id = getPriceId(planKey) || "";
-      try{
-        await navigator.clipboard.writeText(id);
-        toast("Copied", id ? id : "No priceId set");
-      } catch(e){
-        toast("Copy failed", "Your browser blocked clipboard access.");
-      }
+    if (!apiBase){
+      toast("Missing API base", "Set SHORTYPRO.API_BASE_URL at the top of the file.");
+      return;
     }
 
-    // auto-run once for quick visibility
-    runHealthCheck();
-  </script>
+    if (!priceId || !String(priceId).startsWith("price_")){
+      console.error("Bad priceId:", planKey, priceId);
+      toast("Missing priceId", "Fix your SHORTYPRO.PRICES block.");
+      return;
+    }
+
+    const endpoint = apiBase + "/stripe/create-checkout-session";
+
+    try{
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({
+          priceId,
+          successUrl: window.location.origin + "/index.html?checkout=success",
+          cancelUrl: window.location.origin + "/index.html?checkout=cancel"
+        })
+      });
+
+      const data = await res.json().catch(()=> ({}));
+
+      if (!res.ok){
+        console.error("Checkout failed:", res.status, data);
+        toast("Checkout failed", data.detail || "Backend returned an error.");
+        return;
+      }
+
+      const url = data.url || data.checkout_url;
+      if (!url){
+        console.error("No checkout url returned:", data);
+        toast("No redirect URL", "Backend did not return { url }.");
+        return;
+      }
+
+      window.location.href = url;
+    } catch(err){
+      console.error("Checkout request error:", err);
+      toast("Network error", "Could not call backend. Check Render + CORS.");
+    }
+  }
+
+  window.startCheckout = startCheckout;
+</script>
   <script>
   window.SHORTYPRO = {
     API_BASE_URL: "https://shortypro.onrender.com",
@@ -581,7 +618,7 @@ window.startCheckout = startCheckout;
       agency: "price_1SuNclKC49F2A9OzqI4kLooj"
     }
   };
-</script>
+
 <script>
   window.startCheckout = startCheckout;
 </script>
