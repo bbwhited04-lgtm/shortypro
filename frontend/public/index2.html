@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShortyPro — Short Links that Sell</title>
+  <meta name="description" content="ShortyPro helps creators and businesses shorten links, track clicks, and sell with Stripe-powered checkout." />
+  <meta name="theme-color" content="#0b0f19" />
+
+  <style>
+    :root {
+      --bg: #0b0f19; 
+      --card: #121a2b; 
+      --card2: #0f1627;
+      --text: #e8eefc; 
+      --muted: #aab6d6; 
+      --line: rgba(255, 255, 255, .10);
+      --accent: #6ea8ff; 
+      --accent2: #73f1c8; 
+      --warn: #ffcc66; 
+      --danger: #ff6b6b;
+      --radius: 18px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, .35);
+      --shadow2: 0 10px 30px rgba(0, 0, 0, .25);
+      --max: 1100px;
+      font-synthesis-weight: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1100px 600px at 20% -10%, rgba(110, 168, 255, .25), transparent 60%), var(--bg);
+      color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 18px; }
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(11, 15, 25, .72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 14px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .2px; }
+    .logo { width: 34px; height: 34px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: var(--shadow2); display: inline-block; }
+    .navlinks { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .06); color: var(--text); font-weight: 700; cursor: pointer; transition: transform .08s ease, background .15s ease, border-color .15s ease; user-select: none; white-space: nowrap; }
+    .btn:hover { background: rgba(255, 255, 255, .10); }
+    h1 { margin: 14px 0 10px; font-size: clamp(34px, 3.8vw, 52px); line-height: 1.04; letter-spacing: -.6px; }
+    .section { padding: 28px 0; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 980px) { .grid3 { grid-template-columns: 1fr; } }
+    .feature { border: 1px solid var(--line); border-radius: var(--radius); background: rgba(18, 26, 43, .55); padding: 16px; }
+    .feature b { display: block; margin: 2px 0 6px; }
+    .feature p { margin: 0; color: var(--muted); line-height: 1.6; }
+    iframe { width: 100%; height: 200px; border: none; margin-top: 10px; }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <span class="logo" aria-hidden="true"></span>
+          <span>ShortyPro</span>
+          <span class="pill">short links • tracking • stripe</span>
+        </div>
+        <div class="navlinks">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+          <a class="btn" href="https://shortypro-c64p.vercel.app" target="_blank" rel="noopener noreferrer">App</a>
+          <button class="btn primary" onclick="scrollToPricing()">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <h1>Short links that actually make you money.</h1>
+      <p class="sub">
+        ShortyPro is built for creators and businesses who need clean short links, click tracking,
+        and Stripe checkout that just works.
+      </p>
+      <button class="btn primary" onclick="scrollToPricing()">See Plans</button>
+    </div>
+  </header>
+
+  <section class="section" id="features">
+    <div class="container">
+      <h2>What you get</h2>
+      <div class="grid3">
+        <div class="feature">
+          <b>Fast short links</b>
+          <p>Create clean short videos that look professional across social platforms.</p>
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_1" allowfullscreen></iframe>
+        </div>
+        <div class="feature">
+          <b>Click tracking</b>
+          <p>Know what’s working: views, clicks, and referrers in one place.</p>
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2" allowfullscreen></iframe>
+        </div>
+        <div class="feature">
+          <b>Stripe checkout</b>
+          <p>Turn traffic into revenue with simple plan buttons wired to Stripe.</p>
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_3" allowfullscreen></iframe>
+        </div>
+        <div class="feature">
+          <b>Video Conversion Tips & Tricks</b>
+          <p>Learn from the best in the business to help monetize your content.</p>
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_4" allowfullscreen></iframe>
+        </div>
+        <div class="feature">
+          <b>Smart Posting</b>
+          <p>We post for you directly within our dashboard, turning a 4 min video into 20-30 shorts.</p>
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_5" allowfullscreen></iframe>
+        </div>
+        <div class="feature">
+          <b>Join our Private Facebook Group</b>
+          <p>Become part of a growing filmmaking and marketing community.</p>
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_6" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="container">
+      <h2>Pricing</h2>
+      <p class="sub">Choose a plan. Checkout will open in a new tab using your Render backend.</p>
+      <div class="pricingWrap">
+        <div class="priceCard">
+          <div class="plan">Starter</div>
+          <div class="priceTop">
+            <div class="price">$19</div>
+            <div class="per">per month</div>
+          </div>
+          <ul>
+            <li>Basic short links</li>
+            <li>Light tracking</li>
+            <li>Email support</li>
+          </ul>
+          <button class="btn primary" onclick="startCheckout('starter')">Buy Starter</button>
+        </div>
+        <div class="priceCard reco">
+          <div class="badge">Most Popular</div>
+          <div class="plan">Pro</div>
+          <div class="priceTop">
+            <div class="price">$49</div>
+            <div class="per">per month</div>
+          </div>
+          <ul>
+            <li>Everything in Starter</li>
+            <li>Better analytics</li>
+            <li>Priority support</li>
+          </ul>
+          <button class="btn primary" onclick="startCheckout('pro')">Buy Pro</button>
+        </div>
+        <div class="priceCard">
+          <div class="plan">Agency</div>
+          <div class="priceTop">
+            <div class="price">$149</div>
+            <div class="per">per month</div>
+          </div>
+          <ul>
+            <li>Multiple brands/projects</li>
+            <li>Advanced tracking</li>
+            <li>White-glove onboarding</li>
+          </ul>
+          <button class="btn primary" onclick="startCheckout('agency')">Buy Agency</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <h2>FAQ</h2>
+      <div class="grid3">
+        <div class="feature">
+          <b>Become a Content Creator Fast!</b>
+          <p>Purchase our 30-day starter to start making money from short videos.</p>
+        </div>
+        <div class="feature">
+          <b>Just Starting?</b>
+          <p>We can help you learn to shoot professional-looking content in just 14 days!</p>
+        </div>
+        <div class="feature">
+          <b>Freelance Videographers?</b>
+          <p>We help you scale your content creation business beyond six figures.</p>
+        </div>
+        <div class="feature">
+          <b>Online Entrepreneurs</b>
+          <p>Break free from corporate employment and start your online business now!</p>
+        </div>
+        <div class="feature">
+          <b>How can Shorty save you time?</b>
+          <p>We handle the hard work for you.</p>
+        </div>
+        <div class="feature">
+          <b>Convert Videos Easily</b>
+          <p>We offer a premium service for converting long-form videos into shorts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="container" style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
+      <div>© <span id="year"></span> ShortyPro</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <a class="pill" href="https://www.instagram.com/shortypro2" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a class="pill" href="https://x.com/shortypro2" target="_blank" rel="noopener noreferrer">X</a>
+        <a class="pill" href="https://www.threads.com/@shortypro2" target="_blank" rel="noopener noreferrer">Threads</a>
+        <a class="pill" href="https://www.facebook.com/profile.php?id=61587277436466" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="pill" href="https://www.youtube.com/channel/UCmbX7LCkJK_8YmuRwUKfKGQ" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = String(new Date().getFullYear());
+    function scrollToPricing() { document.getElementById("pricing").scrollIntoView({ behavior: "smooth", block: "start" }); }
+    async function startCheckout(planKey) {
+      const priceId = window.SHORTYPRO?.PRICES?.[planKey];
+      if (!priceId || !priceId.startsWith("price_")) {
+        alert("Invalid or missing Stripe price ID");
+        return;
+      }
+      // Checkout logic here...
+    }
+  </script>
+</body>
+</html>
