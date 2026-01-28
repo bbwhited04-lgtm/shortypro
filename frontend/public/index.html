@@ -147,10 +147,13 @@
             <li>Email support</li>
           </ul>
           <div class="priceActions">
-            <button class="btn primary" onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
-             Buy Starter
-         </button>
-         <button class="btn" onclick="copyPriceId('starter')">Copy priceId</button>
+            <script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
+<stripe-buy-button
+  buy-button-id="buy_btn_1SuT6SKC49F2A9OzddETNOJJ"
+  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
+></stripe-buy-button>
           </div>
         </div>
         <div class="priceCard reco">
@@ -166,12 +169,13 @@
             <li>Priority support</li>
           </ul>
           <div class="priceActions">
-          <button class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('pro');">
-  Buy Pro
-</button>
-
-            <button class="btn" onclick="copyPriceId('pro')">Copy priceId</button>
+          <script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
+<stripe-buy-button
+  buy-button-id="buy_btn_1SuTAIKC49F2A9Ozh0nbJKWo"
+  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
+></stripe-buy-button>
           </div>
         </div>
 
@@ -187,9 +191,13 @@
             <li>White-glove onboarding</li>
           </ul>
           <div class="priceActions">
-           <button class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('agency');"> Buy Agency </button>
-           <button class="btn" onclick="copyPriceId('agency')">Copy priceId</button>
+           <script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
+<stripe-buy-button
+  buy-button-id="buy_btn_1SuTBnKC49F2A9OzKhdowMw5"
+  publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
+></stripe-buy-button>
           </div>
         </div>
       </div>
