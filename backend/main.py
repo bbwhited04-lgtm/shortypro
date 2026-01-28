@@ -17,6 +17,11 @@ def cors_origins():
     return [o.strip() for o in raw.split(",") if o.strip()]
 
 app = FastAPI(title=APP_NAME)
+from stripe import router as stripe_router
+from stripe_webhook import router as stripe_webhook_router
+
+app.include_router(stripe_router)
+app.include_router(stripe_webhook_router)
 
 app.add_middleware(
     CORSMiddleware,
