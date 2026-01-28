@@ -4,6 +4,7 @@ import os
 from typing import Optional
 
 import stripe
+from fastapi import FastAPI
 from fastapi import FastAPI, HTTPException, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -28,7 +29,8 @@ app = FastAPI(title="ShortyPro API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        PUBLIC_FRONTEND_URL,
+        "https://shortypro.com",
+        "https://www.shortypro.com",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ],
