@@ -134,7 +134,6 @@
     <div class="container">
       <h2>Pricing</h2>
       <p class="sub">Choose a plan. Checkout will open in a new tab (or redirect) using your Render backend.</p>
-
       <div class="pricingWrap">
         <div class="priceCard">
           <div class="plan">Starter</div>
@@ -149,13 +148,11 @@
           </ul>
           <div class="priceActions">
             <button class="btn primary" onclick="event.stopPropagation(); event.preventDefault(); startCheckout('starter');">
-              Buy Starter
-          </button>
-
-            <button class="btn" onclick="copyPriceId('starter')">Copy priceId</button>
+             Buy Starter
+         </button>
+         <button class="btn" onclick="copyPriceId('starter')">Copy priceId</button>
           </div>
         </div>
-
         <div class="priceCard reco">
           <div class="badge">Most Popular</div>
           <div class="plan">Pro</div>
@@ -191,20 +188,16 @@
           </ul>
           <div class="priceActions">
            <button class="btn primary"
-  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('agency');">
-  Buy Agency
-</button>
-
-            <button class="btn" onclick="copyPriceId('agency')">Copy priceId</button>
+  onclick="event.stopPropagation(); event.preventDefault(); startCheckout('agency');"> Buy Agency </button>
+           <button class="btn" onclick="copyPriceId('agency')">Copy priceId</button>
           </div>
         </div>
       </div>
-
       <div class="note">
         Checkout endpoint expected: <code class="inline">POST /stripe/create-checkout-session</code> with body <code class="inline">{ "priceId": "price_..." }</code>
       </div>
     </div>
-
+    </section>
   <section class="section" id="faq">
     <div class="container">
       <h2>FAQ</h2>
