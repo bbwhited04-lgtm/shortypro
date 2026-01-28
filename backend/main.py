@@ -1,7 +1,8 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+
 APP_NAME = os.getenv("APP_NAME", "ShortyPro")
 
 def cors_origins():
