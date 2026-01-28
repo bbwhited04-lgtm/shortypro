@@ -252,7 +252,18 @@
         alert("Invalid or missing Stripe price ID");
         return;
       }
-      // Checkout logic here...
+     <script>
+  window.SHORTYPRO = {
+    API_BASE_URL: "https://shortypro.onrender.com",
+    PRICES: {
+      starter: "price_1SuNTiKC49F2A9OzFrSyGVgv",
+      pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",
+      agency: "price_1SuNclKC49F2A9OzqI4kLooj"
+    }
+  };
+<script>
+  window.startCheckout = startCheckout;
+</script>
     }
   </script>
 </body>
