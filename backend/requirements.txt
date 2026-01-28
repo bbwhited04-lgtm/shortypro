@@ -5,3 +5,4 @@ pydantic[email]==2.12.5
 python-jose==3.3.0
 bcrypt==4.2.0
 python-dotenv==1.0.1
+stripe==11.0.0
