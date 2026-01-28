@@ -74,11 +74,39 @@
         border-radius: 8px;         /* Optional: Rounded corners for cards */
         background-color: #fff;     /* Optional: Card background color */
     }
+
+    /* Loading Screen Styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    video {
+      width: 100%;
+      max-width: 800px; /* Limit the maximum width of the video */
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
   </style>
 </head>
 
 <body>
-  <div class="topbar">
+  <!-- Loading Screen with Video -->
+  <div class="loading-screen" id="loadingScreen">
+    <video id="introVideo" autoplay muted>
+      <source src="http://shortypro.com/shortypro/shortyprovid.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="topbar" style="display:none;">
     <div class="container">
       <div class="nav">
         <div class="brand">
@@ -97,7 +125,7 @@
     </div>
   </div>
 
-  <header class="hero">
+  <header class="hero" style="display:none;">
     <div class="container">
       <h1>Shorty videos that actually make you money.</h1>
       <p class="sub">
@@ -108,7 +136,7 @@
     </div>
   </header>
 
-  <section class="section" id="features">
+  <section class="section" id="features" style="display:none;">
     <div class="container">
       <h2>What you get</h2>
       <div class="grid3">
@@ -146,7 +174,7 @@
     </div>
   </section>
 
-  <section class="section" id="pricing">
+  <section class="section" id="pricing" style="display:none;">
     <div class="container">
       <h2>Pricing</h2>
       <p class="sub">Choose a plan.</p>
@@ -213,7 +241,7 @@
     </div>
   </section>
 
-  <section class="section" id="faq">
+  <section class="section" id="faq" style="display:none;">
     <div class="container">
       <h2>FAQ</h2>
       <div class="grid3">
@@ -245,7 +273,7 @@
     </div>
   </section>
 
-  <div class="footer">
+  <div class="footer" style="display:none;">
     <div class="container" style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
       <div>© <span id="year"></span> ShortyPro, a division of DEAD APP CORP</div>
       <div style="display:flex; gap:10px; flex-wrap:wrap">
@@ -264,25 +292,30 @@
     function scrollToPricing() { 
       document.getElementById("pricing").scrollIntoView({ behavior: "smooth", block: "start" }); 
     }
-    
-    async function startCheckout(planKey) {
-      const priceId = window.SHORTYPRO?.PRICES?.[planKey];
-      if (!priceId || !priceId.startsWith("price_")) {
-        alert("Invalid or missing Stripe price ID");
-        return;
-      }
-    }
 
-    window.SHORTYPRO = {
-      API_BASE_URL: "https://shortypro.onrender.com",
-      PRICES: {
-        starter: "price_1SuNTiKC49F2A9OzFrSyGVgv",
-        pro: "price_1SuNYQKC49F2A9OzvS6LqMtM",
-        agency: "price_1SuNclKC49F2A9OzqI4kLooj"
-      }
+    // Hide loading screen and show main content
+    const video = document.getElementById('introVideo');
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    // Event listener for when the video ends
+    video.onended = function() {
+      loadingScreen.style.display = 'none'; // Hide loading screen
+      document.querySelector('.topbar').style.display = 'block'; // Show topbar
+      document.querySelector('header').style.display = 'block'; // Show header
+      document.querySelector('#features').style.display = 'block'; // Show features section
+      document.querySelector('#pricing').style.display = 'block'; // Show pricing section
+      document.querySelector('#faq').style.display = 'block'; // Show FAQ section
     };
-    
-    window.startCheckout = startCheckout;
+
+    // Alternatively, you can set a timeout to hide the loading screen after a few seconds
+    /* setTimeout(() => {
+      loadingScreen.style.display = 'none';
+      document.querySelector('.topbar').style.display = 'block';
+      document.querySelector('header').style.display = 'block';
+      document.querySelector('#features').style.display = 'block';
+      document.querySelector('#pricing').style.display = 'block';
+      document.querySelector('#faq').style.display = 'block';
+    }, 10000); */ // Uncomment to use timeout instead of video end
   </script>
 </body>
 </html>
