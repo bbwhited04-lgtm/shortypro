@@ -20,29 +20,27 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  stripeCustomerId     String?  @unique
-  stripeSubscriptionId String?  @unique
-  plan                 Plan     @default(NONE)
-  subscriptionStatus   String   @default("none") // active, trialing, past_due, canceled, etc.
-  currentPeriodEnd     DateTime?
-
-  @@index([email])
-  @@index([stripeCustomerId])
-  @@index([stripeSubscriptionId])
+  // add this
+  subscriptions Subscription[]
 }
+
 
 model Subscription {
   id                   String   @id @default(cuid())
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
   userId               String
-  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  stripeSubscriptionId String   @unique
-  stripePriceId        String
-  plan                 String   // starter | pro | agency
-  status               String   // active | trialing | past_due | canceled | incomplete | unpaid | paused
-
+  stripeCustomerId     String?
+  stripeSubscriptionId String?  @unique
+  priceId              String?
+  plan                 String   @default("none")
+  status               String   @default("none")
   currentPeriodEnd     DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([stripeCustomerId])
 }
+
