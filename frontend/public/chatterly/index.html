@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chatterly — AI chat that converts</title>
+  <meta name="description" content="Deploy an AI chat widget that answers questions, qualifies leads, and books demos—without feeling spammy." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/assets/mfc/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a class="brand" href="/index.html" aria-label="ShortyPro Home">
+        <div class="logo"></div>
+        <div><b>ShortyPro</b><div class="small">DEAD APP CORP</div></div>
+      </a>
+      <div class="navlinks">
+        <a href="/magnetic-funnels/">Magnetic Funnels</a>
+        <a href="/chatterly/">Chatterly</a>
+        <a href="/blog">Blog</a>
+        <span class="badge">Fast setup • Trust-first</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1>Chatterly</h1>
+      <p>An AI chat widget that feels like a helpful rep — answers FAQs, qualifies visitors, and captures lead details with <b>zero friction</b>. Pair it with Magnetic Funnels for a full conversion stack.</p>
+      <div class="pills">
+        <span class="pill">✅ FAQ + lead capture</span>
+        <span class="pill">✅ Demo booking ready</span>
+        <span class="pill">✅ Brand-safe tone</span>
+        <span class="pill">✅ Lightweight embed</span>
+      </div>
+      <div class="ctaRow">
+        <a class="btn primary" href="#demo">Request a demo</a>
+        <a class="btn" href="/magnetic-funnels/">Build a funnel</a>
+        <a class="btn ghost" href="/index.html">Back to main</a>
+      </div>
+    </div>
+
+    <div class="grid" id="demo">
+      <div class="card">
+        <h2>Request a demo</h2>
+        <div class="mini">Tell us what you sell and where you want the chat widget installed. We’ll respond with a simple setup plan.</div>
+
+        <form class="form js-lead-form" data-storage-key="chatterly_demo" data-submit-endpoint="CHANGE_ME">
+          <div class="row2">
+            <input class="input" name="name" placeholder="Name" />
+            <input class="input" name="email" type="email" placeholder="Email (required)" required />
+          </div>
+          <div class="row2">
+            <input class="input" name="website" placeholder="Website URL (optional)" />
+            <select name="goal">
+              <option value="qualify">Qualify leads</option>
+              <option value="support">Support / FAQs</option>
+              <option value="book">Book calls</option>
+              <option value="sales">Sell products</option>
+            </select>
+          </div>
+          <textarea name="details" placeholder="What do you want Chatterly to do? (pricing questions, intake, booking, support, etc.)"></textarea>
+
+          <div class="split">
+            <div class="notice">
+              <div class="dot ok"></div>
+              <div class="mini"><b>Brand-safe by default.</b> We keep tone professional and trustworthy, not pushy or spammy.</div>
+            </div>
+            <div class="notice">
+              <div class="dot warn"></div>
+              <div class="mini"><b>Wire it later.</b> This form saves locally unless you set <span class="tag">data-submit-endpoint</span>.</div>
+            </div>
+          </div>
+
+          <button class="btn primary" type="submit">Send demo request</button>
+          <div class="mini">No spam. You can also email <a href="mailto:billy@deadapp.info">billy@deadapp.info</a>.</div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Looks & feel</h2>
+        <div class="mini">Your uploaded visuals are already supported here.</div>
+
+        <div class="media" style="margin-top:12px">
+          <img src="/shortypro/aichatimage.png" alt="Chatterly chat widget image" />
+        </div>
+        <div class="media" style="margin-top:12px">
+          <img src="/shortypro/aichatupgrade2.png" alt="Chatterly upgrade image" />
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3>Embed plan (simple)</h3>
+          <div class="mini">When you’re ready, we generate an embed snippet like:</div>
+          <div class="notice" style="margin-top:10px">
+            <div class="dot ok"></div>
+            <div class="mini"><span class="tag">&lt;script src=".../chatterly.js"&gt;</span> + your site key.</div>
+          </div>
+          <div class="mini" style="margin-top:10px">Then you can track conversions with UTMs + events — and route qualified leads into Stripe / CRM / email.</div>
+        </div>
+
+        <div class="footer">
+          <div>© <span id="yr"></span> DEAD APP CORP • Missouri, USA</div>
+          <div class="smallLinks">
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+            <a href="/magnetic-funnels/">Magnetic Funnels</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/mfc/app.js"></script>
+  <script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
+</body>
+</html>

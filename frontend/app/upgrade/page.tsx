@@ -17,7 +17,6 @@ const PLANS: Plan[] = [
     price: "$0.99/mo",
     blurb: "Unlock the basics and get moving fast.",
     features: ["Basic dashboard access", "Standard exports", "Email support"],
-    // TODO: replace with your real Stripe link
     href: "https://buy.stripe.com/9B6bJ20qJeKjgGGcFF8IU0",
   },
   {
@@ -25,18 +24,16 @@ const PLANS: Plan[] = [
     price: "$9.99/mo",
     blurb: "For creators posting daily and growing fast.",
     features: ["Everything in Starter", "More renders per month", "Priority support"],
-    // TODO: replace with your real Stripe link
     href: "https://buy.stripe.com/fZu7sM5L30Tt766a7x8IU01",
     badge: "Most popular",
   },
   {
-    name: "Magnetic Funnels",
+    name: "Chatterly",
     price: "$0.99/mo add-on",
-    blurb: "Guided 5‑step funnel builder inside your dashboard.",
-    features: ["Convert → Nurture → Capture → Engage → Attract", "AI copy + AI image prompts", "Publish-ready assets"],
-    // TODO: replace with your real Stripe link
-    href: "https://buy.stripe.com/7sY9AUa1j0TtbmmbbB8IU06",
-    badge: "Add-on",
+    blurb: "All your AI chats in one clean place inside ShortyPro.",
+    features: ["Creative + analytical chat modes", "Context carry-over", "Built into your dashboard"],
+    href: "https://buy.stripe.com/aFafZi4GZgSraii5Rh8IU07",
+    badge: "AI upgrade",
   },
 ];
 
@@ -85,7 +82,7 @@ export default function UpgradePage() {
               </div>
 
               <div style={{ marginTop: 10, fontSize: 22, fontWeight: 900 }}>{p.price}</div>
-              <div style={{ marginTop: n, opacity: 0.8 }}>{p.blurb}</div>
+              <div style={{ marginTop: 8, opacity: 0.8 }}>{p.blurb}</div>
 
               <ul style={{ marginTop: 12, paddingLeft: 18, lineHeight: 1.55 }}>
                 {p.features.map((f) => (

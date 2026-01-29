@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Magnetic Funnels — Build a funnel that converts</title>
+  <meta name="description" content="A one-question-at-a-time funnel builder. Get a tailored build plan in 60 seconds." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/assets/mfc/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a class="brand" href="/index.html" aria-label="ShortyPro Home">
+        <div class="logo"></div>
+        <div><b>ShortyPro</b><div class="small">DEAD APP CORP</div></div>
+      </a>
+      <div class="navlinks">
+        <a href="/magnetic-funnels/">Magnetic Funnels</a>
+        <a href="/chatterly/">Chatterly</a>
+        <a href="/blog">Blog</a>
+        <span class="badge">No-code feel • Open web</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1>Magnetic Funnels</h1>
+      <p>Turn clicks into customers with a <b>one-question-at-a-time</b> funnel that feels like an app. Answer a few questions and we’ll generate a clear build plan (and save your answers so you never lose progress).</p>
+      <div class="pills">
+        <span class="pill">✅ Mobile-first</span>
+        <span class="pill">✅ Trustworthy design</span>
+        <span class="pill">✅ Trackable</span>
+        <span class="pill">✅ Fast</span>
+      </div>
+      <div class="ctaRow">
+        <a class="btn primary" href="#start">Start the 60-second plan</a>
+        <a class="btn" href="/chatterly/">Pair with Chatterly</a>
+        <a class="btn ghost" href="/index.html">Back to main</a>
+      </div>
+    </div>
+
+    <div class="grid" id="start">
+      <div class="card">
+        <h2>Quick funnel planner</h2>
+        <div class="mini">This is the “Zeely-style” flow you described — one question per screen with emojis, clear progress, and a finish line.</div>
+        <div class="progress" style="margin-top:12px"><div id="progressFill"></div></div>
+
+        <div id="quiz"
+          data-storage-key="magnetic_funnels_quiz"
+          data-submit-endpoint="CHANGE_ME"
+          data-steps='[
+            {"key":"goal","q":"What’s the #1 goal of your funnel?","choices":[
+              {"emoji":"🎯","label":"Capture leads","hint":"Email/SMS to nurture later","tag":"Lead gen","value":"lead_gen"},
+              {"emoji":"🛒","label":"Sell a product","hint":"Direct checkout or booking","tag":"Sales","value":"sell_now"},
+              {"emoji":"📅","label":"Book calls","hint":"Calendar-driven qualification","tag":"Booking","value":"book_calls"}
+            ]},
+            {"key":"audience","q":"Who are you targeting?","choices":[
+              {"emoji":"👤","label":"Consumers (B2C)","hint":"Fast decisions, simple offer","tag":"B2C","value":"b2c"},
+              {"emoji":"🏢","label":"Businesses (B2B)","hint":"More trust + proof needed","tag":"B2B","value":"b2b"},
+              {"emoji":"🤝","label":"Both","hint":"We’ll split messaging","tag":"Hybrid","value":"both"}
+            ]},
+            {"key":"traffic","q":"Where will traffic come from first?","choices":[
+              {"emoji":"📱","label":"TikTok / Reels","hint":"Short-form video clicks","tag":"Social","value":"short_video"},
+              {"emoji":"🔎","label":"Google search","hint":"SEO + intent","tag":"Search","value":"seo"},
+              {"emoji":"📧","label":"Email list","hint":"Warm audience","tag":"Owned","value":"email"}
+            ]},
+            {"key":"offer","q":"What are you offering?","choices":[
+              {"emoji":"🎁","label":"Free lead magnet","hint":"PDF, checklist, template","tag":"Free","value":"lead_magnet"},
+              {"emoji":"💳","label":"Paid starter offer","hint":"Low-price, high-convert","tag":"Paid","value":"starter_offer"},
+              {"emoji":"📞","label":"Discovery call","hint":"High-ticket flow","tag":"Call","value":"discovery_call"}
+            ]},
+            {"key":"tone","q":"What vibe should your page feel like?","choices":[
+              {"emoji":"🧼","label":"Clean & clinical","hint":"Maximum trust","tag":"Trust","value":"clean"},
+              {"emoji":"⚡","label":"Bold & punchy","hint":"Fast conversions","tag":"Energy","value":"bold"},
+              {"emoji":"🌿","label":"Friendly & calm","hint":"Warm connection","tag":"Warm","value":"calm"}
+            ]}
+          ]'>
+
+          <div id="quizStage" class="qwrap" style="margin-top:14px">
+            <div class="qhead">
+              <div>
+                <div id="qNum" class="qnum">Question</div>
+                <h3 id="qTitle" class="qtitle">Loading…</h3>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center; justify-content:flex-end;">
+                <button class="btn" id="skipBtn" type="button">Skip</button>
+                <button class="btn" id="backBtn" type="button">Back</button>
+              </div>
+            </div>
+            <div id="choices" class="choices"></div>
+            <div class="notice" style="margin-top:8px">
+              <div class="dot ok"></div>
+              <div class="mini"><b>No dead ends.</b> Your answers are saved in your browser automatically. You can refresh and continue.</div>
+            </div>
+          </div>
+
+          <div id="captureStage" style="display:none; margin-top:14px">
+            <div class="notice">
+              <div class="dot warn"></div>
+              <div class="mini"><b>You’re at the finish line.</b> Enter your email and we’ll send your plan + a simple funnel outline you can ship today.</div>
+            </div>
+            <form id="captureForm" class="form" data-submit-endpoint="CHANGE_ME">
+              <div class="row2">
+                <input class="input" name="name" placeholder="Name (optional)" />
+                <input class="input" name="email" type="email" placeholder="Email (required)" required />
+              </div>
+              <textarea name="notes" placeholder="Optional: add a note about your offer (price, audience, pain point)…"></textarea>
+              <button class="btn primary" type="submit">Send me my build plan</button>
+              <div class="mini">No spam. Your info is used only to contact you about your funnel build.</div>
+            </form>
+            <div class="card" style="margin-top:12px; padding:14px">
+              <div class="mini"><b>Preview of answers (local):</b></div>
+              <pre id="answerPreview" style="white-space:pre-wrap; color:rgba(238,243,255,.9); margin:10px 0 0; font-size:12px; background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.10); padding:12px; border-radius:16px;"></pre>
+            </div>
+          </div>
+
+          <div id="doneStage" style="display:none; margin-top:14px">
+            <div class="notice">
+              <div class="dot ok"></div>
+              <div class="mini"><b>Done.</b> You’re set. If you wired the endpoint, your submission was sent. Either way, your plan is saved locally.</div>
+            </div>
+            <div class="ctaRow" style="margin-top:12px">
+              <a class="btn primary" href="/chatterly/">Next: add Chatterly</a>
+              <a class="btn" href="/magnetic-funnels/">Restart planner</a>
+              <a class="btn ghost" href="/index.html">Back to main</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>What you’ll get</h2>
+        <div class="kpis" style="margin-top:10px">
+          <div class="kpi"><b>1-page outline</b><span>Headline, proof, CTA, FAQ</span></div>
+          <div class="kpi"><b>Tracking plan</b><span>UTMs + attribution</span></div>
+          <div class="kpi"><b>Launch checklist</b><span>Ship in a day</span></div>
+        </div>
+
+        <div class="media" style="margin-top:14px">
+          <!-- Image you already uploaded in /public/shortypro/ -->
+          <img src="/shortypro/magfunnel1.png" alt="Magnetic Funnels preview" />
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3>Want it connected?</h3>
+          <div class="mini">Wire submissions to your backend, email service, Zapier, or Stripe confirmation flow. The README in the zip shows two easy options (Next.js API route or webhook).</div>
+          <div class="notice" style="margin-top:10px">
+            <div class="dot warn"></div>
+            <div class="mini"><b>Important:</b> This page is a drop-in public page. Set <span class="tag">data-submit-endpoint</span> to your endpoint when ready.</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div>© <span id="yr"></span> DEAD APP CORP • Missouri, USA</div>
+          <div class="smallLinks">
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+            <a href="mailto:billy@deadapp.info">billy@deadapp.info</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/mfc/app.js"></script>
+  <script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
+</body>
+</html>
