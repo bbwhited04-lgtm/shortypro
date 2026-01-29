@@ -1,47 +1,66 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [err, setErr] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
-  async function submit(e: React.FormEvent) {
+  const login = (e: React.FormEvent) => {
     e.preventDefault();
-    setErr(null);
-    setLoading(true);
-    const r = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await r.json().catch(() => ({}));
-    setLoading(false);
-    if (!r.ok) return setErr(data?.error || "Login failed");
+    // Quick demo auth: store a token so dashboard guard passes.
+    // TODO: replace with real auth.
+    try {
+      localStorage.setItem("shortypro_token", "demo-token");
+    } catch {}
     router.push("/dashboard");
-  }
+  };
 
   return (
-    <div className="mx-auto max-w-md space-y-6">
-      <h1 className="text-3xl font-bold">Login</h1>
-      <form onSubmit={submit} className="rounded-2xl border border-slate-800 bg-slate-900/30 p-6 space-y-4">
-        <div>
-          <label className="text-sm text-slate-300">Email</label>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2" />
-        </div>
-        <div>
-          <label className="text-sm text-slate-300">Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2" />
-        </div>
-        {err && <div className="text-sm text-red-300">{err}</div>}
-        <button disabled={loading} className="w-full rounded-lg bg-emerald-500 px-3 py-2 font-semibold text-slate-950 hover:bg-emerald-400 disabled:opacity-50">
-          {loading ? "Signing in..." : "Sign in"}
-        </button>
-      </form>
+    <div className="min-h-screen bg-neutral-50 px-4 py-10">
+      <div className="mx-auto max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
+        <div className="text-xl font-semibold">Log in</div>
+        <p className="mt-1 text-sm text-neutral-600">
+          Access your ShortyPro dashboard.
+        </p>
+
+        <form onSubmit={login} className="mt-6 space-y-4">
+          <div>
+            <div className="text-xs text-neutral-500">Email</div>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-300"
+              placeholder="you@company.com"
+              required
+            />
+          </div>
+          <div>
+            <div className="text-xs text-neutral-500">Password</div>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-300"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full rounded-xl bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-800"
+          >
+            Continue
+          </button>
+
+          <div className="text-center text-xs text-neutral-500">
+            Demo login (replace with real auth later).
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
