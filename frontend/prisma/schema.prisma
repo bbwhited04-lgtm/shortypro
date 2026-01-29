@@ -1,3 +1,5 @@
+funnelsEnabled Boolean @default(false)
+
 generator client {
   provider = "prisma-client-js"
 }
