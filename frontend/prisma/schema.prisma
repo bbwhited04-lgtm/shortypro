@@ -17,22 +17,24 @@ enum Plan {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // add this
   subscriptions Subscription[]
-}
 
+  @@index([email])
+}
 
 model Subscription {
   id                   String   @id @default(cuid())
   userId               String
+
   stripeCustomerId     String?
   stripeSubscriptionId String?  @unique
   priceId              String?
-  plan                 String   @default("none")
-  status               String   @default("none")
+  plan                 Plan     @default(NONE)
+  status               String   @default("none") // active, trialing, canceled, etc.
   currentPeriodEnd     DateTime?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -43,4 +45,3 @@ model Subscription {
   @@index([userId])
   @@index([stripeCustomerId])
 }
-
