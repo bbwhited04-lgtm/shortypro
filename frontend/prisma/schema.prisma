@@ -15,8 +15,8 @@ enum Plan {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id    String @id @default(cuid())
+  email String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -27,14 +27,14 @@ model User {
 }
 
 model Subscription {
-  id                   String   @id @default(cuid())
-  userId               String
+  id     String @id @default(cuid())
+  userId String
 
   stripeCustomerId     String?
-  stripeSubscriptionId String?  @unique
+  stripeSubscriptionId String?   @unique
   priceId              String?
-  plan                 Plan     @default(NONE)
-  status               String   @default("none") // active, trialing, canceled, etc.
+  plan                 Plan      @default(NONE)
+  status               String    @default("none") // active, trialing, canceled, etc.
   currentPeriodEnd     DateTime?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
