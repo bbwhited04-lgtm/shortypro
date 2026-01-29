@@ -124,3 +124,72 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
         status_code=500,
         content={"detail": "Internal Server Error", "error": str(exc)},
     )
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+import uuid
+import os
+import shutil
+
+app = FastAPI()
+
+# If you use Vercel rewrite, CORS is less important, but safe to allow your domain
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://www.shortypro.com",
+        "https://shortypro.com",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+UPLOADS = {}  # swap to Redis/DB later
+UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/tmp/shortypro_uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+@app.post("/api/uploads")
+async def create_upload(file: UploadFile = File(...)):
+    upload_id = f"u_{uuid.uuid4().hex[:12]}"
+    save_path = os.path.join(UPLOAD_DIR, f"{upload_id}_{file.filename}")
+
+    with open(save_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # For now: mark as processing. Later: enqueue a background worker job here.
+    UPLOADS[upload_id] = {
+        "upload_id": upload_id,
+        "status": "processing",
+        "progress": 10,
+        "stage": "upload",
+        "message": "Upload received"
+    }
+    return UPLOADS[upload_id]
+
+@app.get("/api/uploads/{upload_id}")
+async def get_upload(upload_id: str):
+    data = UPLOADS.get(upload_id)
+    if not data:
+        return JSONResponse({"status": "error", "message": "Not found"}, status_code=404)
+
+    # DEMO progression (remove once you have a real worker updating status)
+    if data["status"] == "processing":
+        p = min(100, int(data.get("progress", 10)) + 12)
+        data["progress"] = p
+        if p < 40:
+            data["stage"] = "auto_clips"
+            data["message"] = "Detecting highlight moments…"
+        elif p < 70:
+            data["stage"] = "captions"
+            data["message"] = "Generating captions…"
+        elif p < 95:
+            data["stage"] = "export"
+            data["message"] = "Exporting clips…"
+        else:
+            data["status"] = "complete"
+            data["stage"] = "export"
+            data["progress"] = 100
+            data["message"] = "Done"
+
+    return data
