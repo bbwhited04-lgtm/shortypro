@@ -1,15 +1,16 @@
 import NextAuth from "next-auth";
-import { authOptions } from "@/src/lib/authOptions";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/src/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
+// IMPORTANT:
+// Define the handler ONCE, then export as GET and POST (App Router pattern).
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
   ],
   session: { strategy: "database" },
@@ -17,6 +18,5 @@ const handler = NextAuth({
     signIn: "/login",
   },
 });
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
 
+export { handler as GET, handler as POST };

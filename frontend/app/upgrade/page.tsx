@@ -35,7 +35,7 @@ const PLANS: Plan[] = [
     blurb: "Guided 5‑step funnel builder inside your dashboard.",
     features: ["Convert → Nurture → Capture → Engage → Attract", "AI copy + AI image prompts", "Publish-ready assets"],
     // TODO: replace with your real Stripe link
-    href: "https://buy.stripe.com/REPLACE_WITH_MAGNETIC_FUNNELS_LINK",
+    href: "https://buy.stripe.com/7sY9AUa1j0TtbmmbbB8IU06",
     badge: "Add-on",
   },
 ];
