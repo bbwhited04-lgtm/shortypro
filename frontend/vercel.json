@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://shortypro.onrender.com/api/$1"
+    }
+  ]
+}
