@@ -1,10 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/src/lib/prisma";
 
-// IMPORTANT:
-// Define the handler ONCE, then export as GET and POST (App Router pattern).
+// Define ONCE
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -19,4 +18,5 @@ const handler = NextAuth({
   },
 });
 
+// Export for App Router
 export { handler as GET, handler as POST };
