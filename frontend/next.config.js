@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: { ignoreBuildErrors: true },
+  webpack: (config) => {
+    config.watchOptions = {
+      ignored: ['**/node_modules/**', '**/.next/**', 'F:/pagefile.sys'],
+    };
+    return config;
+  },
 };
 
 module.exports = nextConfig;

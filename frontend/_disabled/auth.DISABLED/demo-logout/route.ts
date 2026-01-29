@@ -6,6 +6,7 @@ export async function GET(req: Request) {
   const next = url.searchParams.get("next") || "/";
 
   const res = NextResponse.redirect(new URL(next, url.origin));
-  res.cookies.set(sessionCookieName(), "", { path: "/", maxAge: 0 });
+ res.cookies.set(sessionCookieName, "", { path: "/", maxAge: 0 });
+
   return res;
 }

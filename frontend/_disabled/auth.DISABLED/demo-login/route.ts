@@ -21,13 +21,15 @@ export async function GET(req: Request) {
   });
 
   const sub = user.subscriptions[0];
-  const plan = planFromPriceId(sub?.stripePriceId ?? null);
+ const plan = planFromPriceId(sub?.stripeSubscriptionId ?? null);
   const status = sub?.status ?? "none";
 
-  const token = await signSession({ sub: email, plan, status });
+ const token = await signSession({ plan, status } as any);
+
 
   const res = NextResponse.redirect(new URL(next, url.origin));
-  res.cookies.set(sessionCookieName(), token, {
+ res.cookies.set(sessionCookieName, token, {
+
     httpOnly: true,
     secure: true,
     sameSite: "lax",
