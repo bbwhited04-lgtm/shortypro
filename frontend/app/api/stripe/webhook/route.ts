@@ -1,11 +1,12 @@
 import Stripe from "stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { prisma } from "@/src/lib/prisma";
+import { planFromPriceId } from "@/src/lib/plans";
 
 export const runtime = "nodejs";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // Keep Stripe API pinned; any modern apiVersion is fine as long as it's valid for your account.
   apiVersion: "2024-06-20",
 });
 
@@ -35,13 +36,32 @@ export async function POST(req: Request) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        // If subscription checkout, session.subscription may exist:
-        // const subscriptionId = typeof session.subscription === "string" ? session.subscription : session.subscription?.id;
+        const email =
+          session.customer_details?.email ??
+          session.customer_email ??
+          null;
 
-        // If you want email mapping:
-        // const email = session.customer_details?.email ?? session.customer_email ?? null;
+        // Payment Links may not always include line items in the event.
+        // We'll try to map from a subscription later; for now we store customer id + email.
+        const stripeCustomerId =
+          typeof session.customer === "string" ? session.customer : session.customer?.id;
 
-        // TODO: write to DB here
+        if (email) {
+          await prisma.user.upsert({
+            where: { email },
+            create: { email },
+            update: {},
+          });
+
+          // If we have customer id, store it for later linkage
+          if (stripeCustomerId) {
+            await prisma.user.update({
+              where: { email },
+              data: { stripeCustomerId },
+            });
+          }
+        }
+
         break;
       }
 
@@ -50,16 +70,64 @@ export async function POST(req: Request) {
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription;
 
-        // TODO: write subscription status/price to DB here
-        // const status = sub.status;
-        // const priceId = sub.items.data?.[0]?.price?.id;
+        const stripeCustomerId =
+          typeof sub.customer === "string" ? sub.customer : sub.customer?.id;
 
-        void sub;
+        const stripeSubscriptionId = sub.id;
+        const status = sub.status ?? "none";
+
+        const priceId =
+          sub.items?.data?.[0]?.price?.id ?? null;
+
+        const plan = planFromPriceId(priceId);
+
+        const currentPeriodEnd = sub.current_period_end
+          ? new Date(sub.current_period_end * 1000)
+          : null;
+
+        if (stripeCustomerId) {
+          // Find user by stored customer id
+          const user = await prisma.user.findFirst({
+            where: { stripeCustomerId },
+          });
+
+          if (user) {
+            await prisma.subscription.upsert({
+              where: { stripeSubscriptionId },
+              create: {
+                userId: user.id,
+                stripeCustomerId,
+                stripeSubscriptionId,
+                priceId: priceId ?? undefined,
+                plan: plan === "starter" ? "STARTER" : plan === "pro" ? "PRO" : plan === "agency" ? "AGENCY" : "NONE",
+                status,
+                currentPeriodEnd: currentPeriodEnd ?? undefined,
+              },
+              update: {
+                priceId: priceId ?? undefined,
+                plan: plan === "starter" ? "STARTER" : plan === "pro" ? "PRO" : plan === "agency" ? "AGENCY" : "NONE",
+                status,
+                currentPeriodEnd: currentPeriodEnd ?? undefined,
+              },
+            });
+
+            // Keep latest on user as well (optional)
+            await prisma.user.update({
+              where: { id: user.id },
+              data: {
+                stripeSubscriptionId,
+                plan: plan === "starter" ? "STARTER" : plan === "pro" ? "PRO" : plan === "agency" ? "AGENCY" : "NONE",
+                subscriptionStatus: status,
+                currentPeriodEnd: currentPeriodEnd ?? undefined,
+              },
+            });
+          }
+        }
+
         break;
       }
 
       default:
-        // Ignore unhandled events
         break;
     }
   } catch (err: unknown) {
