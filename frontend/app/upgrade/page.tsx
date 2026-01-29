@@ -18,6 +18,22 @@ const PLANS = [
     features: ["Everything in Pro", "Magnetic Funnels", "Multi-client workflows"],
   },
 ];
+export default function Upgrade() {
+  return (
+    <main style={{ padding: 24, fontFamily: "system-ui" }}>
+      <h1 style={{ fontSize: 26, fontWeight: 800 }}>Choose your plan</h1>
+      <p style={{ opacity: 0.8, marginTop: 8 }}>
+        Unlock the ShortyPro portal by subscribing.
+      </p>
+
+      <div style={{ display: "grid", gap: 12, marginTop: 18, maxWidth: 520 }}>
+        <a href="https://buy.stripe.com/9B6bJ20qJeKjgGGcfF8IU00">Starter</a>
+        <a href="https://buy.stripe.com/fZu7sM5L30Tt766a7x8IU01">Pro</a>
+        <a href="https://buy.stripe.com/cNi28s5L37hRcqq4Nd8IU02">Agency</a>
+      </div>
+    </main>
+  );
+}
 
 export default function UpgradePage({ searchParams }: { searchParams?: { next?: string } }) {
   const next = searchParams?.next || "/portal/";
