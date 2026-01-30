@@ -1,9 +1,8 @@
-// src/app/dashboard/page.tsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 type Entitlements = {
   plan?: string;
@@ -68,7 +67,6 @@ export default function DashboardHome() {
 
   return (
     <div className="space-y-6">
-      {/* Premium hero header */}
       <section className="relative overflow-hidden rounded-3xl border p-6 md:p-8">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-fuchsia-500/5 to-cyan-500/10" />
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -92,7 +90,6 @@ export default function DashboardHome() {
         </div>
       </section>
 
-      {/* One-click actions */}
       <section className="grid gap-4 md:grid-cols-3">
         <ActionCard
           title="Shorty Magic"
@@ -115,7 +112,7 @@ export default function DashboardHome() {
 
         <ActionCard
           title="Chatterly"
-          description="AI chat workspace for ideas, captions, hooks, and replies."
+          description="AI chat workspace for hooks, captions, and replies."
           href={canChat ? "/dashboard/chatterly" : "/pricing"}
           locked={!canChat}
           variant="secondary"
@@ -152,34 +149,31 @@ export default function DashboardHome() {
         />
       </section>
 
-      {/* Advanced tools */}
       <section className="rounded-3xl border p-5 md:p-6">
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
           className="w-full flex items-center justify-between rounded-2xl border px-4 py-3 hover:bg-muted transition"
         >
-        <div className="flex items-center gap-4 text-left">
-    {/* ICON */}
-    <div className="relative h-12 w-12 shrink-0">
-      <Image
-        src="/shortypro/connectify.jpg"
-        alt="Connect & Schedule"
-        fill
-        priority
-        className="object-contain"
-      />
-    </div>
+          <div className="flex items-center gap-4 text-left">
+            <div className="relative h-12 w-12 shrink-0">
+              <Image
+                src="/shortypro/connectify.jpg"
+                alt="Connect & Schedule"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
 
-    {/* TEXT */}
-    <div>
-
-          <div className="text-left">
-            <div className="text-base font-semibold">Connect & Schedule</div>
-            <div className="text-sm text-muted-foreground">
-              Authenticate accounts, create groups, schedule posts, and auto-post.
+            <div>
+              <div className="text-base font-semibold">Connect & Schedule</div>
+              <div className="text-sm text-muted-foreground">
+                Authenticate accounts, create groups, schedule posts, and auto-post.
+              </div>
             </div>
           </div>
+
           <span className="text-sm text-muted-foreground">
             {advancedOpen ? "▲" : "▼"}
           </span>
@@ -227,7 +221,7 @@ function ActionCard(props: {
   description: string;
   href: string;
   locked?: boolean;
-  icon: React.ReactNode;
+  icon: ReactNode;
   variant?: "primary" | "secondary";
 }) {
   const isPrimary = props.variant === "primary";
@@ -242,30 +236,23 @@ function ActionCard(props: {
         props.locked && "opacity-90"
       )}
     >
-      {/* glow */}
       <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10" />
-
       <div className="relative flex items-center gap-4">
         {props.icon}
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <div className="text-xl font-bold leading-tight">{props.title}</div>
-
-            {props.locked ? (
+            {props.locked && (
               <span className="rounded-full border px-2 py-0.5 text-xs text-muted-foreground bg-background/60">
                 Locked
               </span>
-            ) : isPrimary ? (
-              <span className="rounded-full border px-2 py-0.5 text-xs font-medium bg-background/60">
-                Recommended
-              </span>
-            ) : null}
+            )}
           </div>
 
           <div className="mt-1 text-sm text-muted-foreground">{props.description}</div>
 
           <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
-            {props.locked ? "Upgrade to unlock" : "Open"}
+            {props.locked ? "See plans" : "Open"}
             <span className="transition group-hover:translate-x-0.5">→</span>
           </div>
         </div>
@@ -273,7 +260,6 @@ function ActionCard(props: {
     </Link>
   );
 }
-
 
 function MiniTile(props: {
   title: string;

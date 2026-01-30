@@ -6,17 +6,20 @@ import Image from "next/image";
 type JobResponse = {
   id: string;
   status: "queued" | "processing" | "done" | "failed";
-  shorts?: Array<{ id: string; title: string; durationSec: number }>;
+  shorts?: Array<{
+    id: string;
+    title: string;
+    durationSec: number;
+  }>;
   error?: string;
 };
 
 export default function ShortyMagicPage() {
   const [mode, setMode] = useState<"url" | "upload">("url");
-  const [youtubeUrl = useState("")[0];
   const [url, setUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
-
   const [overlayText, setOverlayText] = useState("");
+
   const [job, setJob] = useState<JobResponse | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -29,6 +32,7 @@ export default function ShortyMagicPage() {
   async function startJob() {
     setBusy(true);
     setJob(null);
+
     try {
       const form = new FormData();
       form.set("mode", mode);
@@ -50,8 +54,6 @@ export default function ShortyMagicPage() {
       }
 
       setJob(data);
-
-      // Poll status until done
       await pollJob(data.id);
     } catch (e: any) {
       setJob({ id: "none", status: "failed", error: e?.message || "Error" });
@@ -61,10 +63,11 @@ export default function ShortyMagicPage() {
   }
 
   async function pollJob(id: string) {
-    // simple polling loop (works now)
     for (let i = 0; i < 20; i++) {
       await new Promise((r) => setTimeout(r, 600));
-      const res = await fetch(`/api/shorty-magic/job/${id}`, { cache: "no-store" });
+      const res = await fetch(`/api/shorty-magic/job/${id}`, {
+        cache: "no-store",
+      });
       const data = (await res.json()) as JobResponse;
       setJob(data);
       if (data.status === "done" || data.status === "failed") return;
@@ -96,7 +99,9 @@ export default function ShortyMagicPage() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <div className="font-semibold">Step 1 — Choose input</div>
-            <div className="text-sm text-muted-foreground">YouTube link or MP4 upload.</div>
+            <div className="text-sm text-muted-foreground">
+              YouTube link or MP4 upload.
+            </div>
           </div>
 
           <div className="flex gap-2">
@@ -142,7 +147,8 @@ export default function ShortyMagicPage() {
             />
             {file && (
               <div className="text-xs text-muted-foreground">
-                Selected: {file.name} ({Math.round(file.size / 1024 / 1024)} MB)
+                Selected: {file.name} (
+                {Math.round(file.size / 1024 / 1024)} MB)
               </div>
             )}
           </div>
@@ -154,7 +160,7 @@ export default function ShortyMagicPage() {
         <div>
           <div className="font-semibold">Step 2 — Overlay text (optional)</div>
           <div className="text-sm text-muted-foreground">
-            This becomes a default caption overlay on generated shorts.
+            Default caption overlay for generated shorts.
           </div>
         </div>
 
@@ -183,7 +189,9 @@ export default function ShortyMagicPage() {
             <span className="text-sm text-muted-foreground">{job.status}</span>
           </div>
 
-          {job.error && <div className="text-sm text-red-600">{job.error}</div>}
+          {job.error && (
+            <div className="text-sm text-red-600">{job.error}</div>
+          )}
 
           {job.shorts && job.shorts.length > 0 && (
             <div className="space-y-2">
@@ -194,7 +202,9 @@ export default function ShortyMagicPage() {
                 {job.shorts.map((s) => (
                   <div key={s.id} className="rounded-2xl border p-4">
                     <div className="font-semibold">{s.title}</div>
-                    <div className="text-sm text-muted-foreground">{s.durationSec}s</div>
+                    <div className="text-sm text-muted-foreground">
+                      {s.durationSec}s
+                    </div>
                   </div>
                 ))}
               </div>
