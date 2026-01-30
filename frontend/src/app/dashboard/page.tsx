@@ -205,7 +205,7 @@ export default function DashboardHome() {
       </section>
     </div>
   );
-
+}
 
 function ActionCard(props: {
   title: string;
