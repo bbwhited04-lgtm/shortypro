@@ -35,3 +35,17 @@ def health():
 
 @app.post("/api/uploads")
 async def create_upload(file: UploadFile = File(...)):
+    upload_id = f"u_{uuid.uuid4().hex[:12]}"
+    save_path = os.path.join(UPLOAD_DIR, f"{upload_id}_{file.filename}")
+
+    with open(save_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    UPLOADS[upload_id] = {
+        "upload_id": upload_id,
+        "status": "processing",
+        "progress": 10,
+        "stage": "upload",
+        "message": "Upload received"
+    }
+    return UPLOADS[upload_id]
