@@ -1,1 +1,0 @@
-window.SHORTYPRO = { apiBase: "/api" };
