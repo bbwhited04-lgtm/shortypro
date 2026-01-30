@@ -1,9 +1,5 @@
 import { Section, StatCard } from "@/components/dashboard/Cards";
-import { redirect } from "next/navigation";
 
-export default function Dashboard() {
-  redirect("/dashboard/index.html");
-}
 export default function DashboardHome() {
   return (
     <div className="space-y-6">
