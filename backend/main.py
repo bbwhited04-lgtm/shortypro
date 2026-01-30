@@ -15,6 +15,7 @@ app.add_middleware(
     allow_origins=[
         "https://www.shortypro.com",
         "https://shortypro.com",
+        "http://localhost:3000", # optional, for local dev
     ],
     allow_credentials=True,
     allow_methods=["*"],
