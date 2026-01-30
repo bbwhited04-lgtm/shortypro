@@ -6,11 +6,7 @@ import Image from "next/image";
 type JobResponse = {
   id: string;
   status: "queued" | "processing" | "done" | "failed";
-  shorts?: Array<{
-    id: string;
-    title: string;
-    durationSec: number;
-  }>;
+  shorts?: Array<{ id: string; title: string; durationSec: number }>;
   error?: string;
 };
 
@@ -65,9 +61,7 @@ export default function ShortyMagicPage() {
   async function pollJob(id: string) {
     for (let i = 0; i < 20; i++) {
       await new Promise((r) => setTimeout(r, 600));
-      const res = await fetch(`/api/shorty-magic/job/${id}`, {
-        cache: "no-store",
-      });
+      const res = await fetch(`/api/shorty-magic/job/${id}`, { cache: "no-store" });
       const data = (await res.json()) as JobResponse;
       setJob(data);
       if (data.status === "done" || data.status === "failed") return;
@@ -94,7 +88,6 @@ export default function ShortyMagicPage() {
         </div>
       </div>
 
-      {/* Step 1 */}
       <section className="rounded-3xl border p-5 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -147,15 +140,13 @@ export default function ShortyMagicPage() {
             />
             {file && (
               <div className="text-xs text-muted-foreground">
-                Selected: {file.name} (
-                {Math.round(file.size / 1024 / 1024)} MB)
+                Selected: {file.name} ({Math.round(file.size / 1024 / 1024)} MB)
               </div>
             )}
           </div>
         )}
       </section>
 
-      {/* Step 2 */}
       <section className="rounded-3xl border p-5 space-y-4">
         <div>
           <div className="font-semibold">Step 2 — Overlay text (optional)</div>
@@ -181,7 +172,6 @@ export default function ShortyMagicPage() {
         </button>
       </section>
 
-      {/* Results */}
       {job && (
         <section className="rounded-3xl border p-5 space-y-3">
           <div className="flex items-center justify-between">
@@ -189,9 +179,7 @@ export default function ShortyMagicPage() {
             <span className="text-sm text-muted-foreground">{job.status}</span>
           </div>
 
-          {job.error && (
-            <div className="text-sm text-red-600">{job.error}</div>
-          )}
+          {job.error && <div className="text-sm text-red-600">{job.error}</div>}
 
           {job.shorts && job.shorts.length > 0 && (
             <div className="space-y-2">
@@ -202,9 +190,7 @@ export default function ShortyMagicPage() {
                 {job.shorts.map((s) => (
                   <div key={s.id} className="rounded-2xl border p-4">
                     <div className="font-semibold">{s.title}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {s.durationSec}s
-                    </div>
+                    <div className="text-sm text-muted-foreground">{s.durationSec}s</div>
                   </div>
                 ))}
               </div>
