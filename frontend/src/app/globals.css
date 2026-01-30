@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fix for “white site” / invisible content due to global background overrides */
 :root { color-scheme: light; }
 html, body { height: 100%; }
-body { background: #0b0f14; color: #e8eef7; }
 
-/* Fix click issues where a full-card overlay blocks the top buttons */
+/* Keep globals neutral so dashboard can style itself */
+body {
+  background: #ffffff;
+  color: #0b0f14;
+}
+
+/* Optional: prevents “overlay blocks clicks” issues if you use it */
 [data-click-shield="true"] { pointer-events: none; }

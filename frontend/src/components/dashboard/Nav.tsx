@@ -9,8 +9,14 @@ const items = [
   { href: "/dashboard/scheduler", label: "Scheduler" },
   { href: "/dashboard/assets", label: "Assets" },
   { href: "/dashboard/billing", label: "Billing" },
+
+  // Add these:
+  { href: "/chatterly", label: "Chatterly" },
+  { href: "/magna-hive", label: "Magna Hive" },
+
   { href: "/dashboard/settings", label: "Settings" },
 ];
+
 
 export function Nav() {
   const pathname = usePathname();
