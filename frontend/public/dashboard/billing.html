@@ -78,6 +78,36 @@
 
     <div id="spToasts" class="fixed bottom-4 right-4 z-[60] flex w-[360px] max-w-[calc(100vw-2rem)] flex-col gap-2"></div>
   </div>
+<script>
+async function spCheckout(plan){
+  // For now ask email; later pull from logged-in user profile.
+  const email = prompt("Enter your billing email:");
+  if(!email) return;
+
+  const r = await fetch("/api/billing/checkout", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ plan, email })
+  });
+  const d = await r.json();
+  if(!r.ok || !d?.url){ alert(d?.error || "Checkout error"); return; }
+  location.href = d.url;
+}
+
+async function spPortal(){
+  const email = prompt("Enter your billing email:");
+  if(!email) return;
+
+  const r = await fetch("/api/billing/portal", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ email })
+  });
+  const d = await r.json();
+  if(!r.ok || !d?.url){ alert(d?.error || "Portal error"); return; }
+  location.href = d.url;
+}
+</script>
 
   <script src="/shared/brand.js"></script>
 </body>
