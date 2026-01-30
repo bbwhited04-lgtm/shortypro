@@ -1,37 +1,41 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.models import router as models_router
-import uuid
+
 import os
 import shutil
+import uuid
+
+from app.routes.models import router as models_router
 
 # ✅ CREATE APP FIRST
 app = FastAPI()
 
-# ✅ THEN include routers
-app.include_router(models_router, prefix="/models")
-
-# Allow your frontend domain
+# ✅ MIDDLEWARE NEXT
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://www.shortypro.com",
         "https://shortypro.com",
-        "http://localhost:3000",  # optional, for local dev
+        "http://localhost:3000",  # optional for local dev
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# ✅ ROUTERS AFTER APP EXISTS
+app.include_router(models_router, prefix="/models")
+
 UPLOADS = {}  # swap to Redis/DB later
 UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/tmp/shortypro_uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
 
 @app.post("/api/uploads")
 async def create_upload(file: UploadFile = File(...)):
@@ -46,6 +50,30 @@ async def create_upload(file: UploadFile = File(...)):
         "status": "processing",
         "progress": 10,
         "stage": "upload",
-        "message": "Upload received"
+        "message": "Upload received",
     }
     return UPLOADS[upload_id]
+
+
+@app.get("/api/uploads/{upload_id}")
+async def get_upload(upload_id: str):
+    data = UPLOADS.get(upload_id)
+    if not data:
+        return JSONResponse({"status": "error", "message": "Not found"}, status_code=404)
+
+    # TEMP demo progress
+    if data["status"] == "processing":
+        p = min(100, data["progress"] + 12)
+        data["progress"] = p
+
+        if p < 40:
+            data["stage"] = "auto_clips"
+        elif p < 70:
+            data["stage"] = "captions"
+        elif p < 95:
+            data["stage"] = "export"
+        else:
+            data["status"] = "complete"
+            data["progress"] = 100
+
+    return data
