@@ -159,6 +159,21 @@ export default function DashboardHome() {
           onClick={() => setAdvancedOpen((v) => !v)}
           className="w-full flex items-center justify-between rounded-2xl border px-4 py-3 hover:bg-muted transition"
         >
+        <div className="flex items-center gap-4 text-left">
+    {/* ICON */}
+    <div className="relative h-12 w-12 shrink-0">
+      <Image
+        src="/shortypro/connectify.jpg"
+        alt="Connect & Schedule"
+        fill
+        priority
+        className="object-contain"
+      />
+    </div>
+
+    {/* TEXT */}
+    <div>
+
           <div className="text-left">
             <div className="text-base font-semibold">Connect & Schedule</div>
             <div className="text-sm text-muted-foreground">
