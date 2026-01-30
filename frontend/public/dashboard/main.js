@@ -53,3 +53,51 @@
     window.ShortyProToast?.("Refreshed (demo). Next step: load shorts from your backend.", "info");
   });
 })();
+
+async function spOpenBillingPortal(){
+  // TEMP until you have real user profiles:
+  // Use email prompt (works today). Later we pull from /api/profile.
+  const email = prompt("Enter the billing email you used at checkout:");
+  if(!email) return;
+
+  const r = await fetch("/api/billing/portal", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  const d = await r.json().catch(()=>null);
+  if(!r.ok || !d?.ok || !d?.url){
+    alert(d?.error || "Could not open billing portal");
+    return;
+  }
+
+  window.location.href = d.url;
+}
+  // --- Billing: open Stripe Customer Portal ---
+  async function spOpenBillingPortal(){
+    // TEMP until you have real user profiles:
+    // Prompt for email used at checkout
+    const email = prompt("Enter the billing email you used at checkout:");
+    if(!email) return;
+
+    const r = await fetch("/api/billing/portal", {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({ email })
+    });
+
+    const d = await r.json().catch(()=>null);
+    if(!r.ok || !d?.ok || !d?.url){
+      window.ShortyProToast?.(d?.error || "Could not open billing portal", "danger");
+      return;
+    }
+
+    window.location.href = d.url;
+  }
+
+  // make it callable from HTML onclick
+  window.spOpenBillingPortal = spOpenBillingPortal;
+
+// Expose for onclick buttons
+window.spOpenBillingPortal = spOpenBillingPortal;
