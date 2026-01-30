@@ -98,6 +98,30 @@ async function spOpenBillingPortal(){
 
   // make it callable from HTML onclick
   window.spOpenBillingPortal = spOpenBillingPortal;
+  // --- Billing: Stripe Checkout ---
+  async function spCheckout(plan){
+    // TEMP until full user profiles:
+    const email = prompt("Enter the billing email you want to use:");
+    if(!email) return;
+
+    const r = await fetch("/api/billing/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan, email })
+    });
+
+    const d = await r.json().catch(()=>null);
+    if(!r.ok || !d?.ok || !d?.url){
+      window.ShortyProToast?.(d?.error || "Checkout failed", "danger");
+      return;
+    }
+
+    // Redirect to Stripe Checkout
+    window.location.href = d.url;
+  }
+
+  // expose for HTML buttons
+  window.spCheckout = spCheckout;
 
 // Expose for onclick buttons
 window.spOpenBillingPortal = spOpenBillingPortal;
