@@ -38,6 +38,7 @@ export default function DashboardHome() {
         const data = (await res.json()) as Entitlements;
         if (alive) setEntitlements(data);
       } catch {
+        // If API isn't ready yet, still render the dashboard
         if (alive) setEntitlements(null);
       } finally {
         if (alive) setLoading(false);
@@ -67,6 +68,7 @@ export default function DashboardHome() {
 
   return (
     <div className="space-y-6">
+      {/* Premium hero header */}
       <section className="relative overflow-hidden rounded-3xl border p-6 md:p-8">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-fuchsia-500/5 to-cyan-500/10" />
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -90,6 +92,7 @@ export default function DashboardHome() {
         </div>
       </section>
 
+      {/* One-click actions */}
       <section className="grid gap-4 md:grid-cols-3">
         <ActionCard
           title="Shorty Magic"
@@ -149,6 +152,7 @@ export default function DashboardHome() {
         />
       </section>
 
+      {/* Advanced tools toggle */}
       <section className="rounded-3xl border p-5 md:p-6">
         <button
           type="button"
@@ -232,13 +236,15 @@ function ActionCard(props: {
       className={classNames(
         "group relative rounded-3xl border p-6 shadow-sm transition",
         "hover:-translate-y-0.5 hover:shadow-md",
-        isPrimary && "bg-gradient-to-br from-purple-600/10 via-fuchsia-500/5 to-cyan-500/10",
+        isPrimary &&
+          "bg-gradient-to-br from-purple-600/10 via-fuchsia-500/5 to-cyan-500/10",
         props.locked && "opacity-90"
       )}
     >
       <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10" />
       <div className="relative flex items-center gap-4">
         {props.icon}
+
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <div className="text-xl font-bold leading-tight">{props.title}</div>
@@ -249,7 +255,9 @@ function ActionCard(props: {
             )}
           </div>
 
-          <div className="mt-1 text-sm text-muted-foreground">{props.description}</div>
+          <div className="mt-1 text-sm text-muted-foreground">
+            {props.description}
+          </div>
 
           <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
             {props.locked ? "See plans" : "Open"}
