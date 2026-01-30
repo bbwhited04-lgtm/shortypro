@@ -41,6 +41,41 @@
 
     <div id="spToasts" class="fixed bottom-4 right-4 z-[60] flex w-[360px] max-w-[calc(100vw-2rem)] flex-col gap-2"></div>
   </div>
+  <form id="spLoginForm">
+  <input id="spPassword" type="password" />
+  <button type="submit">Sign in</button>
+  <div id="spMsg"></div>
+</form>
+
+<script>
+  (function(){
+    const form = document.getElementById("spLoginForm");
+    const pass = document.getElementById("spPassword");
+    const msg  = document.getElementById("spMsg");
+
+    const params = new URLSearchParams(location.search);
+    const next = params.get("next") || "/dashboard/index.html";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "";
+
+      const r = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pass.value })
+      });
+
+      const data = await r.json().catch(()=>null);
+      if (!r.ok || !data?.ok) {
+        msg.textContent = data?.error || "Login failed";
+        return;
+      }
+
+      location.href = next;
+    });
+  })();
+</script>
 
   <script src="/shared/brand.js"></script>
 </body>
