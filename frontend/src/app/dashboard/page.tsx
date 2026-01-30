@@ -68,27 +68,38 @@ export default function DashboardHome() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">
-            One-click tools up top. Advanced auth + scheduling below.
-          </p>
-        </div>
+      {/* Premium hero header */}
+      <section className="relative overflow-hidden rounded-3xl border p-6 md:p-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-fuchsia-500/5 to-cyan-500/10" />
+        <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <h1 className="text-3xl font-extrabold tracking-tight">
+              Your content engine is ready.
+            </h1>
+            <p className="text-sm md:text-base text-muted-foreground">
+              One click to create. One place to schedule. Everything stays simple.
+            </p>
+          </div>
 
-        <div className="rounded-xl border px-3 py-2 text-sm text-muted-foreground">
-          {statusLabel}
+          <div className="flex items-center gap-2">
+            <span className="rounded-full border px-3 py-1 text-xs text-muted-foreground bg-background/60">
+              {statusLabel}
+            </span>
+            <span className="rounded-full border px-3 py-1 text-xs font-medium bg-background/60">
+              {loading ? "Syncing…" : "Online"}
+            </span>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* One-click actions */}
       <section className="grid gap-4 md:grid-cols-3">
         <ActionCard
           title="Shorty Magic"
-          description="Upload/link a video → generate shorts → add to calendar."
-          href={canShorty ? "/shorty-magic" : "/pricing"}
+          description="Turn any video into a batch of shorts in minutes."
+          href={canShorty ? "/dashboard/shorty-magic" : "/pricing"}
           locked={!canShorty}
+          variant="primary"
           icon={
             <div className="relative h-16 w-16 shrink-0">
               <Image
@@ -104,9 +115,10 @@ export default function DashboardHome() {
 
         <ActionCard
           title="Chatterly"
-          description="AI chat workspace. Instant start with one click."
-          href={canChat ? "/chatterly" : "/pricing"}
+          description="AI chat workspace for ideas, captions, hooks, and replies."
+          href={canChat ? "/dashboard/chatterly" : "/pricing"}
           locked={!canChat}
+          variant="secondary"
           icon={
             <div className="relative h-16 w-16 shrink-0">
               <Image
@@ -122,9 +134,10 @@ export default function DashboardHome() {
 
         <ActionCard
           title="Magna Hive"
-          description="Magnetic Funnel workspace. Instant start with one click."
-          href={canMagnahive ? "/magnahive" : "/pricing"}
+          description="Build magnetic funnels and turn attention into action."
+          href={canMagnahive ? "/dashboard/magnahive" : "/pricing"}
           locked={!canMagnahive}
+          variant="secondary"
           icon={
             <div className="relative h-16 w-16 shrink-0">
               <Image
@@ -139,52 +152,51 @@ export default function DashboardHome() {
         />
       </section>
 
-      {/* Advanced tools toggle */}
-      <section className="rounded-2xl border p-5">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <div className="text-lg font-semibold">Connect & Schedule</div>
+      {/* Advanced tools */}
+      <section className="rounded-3xl border p-5 md:p-6">
+        <button
+          type="button"
+          onClick={() => setAdvancedOpen((v) => !v)}
+          className="w-full flex items-center justify-between rounded-2xl border px-4 py-3 hover:bg-muted transition"
+        >
+          <div className="text-left">
+            <div className="text-base font-semibold">Connect & Schedule</div>
             <div className="text-sm text-muted-foreground">
               Authenticate accounts, create groups, schedule posts, and auto-post.
             </div>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setAdvancedOpen((v) => !v)}
-            className="rounded-xl border px-4 py-2 text-sm hover:bg-muted transition"
-          >
-            {advancedOpen ? "Hide" : "Open"}
-          </button>
-        </div>
+          <span className="text-sm text-muted-foreground">
+            {advancedOpen ? "▲" : "▼"}
+          </span>
+        </button>
 
         {advancedOpen && (
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
             <MiniTile
               title="Authenticate Accounts"
               description="Connect Facebook pages, IG, YouTube, GSC, Bing, etc."
-              href="/accounts"
+              href="/dashboard/accounts"
               locked={false}
               badge="Setup"
             />
             <MiniTile
               title="Groups"
               description="Assign connected accounts into groups for posting."
-              href={canCalendar ? "/calendar/groups" : "/pricing"}
+              href={canCalendar ? "/dashboard/calendar/groups" : "/pricing"}
               locked={!canCalendar}
               badge={canCalendar ? "Ready" : "Locked"}
             />
             <MiniTile
               title="Calendar"
               description="Schedule content per group and manage your queue."
-              href={canCalendar ? "/calendar" : "/pricing"}
+              href={canCalendar ? "/dashboard/calendar" : "/pricing"}
               locked={!canCalendar}
               badge={canCalendar ? "Ready" : "Locked"}
             />
             <MiniTile
               title="Auto-post"
               description="Enable posting automation once accounts are connected."
-              href={canAutopost ? "/calendar/autopost" : "/pricing"}
+              href={canAutopost ? "/dashboard/calendar/autopost" : "/pricing"}
               locked={!canAutopost}
               badge={canAutopost ? "Ready" : "Locked"}
             />
@@ -193,7 +205,7 @@ export default function DashboardHome() {
       </section>
     </div>
   );
-}
+
 
 function ActionCard(props: {
   title: string;
@@ -201,35 +213,52 @@ function ActionCard(props: {
   href: string;
   locked?: boolean;
   icon: React.ReactNode;
+  variant?: "primary" | "secondary";
 }) {
+  const isPrimary = props.variant === "primary";
+
   return (
     <Link
       href={props.href}
       className={classNames(
-        "rounded-2xl border p-5 shadow-sm transition hover:shadow",
+        "group relative rounded-3xl border p-6 shadow-sm transition",
+        "hover:-translate-y-0.5 hover:shadow-md",
+        isPrimary && "bg-gradient-to-br from-purple-600/10 via-fuchsia-500/5 to-cyan-500/10",
         props.locked && "opacity-90"
       )}
     >
-      <div className="flex items-center gap-4">
+      {/* glow */}
+      <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10" />
+
+      <div className="relative flex items-center gap-4">
         {props.icon}
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <div className="text-lg font-semibold leading-tight">{props.title}</div>
-            {props.locked && (
-              <span className="rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
+            <div className="text-xl font-bold leading-tight">{props.title}</div>
+
+            {props.locked ? (
+              <span className="rounded-full border px-2 py-0.5 text-xs text-muted-foreground bg-background/60">
                 Locked
               </span>
-            )}
+            ) : isPrimary ? (
+              <span className="rounded-full border px-2 py-0.5 text-xs font-medium bg-background/60">
+                Recommended
+              </span>
+            ) : null}
           </div>
-          <div className="text-sm text-muted-foreground">{props.description}</div>
-          <div className="mt-3 text-sm font-medium">
-            {props.locked ? "Upgrade to unlock →" : "Open →"}
+
+          <div className="mt-1 text-sm text-muted-foreground">{props.description}</div>
+
+          <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
+            {props.locked ? "Upgrade to unlock" : "Open"}
+            <span className="transition group-hover:translate-x-0.5">→</span>
           </div>
         </div>
       </div>
     </Link>
   );
 }
+
 
 function MiniTile(props: {
   title: string;
