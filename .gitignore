@@ -1,11 +1,15 @@
-node_modules/
-**/node_modules/
-.next/
-**/.next/
-out/
-**/out/
-.env
-.env.*
+# Python
 .venv/
+__pycache__/
 *.pyc
-__pycache__
+
+# Node (if applicable)
+node_modules/
+.next/
+dist/
+build/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
