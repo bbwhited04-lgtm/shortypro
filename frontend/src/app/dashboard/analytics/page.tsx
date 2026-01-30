@@ -29,6 +29,7 @@ function PastelCard({ m }: { m: Metric }) {
 }
 
 function PlaceholderChart({ title }: { title: string }) {
+  // Lightweight placeholder (no deps). Replace with real chart lib later.
   return (
     <div className="rounded-2xl border bg-white p-4">
       <div className="text-sm font-semibold">{title}</div>
@@ -41,6 +42,8 @@ function PlaceholderChart({ title }: { title: string }) {
 }
 
 export default function AnalyticsPage() {
+  // NOTE: These are placeholders. Once social accounts are connected, swap these
+  // values for real metrics from your backend.
   const overview: Metric[] = [
     { label: "Followers", value: "—", delta: "All connected accounts", tone: "blue" },
     { label: "Engagement", value: "—", delta: "Likes, comments, shares", tone: "green" },
@@ -118,9 +121,16 @@ export default function AnalyticsPage() {
         <div className="rounded-2xl border bg-white p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <PastelCard m={{ label: "TikTok", value: "Connected", delta: "Posting OK", tone: "green" }} />
-            <PastelCard m={{ label: "Instagram", value: "Connected", delta: "Posting OK", tone: "green" }} />
             <PastelCard
-              m={{ label: "Facebook", value: "Not connected", delta: "Connect to start posting", tone: "amber" }}
+              m={{ label: "Instagram", value: "Connected", delta: "Posting OK", tone: "green" }}
+            />
+            <PastelCard
+              m={{
+                label: "Facebook",
+                value: "Not connected",
+                delta: "Connect to start posting",
+                tone: "amber",
+              }}
             />
             <PastelCard m={{ label: "YouTube", value: "Connected", delta: "Shorts enabled", tone: "blue" }} />
           </div>
