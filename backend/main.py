@@ -1,6 +1,8 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from app.routes.models import router as models_router
+app.include_router(models_router, prefix="/models")
 import uuid
 import os
 import shutil
