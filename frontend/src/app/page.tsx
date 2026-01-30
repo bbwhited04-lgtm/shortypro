@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  redirect("/dashboard");
+  // Public marketing page lives in /public/index.html
+  redirect("/index.html");
 }

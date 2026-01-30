@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-
+app = FastAPI()
 import os
 import shutil
 import uuid
@@ -9,7 +9,7 @@ import uuid
 from app.routes.models import router as models_router
 
 # ✅ CREATE APP FIRST
-app = FastAPI()
+
 
 # ✅ MIDDLEWARE NEXT
 app.add_middleware(
