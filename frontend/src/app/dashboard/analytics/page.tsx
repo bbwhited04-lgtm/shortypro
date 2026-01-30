@@ -70,24 +70,24 @@ export default function AnalyticsPage() {
         </div>
       </Section>
 
-      <Section
-        title="Ad insights"
-        desc="Track spend, CPC, and conversions without turning the page into a cockpit."
-      >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <PastelCard m={{ label: "Spend", value: "—", delta: "Last 7 days", tone: "slate" }} />
-          <PastelCard m={{ label: "CPC", value: "—", delta: "Cost per click", tone: "amber" }} />
-          <PastelCard m={{ label: "CTR", value: "—", delta: "Click-through rate", tone: "blue" }} />
-          <PastelCard m={{ label: "Conversions", value: "—", delta: "Leads / sales", tone: "green" }} />
-        </div>
+<Section
+  title="Ad insights"
+  desc="Track spend, CPC, and conversions without turning the page into a cockpit."
+>
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <PastelCard m={{ label: "Spend", value: "—", delta: "Last 7 days", tone: "slate" }} />
+    <PastelCard m={{ label: "CPC", value: "—", delta: "Cost per click", tone: "amber" }} />
+    <PastelCard m={{ label: "CTR", value: "—", delta: "Click-through rate", tone: "blue" }} />
+    <PastelCard m={{ label: "Conversions", value: "—", delta: "Leads / sales", tone: "green" }} />
+  </div>
 
-        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <PlaceholderChart title="Spend + CPC trend" />
-          </div>
-          <PlaceholderChart title="Top campaigns" />
-        </div>
-      </Section>
+  <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div className="lg:col-span-2">
+      <PlaceholderChart title="Spend + CPC trend" />
+    </div>
+    <PlaceholderChart title="Top campaigns" />
+  </div>
+</Section>
 
       <Section
         title="Audience"
