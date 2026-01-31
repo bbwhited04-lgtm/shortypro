@@ -160,7 +160,7 @@ export default function MagnaHivePage() {
   }
 
   return (
-    <div className="relative mx-auto max-w-6xl px-6 py-10 text-white">
+   <div className="relative mx-auto max-w-6xl px-6 py-10 text-slate-900">
       {/* Ambient background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-24 left-1/2 h-72 w-[680px] -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
@@ -496,7 +496,8 @@ export default function MagnaHivePage() {
                         ))}
                       </div>
 
-                      <div className="mt-5 inline-block rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 p-[2px]">
+                      <div className="inline-block rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+>
                         <a
                           href={selected.ctaUrl}
                           className="inline-block rounded-full bg-black px-5 py-2 text-sm font-semibold text-white hover:bg-black/90"
