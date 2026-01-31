@@ -14,27 +14,27 @@ function requireEnv(name: string) {
   if (!v) throw new Error(`Missing env var: ${name}`);
   return v;
 }
+type Plan = "free" | "shortypro" | "magna" | "unknown";
 
-function toPlanEnum(plan: string | null | undefined) {
-  // IMPORTANT: must match your Prisma enum Plan EXACTLY.
-  switch ((plan ?? "").toLowerCase()) {
+function toPlanEnum(plan: string | null | undefined): Plan {
+  const p = (plan ?? "").toLowerCase();
+
+  switch (p) {
     case "starter":
-      return "STARTER";
+      return Plan.STARTER;
     case "pro":
-      return "PRO";
+      return Plan.PRO;
     case "agency":
-      return "AGENCY";
-
-    // Dream isn't in Prisma enum yet → map it to PRO for now
+      return Plan.AGENCY;
     case "dream":
     case "own_the_stack":
     case "own-the-stack":
-      return "PRO";
-
+      return Plan.DREAM;
     default:
-      return "NONE";
+      return Plan.NONE;
   }
 }
+
 
 
 function getCustomerId(obj: any): string | null {
