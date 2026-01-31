@@ -3,6 +3,12 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { PROVIDERS } from "@/lib/integrations/providers";
+import { redirect } from "next/navigation";
+
+export default function DashboardSettingsRedirect() {
+  redirect("/settings");
+}
+
 
 type ConnectionState = "disconnected" | "connected" | "coming_soon";
 
