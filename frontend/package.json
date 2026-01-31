@@ -19,6 +19,7 @@
     "stripe": "^20.3.0"
   },
   "devDependencies": {
+    "@types/node": "^25.1.0",
     "@types/react": "19.2.10",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
