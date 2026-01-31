@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import DreamBuyButton from "@/components/DreamBuyButton";
 
 export default function DreamPage() {
   return (
@@ -30,12 +32,10 @@ export default function DreamPage() {
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#buy"
-                className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-white/90"
-              >
-                Get The Dream
-              </a>
+              <DreamBuyButton className="your-existing-button-classes">
+  Buy The Dream
+</DreamBuyButton>
+
 
               <Link
                 href="/login"
@@ -152,19 +152,11 @@ export default function DreamPage() {
               </div>
             </div>
 
-            <a
-  href="/api/stripe/dream"
-  className="inline-flex items-center justify-center rounded-xl bg-fuchsia-500 px-6 py-3 text-sm font-semibold text-white hover:bg-fuchsia-400"
->
+            <DreamBuyButton className="your-existing-button-classes">
   Buy The Dream
-</a>
+</DreamBuyButton>
 
-            <a
-              href="/api/stripe/dream"
-              className="inline-flex items-center justify-center rounded-xl bg-fuchsia-500 px-6 py-3 text-sm font-semibold text-white hover:bg-fuchsia-400"
-            >
-              Buy The Dream
-            </a>
+            
           </div>
         </div>
       </section>

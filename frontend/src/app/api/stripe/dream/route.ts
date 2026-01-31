@@ -64,26 +64,3 @@ export async function GET() {
   return NextResponse.json({ error: "Use POST" }, { status: 405 });
 }
 
-export async function handleBuyDream() {
-  try {
-    const res = await fetch("/api/stripe/dream", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        // optional, but helps Stripe prefill email:
-        email: "",
-        successUrl: `${window.location.origin}/dashboard?dream=success`,
-        cancelUrl: `${window.location.origin}/dream?dream=cancel`,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data?.error || "Checkout failed");
-    if (!data?.url) throw new Error("No checkout URL returned");
-
-    window.location.href = data.url;
-  } catch (e: any) {
-    alert(e?.message ?? "Dream checkout failed");
-  }
-}
