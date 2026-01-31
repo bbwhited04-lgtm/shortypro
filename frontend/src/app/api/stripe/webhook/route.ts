@@ -16,7 +16,7 @@ function requireEnv(name: string) {
 }
 
 function toPlanEnum(plan: string | null | undefined) {
-  // Adjust these to match your Prisma enum EXACTLY
+  // IMPORTANT: must match your Prisma enum Plan EXACTLY.
   switch ((plan ?? "").toLowerCase()) {
     case "starter":
       return "STARTER";
@@ -24,14 +24,18 @@ function toPlanEnum(plan: string | null | undefined) {
       return "PRO";
     case "agency":
       return "AGENCY";
+
+    // Dream isn't in Prisma enum yet → map it to PRO for now
     case "dream":
     case "own_the_stack":
     case "own-the-stack":
-      return "DREAM"; // if you have it; otherwise change to "PRO" or "AGENCY"
+      return "PRO";
+
     default:
       return "NONE";
   }
 }
+
 
 function getCustomerId(obj: any): string | null {
   const c = obj?.customer;

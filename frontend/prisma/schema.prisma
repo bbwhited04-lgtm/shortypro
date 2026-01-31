@@ -8,11 +8,13 @@ datasource db {
 }
 
 enum Plan {
-  NONE
   STARTER
   PRO
   AGENCY
+  DREAM
+  NONE
 }
+
 
 model User {
   id             String   @id @default(cuid())
