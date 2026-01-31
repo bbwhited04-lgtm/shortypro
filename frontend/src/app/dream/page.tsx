@@ -1,58 +1,59 @@
 "use client";
 import Link from "next/link";
-import DreamBuyButton from "@/components/DreamBuyButton";
+import StripeBuyButton from "@/components/StripeBuyButton";
 
 export default function DreamPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-70"
-          style={{ backgroundImage: "url(/shortypro/thedreampack-image.jpg)" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/75 to-black" />
+  <div
+    className="absolute inset-0 bg-cover bg-center opacity-70"
+    style={{ backgroundImage: "url(/shortypro/thedreampack-image.jpg)" }}
+  />
+  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/75 to-black" />
 
-        <div className="relative mx-auto max-w-6xl px-6 py-28">
-          <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/80">
-              THE DREAM • Own the Stack
-            </div>
+  <div className="relative mx-auto max-w-6xl px-6 py-28">
+    <div className="max-w-2xl space-y-6">
+      <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/80">
+        THE DREAM • Own the Stack
+      </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl">
-              Stop paying subscriptions.
-              <span className="block text-white/90">
-                Own your CRM, funnels, video & AI.
-              </span>
-            </h1>
+      <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl">
+        Stop paying subscriptions.
+        <span className="block text-white/90">
+          Own your CRM, funnels, video & AI.
+        </span>
+      </h1>
 
-            <p className="text-lg text-white/80">
-              The Dream Package replaces Salesforce, Canva, Sprout, funnel builders,
-              schedulers, and AI tools with one platform you control.
-            </p>
+      <p className="text-lg text-white/80">
+        The Dream Package replaces Salesforce, Canva, Sprout, funnel builders,
+        schedulers, and AI tools with one platform you control.
+      </p>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-             <script async src="https://js.stripe.com/v3/buy-button.js">
-             </script>
-
-            <stripe-buy-button buy-button-id="buy_btn_1Svk8hKC49F2A9OzY2D3HY9o" publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
-            </stripe-buy-button>
-
-
-              <Link
-                href="/login"
-                className="rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Log in
-              </Link>
-            </div>
-
-            <div className="text-xs text-white/60">
-              $249 Dream Package • Cancel anytime • shortypro.com
-            </div>
-          </div>
+      {/* BUY BUTTON */}
+      <div className="inline-block rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 p-[2px]">
+        <div className="rounded-full bg-black px-5 py-2">
+          <StripeBuyButton
+            buyButtonId="buy_btn_1Svk8hKC49F2A9OzY2D3HY9o"
+            publishableKey="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
+          />
         </div>
-      </section>
+      </div>
+
+      <Link
+        href="/login"
+        className="inline-block rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+      >
+        Log in
+      </Link>
+
+      <div className="text-xs text-white/60">
+        $249 Dream Package • Cancel anytime • shortypro.com
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* VIDEO */}
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -140,32 +141,28 @@ export default function DreamPage() {
         </div>
       </section>
 
-      {/* BUY */}
-      <section id="buy" className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h3 className="text-2xl font-bold">The Dream Package</h3>
-              <p className="mt-2 text-white/70">
-                Own your CRM, funnels, video, AI, and scheduling stack.
-              </p>
-              <div className="mt-3 text-sm text-white/60">
-                $249 / month • Cancel anytime
-              </div>
-            </div>
-              <script async src="https://js.stripe.com/v3/buy-button.js">
-              </script>
-              <stripe-buy-button buy-button-id="buy_btn_1Svk8hKC49F2A9OzY2D3HY9o" publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
-              </stripe-buy-button>
-            </div>
+{/* BUY */}
+<section id="buy" className="mx-auto max-w-6xl px-6 pb-24">
+  <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+    <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h3 className="text-2xl font-bold">The Dream Package</h3>
+        <p className="mt-2 text-white/70">
+          Own your CRM, funnels, video, AI, and scheduling stack.
+        </p>
+        <div className="mt-3 text-sm text-white/60">
+          $249 / month • Cancel anytime
         </div>
-      </section>
+      </div>
 
-      <footer className="border-t border-white/10 bg-black">
-        <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-white/60">
-          © {new Date().getFullYear()} DEAD APP CORP • ShortyPro
+      <div className="inline-block rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 p-[2px]">
+        <div className="rounded-full bg-black px-5 py-2">
+          <StripeBuyButton
+            buyButtonId="buy_btn_1Svk8hKC49F2A9OzY2D3HY9o"
+            publishableKey="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs"
+          />
         </div>
-      </footer>
-    </main>
-  );
-}
+      </div>
+    </div>
+  </div>
+</section>
