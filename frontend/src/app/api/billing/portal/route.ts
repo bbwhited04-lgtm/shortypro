@@ -1,112 +1,81 @@
-import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
-
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
+import { NextResponse } from "next/server";
+import { getStripe } from "@/lib/stripe";
 
-function requireEnv(name: string) {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing env var: ${name}`);
-  return v;
+type Body = {
+  // Preferred: known Stripe customer id (cus_...)
+  customerId?: string | null;
+
+  // Fallback: use email to look up/create customer
+  email?: string | null;
+
+  // Where to send user back after managing billing
+  returnUrl?: string | null;
+};
+
+function getReturnUrl(body: Body): string {
+  // Allow caller override; otherwise default to your site
+  return (
+    (body.returnUrl && body.returnUrl.trim()) ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://www.shortypro.com"
+  );
 }
 
-// Optional: guard so build doesn’t explode if env missing during local dev
-function stripeReady() {
-  return !!process.env.STRIPE_SECRET_KEY;
-}
-
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    if (!stripeReady()) {
-      return NextResponse.json(
-        { ok: false, error: "Stripe not configured (missing STRIPE_SECRET_KEY)" },
-        { status: 500 }
-      );
+    const stripe = getStripe();
+
+    const body = (await req.json().catch(() => ({}))) as Body;
+
+    const email = body.email?.trim() || null;
+    let customerId = body.customerId?.trim() || null;
+
+    // If no customerId, try to find an existing customer by email.
+    if (!customerId && email) {
+      const existing = await stripe.customers.list({
+        email,
+        limit: 1,
+      });
+
+      if (existing.data.length > 0) {
+        customerId = existing.data[0].id;
+      } else {
+        // Create a customer if none exists
+        const created = await stripe.customers.create({ email });
+        customerId = created.id;
+      }
     }
 
-    const body = await req.json().catch(() => ({}));
-    const action = body?.action as string | undefined;
-
-    // Common inputs
-    const email = body?.email as string | undefined;
-    const priceId = body?.priceId as string | undefined;
-
-    if (!action) {
+    if (!customerId) {
       return NextResponse.json(
-        { ok: false, error: "Missing action" },
+        { error: "Missing customerId (or email to create/find customer)." },
         { status: 400 }
       );
     }
 
-    // --------
-    // ACTION: create checkout session
-    // --------
-    if (action === "checkout") {
-      if (!email) {
-        return NextResponse.json(
-          { ok: false, error: "Email required" },
-          { status: 400 }
-        );
-      }
-      if (!priceId) {
-        return NextResponse.json(
-          { ok: false, error: "priceId required" },
-          { status: 400 }
-        );
-      }
+    const returnUrl = getReturnUrl(body);
 
-      const origin =
-        req.headers.get("origin") ??
-        process.env.NEXT_PUBLIC_SITE_URL ??
-        "https://www.shortypro.com";
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: returnUrl,
+    });
 
-      const session = await stripe.checkout.sessions.create({
-        mode: "subscription",
-        customer_email: email,
-        line_items: [{ price: priceId, quantity: 1 }],
-        success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/cancel`,
-        allow_promotion_codes: true,
-      });
-
-      return NextResponse.json({ ok: true, url: session.url });
-    }
-
-    // --------
-    // ACTION: create billing portal session
-    // --------
-    if (action === "portal") {
-      const customerId = body?.customerId as string | undefined;
-
-      if (!customerId) {
-        return NextResponse.json(
-          { ok: false, error: "customerId required" },
-          { status: 400 }
-        );
-      }
-
-      const origin =
-        req.headers.get("origin") ??
-        process.env.NEXT_PUBLIC_SITE_URL ??
-        "https://www.shortypro.com";
-
-      const portal = await stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: `${origin}/dashboard/billing`,
-      });
-
-      return NextResponse.json({ ok: true, url: portal.url });
-    }
-
-    return NextResponse.json(
-      { ok: false, error: `Unknown action: ${action}` },
-      { status: 400 }
-    );
+    return NextResponse.json({ url: session.url }, { status: 200 });
   } catch (err: any) {
+    // Helpful error output without crashing build
     return NextResponse.json(
-      { ok: false, error: err?.message ?? "Billing error" },
+      {
+        error: "Failed to create billing portal session",
+        message: err?.message ?? String(err),
+      },
       { status: 500 }
     );
   }
+}
+
+// Optional: reject other methods cleanly
+export async function GET() {
+  return NextResponse.json({ error: "Use POST" }, { status: 405 });
 }

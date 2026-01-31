@@ -1,40 +1,65 @@
-import Stripe from "stripe";
-import { NextResponse } from "next/server";
-
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import { NextResponse } from "next/server";
+import { getStripe } from "@/lib/stripe";
 
+function requireEnv(name: string): string {
+  const v = process.env[name];
+  if (!v) throw new Error(`${name} is not set`);
+  return v;
+}
 
-export async function GET() {
+export async function POST(req: Request) {
   try {
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const stripe = getStripe();
+
+    const body = (await req.json().catch(() => ({}))) as {
+      email?: string;
+      priceId?: string;
+      successUrl?: string;
+      cancelUrl?: string;
+    };
+
+    // Prefer env var, fallback to body, final fallback is empty -> error
+    const priceId =
+      process.env.STRIPE_PRICE_DREAM?.trim() ||
+      body.priceId?.trim() ||
+      "";
+
+    if (!priceId) {
+      return NextResponse.json(
+        { error: "Missing Dream priceId (set STRIPE_PRICE_DREAM or pass priceId)" },
+        { status: 400 }
+      );
+    }
+
+    const site =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      "https://www.shortypro.com";
+
+    const successUrl = body.successUrl?.trim() || `${site}/dashboard?upgrade=success`;
+    const cancelUrl = body.cancelUrl?.trim() || `${site}/dashboard?upgrade=cancel`;
 
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription", // change to "payment" if you ever make it one-time
-      line_items: [
-        {
-          price: "price_1Svf9SKC49F2A9OzZ8X4OIL6",
-          quantity: 1,
-        },
-      ],
-      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/dream`,
-      metadata: {
-        product: "dream",
-        plan: "own_the_stack",
-      },
+      mode: "subscription",
+      customer_email: body.email?.trim() || undefined,
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       allow_promotion_codes: true,
+      metadata: { plan: "dream" }
     });
 
-    return NextResponse.redirect(session.url!, { status: 303 });
+    return NextResponse.json({ url: session.url }, { status: 200 });
   } catch (err: any) {
-    console.error("Stripe error:", err);
     return NextResponse.json(
-      { error: "Unable to start checkout" },
+      { error: err?.message ?? String(err) },
       { status: 500 }
     );
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: "Use POST" }, { status: 405 });
 }

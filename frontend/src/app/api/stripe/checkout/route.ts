@@ -1,29 +1,56 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
+import { getStripe } from "@/lib/stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
-
-
-const PRICE_MAP: Record<string, string> = {
-  Starter: "price_STARTER_ID",
-  Pro: "price_PRO_ID",
-  Agency: "price_AGENCY_ID",
+type Body = {
+  priceId?: string | null;
+  email?: string | null;
+  successUrl?: string | null;
+  cancelUrl?: string | null;
+  plan?: string | null; // optional metadata
 };
 
 export async function POST(req: Request) {
-  const { plan } = await req.json();
+  try {
+    const stripe = getStripe();
 
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    line_items: [
-      {
-        price: PRICE_MAP[plan],
-        quantity: 1,
-      },
-    ],
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/billing?success=1`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/billing?canceled=1`,
-  });
+    const body = (await req.json().catch(() => ({}))) as Body;
 
-  return NextResponse.json({ url: session.url });
+    const priceId = body.priceId?.trim() || "";
+    if (!priceId) {
+      return NextResponse.json({ error: "Missing priceId" }, { status: 400 });
+    }
+
+    const site =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      "https://www.shortypro.com";
+
+    const successUrl =
+      body.successUrl?.trim() || `${site}/dashboard?checkout=success`;
+    const cancelUrl =
+      body.cancelUrl?.trim() || `${site}/pricing?checkout=cancel`;
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      customer_email: body.email?.trim() || undefined,
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      allow_promotion_codes: true,
+      metadata: body.plan ? { plan: body.plan } : undefined,
+    });
+
+    return NextResponse.json({ url: session.url }, { status: 200 });
+  } catch (err: any) {
+    return NextResponse.json(
+      { error: err?.message ?? String(err) },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: "Use POST" }, { status: 405 });
 }
