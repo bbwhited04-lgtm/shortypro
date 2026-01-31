@@ -1,5 +1,15 @@
-import AppShell from "@/components/app/AppShell";
+import "./globals.css";
+import type { ReactNode } from "react";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return <AppShell>{children}</AppShell>;
+export const metadata = {
+  title: "ShortyPro",
+  description: "ShortyPro Dashboard",
+};
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
