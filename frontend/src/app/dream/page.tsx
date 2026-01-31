@@ -32,9 +32,11 @@ export default function DreamPage() {
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <DreamBuyButton className="your-existing-button-classes">
-  Buy The Dream
-</DreamBuyButton>
+             <script async src="https://js.stripe.com/v3/buy-button.js">
+             </script>
+
+            <stripe-buy-button buy-button-id="buy_btn_1Svk8hKC49F2A9OzY2D3HY9o" publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
+            </stripe-buy-button>
 
 
               <Link
@@ -151,13 +153,11 @@ export default function DreamPage() {
                 $249 / month • Cancel anytime
               </div>
             </div>
-
-            <DreamBuyButton className="your-existing-button-classes">
-  Buy The Dream
-</DreamBuyButton>
-
-            
-          </div>
+              <script async src="https://js.stripe.com/v3/buy-button.js">
+              </script>
+              <stripe-buy-button buy-button-id="buy_btn_1Svk8hKC49F2A9OzY2D3HY9o" publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
+              </stripe-buy-button>
+            </div>
         </div>
       </section>
 
