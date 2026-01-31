@@ -9,7 +9,6 @@ type Props = {
 
 export default function StripeBuyButton({ buyButtonId, publishableKey }: Props) {
   useEffect(() => {
-    // load the script once
     const existing = document.querySelector(
       'script[src="https://js.stripe.com/v3/buy-button.js"]'
     );
@@ -21,12 +20,6 @@ export default function StripeBuyButton({ buyButtonId, publishableKey }: Props) 
     document.body.appendChild(s);
   }, []);
 
-  // The web component is provided by the script above
-  return (
-    // @ts-expect-error - custom element provided by Stripe script
-    <stripe-buy-button
-      buy-button-id={buyButtonId}
-      publishable-key={publishableKey}
-    />
-  );
+  // @ts-expect-error - stripe web component provided by Stripe
+  return <stripe-buy-button buy-button-id={buyButtonId} publishable-key={publishableKey} />;
 }
