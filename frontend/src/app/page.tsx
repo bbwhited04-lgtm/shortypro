@@ -1,3 +1,8 @@
+import { redirect } from "next/navigation";
+
+export default function Home() {
+  redirect("/index.html");
+}
 export default function Home() {
   return (
     <div style={{ padding: 40, fontFamily: "system-ui" }}>
