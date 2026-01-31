@@ -1,47 +1,46 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Shorty Pro — Short Links that Sell</title>
-<meta name="description" content="ShortyPro helps creators and businesses shorten videos, track clicks, and sell with Stripe-powered checkout." />
-<meta name="theme-color" content="#0b0f19" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShortyPro — Own The Stack</title>
+  <meta name="description" content="Stop paying subscriptions. Own your CRM, funnels, video engine, scheduling, analytics, and AI chat — in one stack." />
+  <meta name="theme-color" content="#0b0f19" />
 
-<!-- Additional Meta Tags -->
-<meta name="keywords" content="short links, URL shortener, video shortening, link tracking, e-commerce, Stripe checkout, digital marketing, content creation" />
-<meta name="author" content="Shorty Pro Team" />
-<meta name="robots" content="index, follow" />
+  <!-- SEO -->
+  <meta name="keywords" content="CRM, funnels, video shorts, social scheduler, AI chat, marketing stack, subscriptions, Stripe checkout, ShortyPro" />
+  <meta name="author" content="DEAD APP CORP" />
+  <meta name="robots" content="index, follow" />
 
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="Shorty Pro — Short Links that Sell" />
-<meta property="og:description" content="ShortyPro helps creators and businesses shorten videos, track clicks, and sell with Stripe-powered checkout." />
-<meta property="og:image" content="URL_TO_IMAGE" /> <!-- Replace with the URL of your image -->
-<meta property="og:url" content="https://shortypro.com" />
-<meta property="og:type" content="website" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="ShortyPro — Own The Stack" />
+  <meta property="og:description" content="The Dream Package: CRM + Funnels + Video + Scheduler + Analytics + AI chat — $249/mo." />
+  <meta property="og:image" content="/shortypro/thedreampack-image.jpg" />
+  <meta property="og:url" content="https://www.shortypro.com" />
+  <meta property="og:type" content="website" />
 
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Shorty Pro — Short Links that Sell" />
-<meta name="twitter:description" content="ShortyPro helps creators and businesses shorten videos, track clicks, and sell with Stripe-powered checkout." />
-<meta name="twitter:image" content="URL_TO_IMAGE" /> <!-- Replace with the URL of your image -->
-
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ShortyPro — Own The Stack" />
+  <meta name="twitter:description" content="Stop paying subscriptions. Own your stack." />
+  <meta name="twitter:image" content="/shortypro/thedreampack-image.jpg" />
 
   <style>
     :root {
-      --bg: #0b0f19; 
-      --card: #121a2b; 
-      --card2: #0f1627;
-      --text: #e8eefc; 
-      --muted: #aab6d6; 
-      --line: rgba(255, 255, 255, .10);
-      --accent: #6ea8ff; 
-      --accent2: #73f1c8; 
-      --warn: #ffcc66; 
-      --danger: #ff6b6b;
+      --bg: #0b0f19;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.04);
+      --text: #e8eefc;
+      --muted: rgba(232,238,252,.70);
+      --line: rgba(255, 255, 255, .12);
+      --accent: #ff4fd8;
+      --accent2: #49d7ff;
+      --good: #73f1c8;
+      --warn: #ffcc66;
       --radius: 18px;
       --shadow: 0 20px 50px rgba(0, 0, 0, .35);
       --shadow2: 0 10px 30px rgba(0, 0, 0, .25);
-      --max: 1100px;
+      --max: 1120px;
       font-synthesis-weight: none;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
@@ -52,290 +51,413 @@
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1100px 600px at 20% -10%, rgba(110, 168, 255, .25), transparent 60%), var(--bg);
+      background:
+        radial-gradient(1000px 600px at 15% -10%, rgba(73, 215, 255, .20), transparent 60%),
+        radial-gradient(900px 500px at 90% 0%, rgba(255, 79, 216, .16), transparent 60%),
+        var(--bg);
       color: var(--text);
     }
     a { color: inherit; text-decoration: none; }
     .container { max-width: var(--max); margin: 0 auto; padding: 0 18px; }
+
+    /* Topbar */
     .topbar {
       position: sticky; top: 0; z-index: 30;
       backdrop-filter: blur(14px);
       background: rgba(11, 15, 25, .72);
       border-bottom: 1px solid var(--line);
     }
-    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 14px; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .2px; }
-    .logo { width: 34px; height: 34px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: var(--shadow2); display: inline-block; }
-    .navlinks { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .06); color: var(--text); font-weight: 700; cursor: pointer; transition: transform .08s ease, background .15s ease, border-color .15s ease; user-select: none; white-space: nowrap; }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; gap: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .2px; }
+    .logo {
+      width: 34px; height: 34px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: var(--shadow2);
+      display: inline-block;
+    }
+    .navlinks { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .navlinks a { color: rgba(232,238,252,.86); font-weight: 700; font-size: 14px; padding: 8px 10px; border-radius: 12px; }
+    .navlinks a:hover { background: rgba(255,255,255,.06); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .06);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
     .btn:hover { background: rgba(255, 255, 255, .10); }
-    h1 { margin: 14px 0 10px; font-size: clamp(34px, 3.8vw, 52px); line-height: 1.04; letter-spacing: -.6px; }
-    .section { padding: 28px 0; }
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    @media (max-width: 980px) { .grid3 { grid-template-columns: 1fr; } }
-    .feature { border: 1px solid var(--line); border-radius: var(--radius); background: rgba(18, 26, 43, .55); padding: 16px; }
-    .feature b { display: block; margin: 2px 0 6px; }
-    .feature p { margin: 0; color: var(--muted); line-height: 1.6; }
-    iframe { width: 100%; height: 200px; border: none; margin-top: 10px; }
-
-    /* Pricing Styles */
-    .pricingWrap {
-        display: flex;                /* Use flexbox to arrange items in a row */
-        justify-content: space-around; /* Space out the cards evenly */
-        flex-wrap: wrap;             /* Allow cards to wrap if the screen is too small */
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(255,79,216,.95), rgba(73,215,255,.85));
+      border-color: rgba(255,255,255,.14);
+      color: #0b0f19;
+      box-shadow: 0 12px 28px rgba(255,79,216,.14);
     }
-    .priceCard {
-        flex: 1;                     /* Allow cards to grow and fill the space */
-        min-width: 250px;           /* Set a minimum width for each card */
-        margin: 10px;               /* Add some margin between cards */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
-        padding: 20px;              /* Add padding inside the cards */
-        border-radius: 8px;         /* Optional: Rounded corners for cards */
-        background-color: #fff;     /* Optional: Card background color */
-    }
+    .btn-primary:hover { filter: brightness(1.05); }
 
-    /* Loading Screen Styles */
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: flex;
+    /* Sections */
+    .section { padding: 44px 0; }
+    h1 { margin: 0 0 12px; font-size: clamp(34px, 4vw, 56px); line-height: 1.04; letter-spacing: -.8px; }
+    h2 { margin: 0 0 10px; font-size: 26px; letter-spacing: -.3px; }
+    p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    .hero {
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url("/shortypro/thedreampack-image.jpg");
+      background-size: cover;
+      background-position: center;
+      opacity: .66;
+      transform: scale(1.03);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(900px 450px at 30% 10%, rgba(255,79,216,.18), transparent 55%),
+                  radial-gradient(900px 450px at 80% 20%, rgba(73,215,255,.20), transparent 55%),
+                  linear-gradient(to bottom, rgba(11,15,25,.55), rgba(11,15,25,.85) 55%, rgba(11,15,25,1));
+    }
+    .hero-inner {
+      position: relative;
+      padding: 64px 0 52px;
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .hero-inner { grid-template-columns: 1fr; }
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(232,238,252,.90);
+      font-weight: 800;
+      font-size: 12px;
+      width: fit-content;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--good); box-shadow: 0 0 0 4px rgba(115,241,200,.12); }
+
+    .hero-card {
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.30);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero-card .inner { padding: 16px; }
+    .kbd {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(232,238,252,.88);
     }
-    video {
-      width: 100%;
-      max-width: 800px; /* Limit the maximum width of the video */
+
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 980px) { .grid4 { grid-template-columns: repeat(2, 1fr); } .grid3 { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .grid4 { grid-template-columns: 1fr; } }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--card);
       border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow2);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 15px; letter-spacing: -.2px; }
+    .small { font-size: 13px; color: rgba(232,238,252,.66); }
+
+    .videoWrap {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
       box-shadow: var(--shadow);
     }
+    .videoWrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .aspect { aspect-ratio: 16 / 9; }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    @media (max-width: 980px) { .pricing { grid-template-columns: 1fr; } }
+
+    .priceBox {
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .priceLine { display:flex; align-items: baseline; gap: 10px; margin-top: 10px; }
+    .price { font-size: 42px; font-weight: 950; letter-spacing: -1px; }
+    .per { color: rgba(232,238,252,.68); font-weight: 800; }
+    ul.clean { margin: 12px 0 0; padding-left: 18px; color: rgba(232,238,252,.78); }
+    ul.clean li { margin: 8px 0; line-height: 1.45; }
+    .note { margin-top: 12px; font-size: 12px; color: rgba(232,238,252,.60); }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      padding: 22px 0;
+      color: rgba(232,238,252,.70);
+    }
+    .footerRow { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .footerLinks { display:flex; gap:10px; flex-wrap:wrap; }
+    .footerLinks a { padding: 8px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); }
+    .footerLinks a:hover { background: rgba(255,255,255,.08); }
   </style>
 </head>
 
 <body>
-  <!-- Loading Screen with Video -->
-  <div class="loading-screen" id="loadingScreen">
-    <video id="introVideo" autoplay muted>
-      <source src="http://shortypro.com/shortypro/shortyprovid.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-
-  <div class="topbar" style="display:none;">
+  <!-- Topbar -->
+  <div class="topbar">
     <div class="container">
       <div class="nav">
         <div class="brand">
           <span class="logo" aria-hidden="true"></span>
-          <span>Shorty Pro</span>
-          
+          <span>ShortyPro</span>
         </div>
-        <div class="navlinks">
-  <a href="#features">Features</a>
-  <a href="#pricing">Pricing</a>
-  <a href="#faq">FAQ</a>
-  <a href="/branding.html">Branding</a>
-  <button class="btn primary" onclick="scrollToPricing()">Get Started</button>
-</div>
 
+        <div class="navlinks">
+          <a href="/dream">Own The Stack</a>
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="/login">Log in</a>
+          <a class="btn btn-primary" href="/api/stripe/dream">Buy The Dream</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <header class="hero" style="display:none;">
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
     <div class="container">
-      <h1>Shorty videos that actually make you money.</h1>
-      <p class="sub">
-        ShortyPro is built for creators and businesses who need clean short videos, click tracking,
-        and Stripe checkout that just works. Converting more customers than your average bear.
-      </p>
-      <button class="btn primary" onclick="scrollToPricing()">See Plans</button>
+      <div class="hero-inner">
+        <div>
+          <div class="pill"><span class="dot"></span> THE DREAM • Own The Stack</div>
+          <h1>Stop paying subscriptions.<br />Own your CRM, funnels, video & AI.</h1>
+          <p>
+            Replace the patchwork stack with one platform that creates content, captures leads,
+            builds funnels, schedules posts, and keeps your customer list — all under one roof.
+          </p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+            <a class="btn btn-primary" href="/api/stripe/dream">Get The Dream ($249/mo)</a>
+            <a class="btn" href="/dream">See the Dream page</a>
+            <a class="btn" href="/dashboard">Go to dashboard</a>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+            <span class="kbd">CRM</span>
+            <span class="kbd">Funnels</span>
+            <span class="kbd">Video Shorts</span>
+            <span class="kbd">Scheduler</span>
+            <span class="kbd">Analytics</span>
+            <span class="kbd">Chatterly AI</span>
+          </div>
+
+          <p class="note">
+            Cancel anytime. Built by DEAD APP CORP. Your audience is an asset — own it.
+          </p>
+        </div>
+
+        <div class="hero-card">
+          <div class="inner">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;">
+              <div style="font-weight:950; letter-spacing:-.2px;">Watch the vision</div>
+              <a class="btn" style="padding:10px 12px; font-weight:900;" href="/dream">Open /dream</a>
+            </div>
+            <div class="videoWrap aspect">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/_TBNaGEfgwA"
+                title="ShortyPro — The Dream Package"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+            <div class="small" style="margin-top:10px;">
+              Pro tip: Say “Own the Stack” in every short + put <strong>shortypro.com/dream</strong> on-screen.
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </header>
 
-  <section class="section" id="features" style="display:none;">
+  <!-- How it works -->
+  <section id="how" class="section">
     <div class="container">
-      <h2>What you get</h2>
-      <div class="grid3">
-        <div class="feature">
-          <b>Fast short links</b>
-          <p>Create clean short videos that look professional across social platforms.</p>
-          <iframe src="https://shortypro.com/shortypro/shortyprovid2.mp4" allowfullscreen></iframe>
+      <h2>How it works</h2>
+      <p>One flow: upload → generate → schedule → capture leads → scale.</p>
+
+      <div class="grid3" style="margin-top:14px;">
+        <div class="card">
+          <h3>1) Connect accounts</h3>
+          <p class="small">Settings → Integrations. Connect TikTok, Instagram, Facebook, YouTube, Google, Slack, and more.</p>
         </div>
-        <div class="feature">
-          <b>Click tracking</b>
-          <p>Know what’s working: views, clicks, and referrers in one place.</p>
-          <iframe src="https://shortypro.com/shortypro/vid1.mp4" allowfullscreen></iframe>
+        <div class="card">
+          <h3>2) Create content</h3>
+          <p class="small">Upload long videos and generate short clips, captions, scripts, hooks, replies & CTAs using Chatterly.</p>
         </div>
-        <div class="feature">
-          <b>Stripe checkout</b>
-          <p>Turn traffic into revenue with simple plan buttons wired to Stripe.</p>
-          <iframe src="https://shortypro.com/shortypro/shortyprovid3.mp4" allowfullscreen></iframe>
-        </div>
-        <div class="feature">
-          <b>Video Conversion Tips & Tricks</b>
-          <p>Learn from the best in the business to help monetize your content.</p>
-          <iframe src="https://shortypro.com/shortypro/shortyprovid4.mp4" allowfullscreen></iframe>
-        </div>
-        <div class="feature">
-          <b>Smart Posting</b>
-          <p>We post for you directly within our dashboard, turning a 4 min video into 20-30 shorts.</p>
-          <iframe src="https://shortypro.com/shortypro/shortyprovid5.mp4" allowfullscreen></iframe>
-        </div>
-        <div class="feature">
-          <b>Join our Private Facebook Group</b>
-          <p>Become part of a growing filmmaking and marketing community.</p>
-          <iframe src="https://shortypro.com/shortypro/shortyprovid6.mp4" allowfullscreen></iframe>
+        <div class="card">
+          <h3>3) Funnel + leads</h3>
+          <p class="small">Build a 5–10 card funnel, capture emails, export lists, and keep your audience forever.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="pricing" style="display:none;">
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2>Built for the Dream package</h2>
+      <p>Everything you asked for: video + chat + CRM + funnels + scheduler — in one product.</p>
+
+      <div class="grid4" style="margin-top:14px;">
+        <div class="card">
+          <h3>Video Engine</h3>
+          <p class="small">Upload a long video → auto-generate shorts → schedule across platforms.</p>
+        </div>
+        <div class="card">
+          <h3>Chatterly AI</h3>
+          <p class="small">Hooks, captions, scripts, replies, CTAs. Fast. Consistent. Brand-safe.</p>
+        </div>
+        <div class="card">
+          <h3>Funnels</h3>
+          <p class="small">Flash-card funnels (5–10 max) with video, CTA, and email capture.</p>
+        </div>
+        <div class="card">
+          <h3>CRM + Leads</h3>
+          <p class="small">Own your list: capture, segment, export, and run bulk mail campaigns.</p>
+        </div>
+      </div>
+
+      <div class="grid4" style="margin-top:14px;">
+        <div class="card">
+          <h3>Scheduler</h3>
+          <p class="small">Auto-post to connected accounts once you’ve linked them in Settings.</p>
+        </div>
+        <div class="card">
+          <h3>Integrations</h3>
+          <p class="small">Wave 1/2 OAuth connects + token storage. Expand into CRM + commerce.</p>
+        </div>
+        <div class="card">
+          <h3>Analytics</h3>
+          <p class="small">Track performance and growth across platforms in one view.</p>
+        </div>
+        <div class="card">
+          <h3>Help + Tutorials</h3>
+          <p class="small">Long-form YouTube walkthroughs embedded inside each dashboard tab.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section">
     <div class="container">
       <h2>Pricing</h2>
-      <p class="sub">Choose a plan.</p>
-      <div class="pricingWrap">
-        <div class="priceCard">
-          <div class="plan">Starter</div>
-          <div class="priceTop">
-            <div class="price">$19</div>
-            <div class="per">per month</div>
+      <p>Own the stack for less than what people pay for “just one tool.”</p>
+
+      <div class="pricing" style="margin-top:14px;">
+        <div class="priceBox">
+          <div style="font-weight:950;">The Dream Package</div>
+          <div class="priceLine">
+            <div class="price">$249</div>
+            <div class="per">/ month</div>
           </div>
-          <ul>
-            <li>Basic short links</li>
-            <li>Light tracking</li>
-            <li>Email support</li>
+          <ul class="clean">
+            <li>CRM + lead capture</li>
+            <li>Funnels (5–10 card max)</li>
+            <li>Video shorts generator</li>
+            <li>Scheduler + posting</li>
+            <li>Chatterly AI (scripts, hooks, captions)</li>
+            <li>Integrations hub</li>
           </ul>
-          <div class="priceActions">
-            <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-            <stripe-buy-button
-              buy-button-id="buy_btn_1SuT6SKC49F2A9OzddETNOJJ"
-              publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
-            </stripe-buy-button>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+            <a class="btn btn-primary" href="/api/stripe/dream">Buy The Dream</a>
+            <a class="btn" href="/dream">Learn more</a>
           </div>
+
+          <div class="note">You can cancel anytime. Access stays active through the end of your billing period.</div>
         </div>
-        <div class="priceCard reco">
-          <div class="badge">Most Popular</div>
-          <div class="plan">Pro</div>
-          <div class="priceTop">
-            <div class="price">$49</div>
-            <div class="per">per month</div>
-          </div>
-          <ul>
-            <li>Everything in Starter</li>
-            <li>Better analytics</li>
-            <li>Priority support</li>
-          </ul>
-          <div class="priceActions">
-            <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-            <stripe-buy-button
-              buy-button-id="buy_btn_1SuTAIKC49F2A9Ozh0nbJKWo"
-              publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
-            </stripe-buy-button>
-          </div>
-        </div>
-        <div class="priceCard">
-          <div class="plan">Agency</div>
-          <div class="priceTop">
-            <div class="price">$149</div>
-            <div class="per">per month</div>
-          </div>
-          <ul>
-            <li>Multiple brands/projects</li>
-            <li>Advanced tracking</li>
-            <li>White-glove onboarding</li>
-          </ul>
-          <div class="priceActions">
-            <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-            <stripe-buy-button
-              buy-button-id="buy_btn_1SuTBnKC49F2A9OzKhdowMw5"
-              publishable-key="pk_live_51StUA4KC49F2A9Oz5PN3E29C5pUkoi4fF0IbxhaEULjdGhh5K7OGzqXc2LP78eEK1Y8sHdfZYFca0mFmGB1OBkmi00J71VEwUs">
-            </stripe-buy-button>
+
+        <div class="card" style="border-radius:22px;">
+          <h3>Who it’s for</h3>
+          <p class="small">
+            Creators, small businesses, and agencies who want a single platform to create content,
+            capture leads, build funnels, and scale without juggling tools.
+          </p>
+
+          <div style="height:10px"></div>
+
+          <h3>What you own</h3>
+          <p class="small">
+            Your customer list and funnel system. The stack that runs your marketing — all under one roof.
+          </p>
+
+          <div style="height:10px"></div>
+
+          <h3>Start here</h3>
+          <p class="small">Buy → create account → connect integrations → upload video → generate shorts → schedule.</p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+            <a class="btn" href="/login">Log in</a>
+            <a class="btn" href="/dashboard">Dashboard</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="faq" style="display:none;">
+  <!-- Footer -->
+  <footer>
     <div class="container">
-      <h2>FAQ</h2>
-      <div class="grid3">
-        <div class="feature">
-          <b>Become a Content Creator In The Fastest Timeframe Possible!</b>
-          <p>Purchase our 30 day starter to get started, Make money from short 10 second videos, we do all the hard work</p>
+      <div class="footerRow">
+        <div class="footerLinks">
+          <a href="/dream">Own The Stack</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/terms.html">Terms</a>
+          <a href="/refund.html">Refund Policy</a>
         </div>
-        <div class="feature">
-          <b>Content Creators</b>
-          <p>Just picked up a camera for the first time? Or maybe you're looking to start shooting professional-looking content with your smartphone? We can help you learn in just 14 days!</p>
-        </div>
-        <div class="feature">
-          <b>Freelance Videographers?</b>
-          <p>You're looking to turn content creation into a full-time career, or maybe you've already started but you want to SCALE your business well beyond 6 figures. We've helped hundreds of videographers do this.</p>
-        </div>
-        <div class="feature">
-          <b>Online Entrepreneurs wanting to get paid from TikTok?</b>
-          <p>2025 is an amazing time to break free from corporate employment and start an online business that provides a sense of FREEDOM! The "30 Day Pro Membership" Program is what you need.</p>
-        </div>
-        <div class="feature">
-          <b>How can Shorty save you time?</b>
-          <p>By using Shorty Pro, we do all the hard work for you.</p>
-        </div>
-        <div class="feature">
-          <b>Convert Videos from long form to short form with Shorty Pro?</b>
-          <p>We offer a premium service for this based on three models above.</p>
-        </div>
+        <div>© <span id="yr"></span> DEAD APP CORP • ShortyPro</div>
       </div>
     </div>
-  </section>
-
-  <div class="footer" style="display:none;">
-    <div class="container" style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
-      <div>© <span id="year"></span> ShortyPro, a division of DEAD APP CORP</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap">
-        <a class="pill" href="https://www.instagram.com/shortypro2" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a class="pill" href="https://x.com/shortypro2" target="_blank" rel="noopener noreferrer">X</a>
-        <a class="pill" href="https://www.threads.com/@shortypro2" target="_blank" rel="noopener noreferrer">Threads</a>
-        <a class="pill" href="https://www.facebook.com/profile.php?id=61587277436466" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a class="pill" href="https://www.youtube.com/channel/UCmbX7LCkJK_8YmuRwUKfKGQ" target="_blank" rel="noopener noreferrer">YouTube</a>
-      </div>
-    </div>
-  </div>
+  </footer>
 
   <script>
-    document.getElementById("year").textContent = String(new Date().getFullYear());
-    
-    function scrollToPricing() { 
-      document.getElementById("pricing").scrollIntoView({ behavior: "smooth", block: "start" }); 
-    }
-
-    // Hide loading screen and show main content
-    const video = document.getElementById('introVideo');
-    const loadingScreen = document.getElementById('loadingScreen');
-
-    // Event listener for when the video ends
-    video.onended = function() {
-      loadingScreen.style.display = 'none'; // Hide loading screen
-      document.querySelector('.topbar').style.display = 'block'; // Show topbar
-      document.querySelector('header').style.display = 'block'; // Show header
-      document.querySelector('#features').style.display = 'block'; // Show features section
-      document.querySelector('#pricing').style.display = 'block'; // Show pricing section
-      document.querySelector('#faq').style.display = 'block'; // Show FAQ section
-    };
-
-    // Alternatively, you can set a timeout to hide the loading screen after a few seconds
-    /* setTimeout(() => {
-      loadingScreen.style.display = 'none';
-      document.querySelector('.topbar').style.display = 'block';
-      document.querySelector('header').style.display = 'block';
-      document.querySelector('#features').style.display = 'block';
-      document.querySelector('#pricing').style.display = 'block';
-      document.querySelector('#faq').style.display = 'block';
-    }, 10000); */ // Uncomment to use timeout instead of video end
+    document.getElementById("yr").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
