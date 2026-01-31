@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import type { Plan } from "@/lib/plans";
 
 function toPlanEnum(plan: string | null | undefined): Plan {
