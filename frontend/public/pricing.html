@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShortyPro — Own The Stack</title>
+  <meta name="description" content="Stop paying subscriptions. Own your CRM, funnels, video engine, scheduling, analytics, and AI chat — in one stack." />
+  <meta name="theme-color" content="#0b0f19" />
+
+  <!-- SEO -->
+  <meta name="keywords" content="CRM, funnels, video shorts, social scheduler, AI chat, marketing stack, subscriptions, Stripe checkout, ShortyPro" />
+  <meta name="author" content="DEAD APP CORP" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ShortyPro — Own The Stack" />
+  <meta property="og:description" content="The Dream Package: CRM + Funnels + Video + Scheduler + Analytics + AI chat — $249/mo." />
+  <meta property="og:image" content="/shortypro/thedreampack-image.jpg" />
+  <meta property="og:url" content="https://www.shortypro.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ShortyPro — Own The Stack" />
+  <meta name="twitter:description" content="Stop paying subscriptions. Own your stack." />
+  <meta name="twitter:image" content="/shortypro/thedreampack-image.jpg" />
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.04);
+      --text: #e8eefc;
+      --muted: rgba(232,238,252,.70);
+      --line: rgba(255, 255, 255, .12);
+      --accent: #ff4fd8;
+      --accent2: #49d7ff;
+      --good: #73f1c8;
+      --warn: #ffcc66;
+      --radius: 18px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, .35);
+      --shadow2: 0 10px 30px rgba(0, 0, 0, .25);
+      --max: 1120px;
+      font-synthesis-weight: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:
+        radial-gradient(1000px 600px at 15% -10%, rgba(73, 215, 255, .20), transparent 60%),
+        radial-gradient(900px 500px at 90% 0%, rgba(255, 79, 216, .16), transparent 60%),
+        var(--bg);
+      color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 18px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(11, 15, 25, .72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; gap: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .2px; }
+    .logo {
+      width: 34px; height: 34px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: var(--shadow2);
+      display: inline-block;
+    }
+    .navlinks { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .navlinks a { color: rgba(232,238,252,.86); font-weight: 700; font-size: 14px; padding: 8px 10px; border-radius: 12px; }
+    .navlinks a:hover { background: rgba(255,255,255,.06); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .06);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn:hover { background: rgba(255, 255, 255, .10); }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(255,79,216,.95), rgba(73,215,255,.85));
+      border-color: rgba(255,255,255,.14);
+      color: #0b0f19;
+      box-shadow: 0 12px 28px rgba(255,79,216,.14);
+    }
+    .btn-primary:hover { filter: brightness(1.05); }
+
+    /* Sections */
+    .section { padding: 44px 0; }
+    h1 { margin: 0 0 12px; font-size: clamp(34px, 4vw, 56px); line-height: 1.04; letter-spacing: -.8px; }
+    h2 { margin: 0 0 10px; font-size: 26px; letter-spacing: -.3px; }
+    p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    .hero {
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url("/shortypro/thedreampack-image.jpg");
+      background-size: cover;
+      background-position: center;
+      opacity: .66;
+      transform: scale(1.03);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(900px 450px at 30% 10%, rgba(255,79,216,.18), transparent 55%),
+                  radial-gradient(900px 450px at 80% 20%, rgba(73,215,255,.20), transparent 55%),
+                  linear-gradient(to bottom, rgba(11,15,25,.55), rgba(11,15,25,.85) 55%, rgba(11,15,25,1));
+    }
+    .hero-inner {
+      position: relative;
+      padding: 64px 0 52px;
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .hero-inner { grid-template-columns: 1fr; }
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(232,238,252,.90);
+      font-weight: 800;
+      font-size: 12px;
+      width: fit-content;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--good); box-shadow: 0 0 0 4px rgba(115,241,200,.12); }
+
+    .hero-card {
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.30);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero-card .inner { padding: 16px; }
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(232,238,252,.88);
+    }
+
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 980px) { .grid4 { grid-template-columns: repeat(2, 1fr); } .grid3 { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .grid4 { grid-template-columns: 1fr; } }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow2);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 15px; letter-spacing: -.2px; }
+    .small { font-size: 13px; color: rgba(232,238,252,.66); }
+
+    .videoWrap {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      box-shadow: var(--shadow);
+    }
+    .videoWrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .aspect { aspect-ratio: 16 / 9; }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    @media (max-width: 980px) { .pricing { grid-template-columns: 1fr; } }
+
+    .priceBox {
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .priceLine { display:flex; align-items: baseline; gap: 10px; margin-top: 10px; }
+    .price { font-size: 42px; font-weight: 950; letter-spacing: -1px; }
+    .per { color: rgba(232,238,252,.68); font-weight: 800; }
+    ul.clean { margin: 12px 0 0; padding-left: 18px; color: rgba(232,238,252,.78); }
+    ul.clean li { margin: 8px 0; line-height: 1.45; }
+    .note { margin-top: 12px; font-size: 12px; color: rgba(232,238,252,.60); }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      padding: 22px 0;
+      color: rgba(232,238,252,.70);
+    }
+    .footerRow { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .footerLinks { display:flex; gap:10px; flex-wrap:wrap; }
+    .footerLinks a { padding: 8px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); }
+    .footerLinks a:hover { background: rgba(255,255,255,.08); }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>1. Hootsuite</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Free Plan: Limited features for 1 user and 2 social accounts.</p>
+            <p>Professional: $19/month (1 user, 10 social accounts).</p>
+            <p>Team: $99/month (3 users, 20 social accounts).</p>
+            <p>Business: $599/month (5 users, 35 social accounts).</p>
+            <p>Enterprise: Custom pricing.</p>
+            <p><a href="https://hootsuite.com/plans" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>2. Buffer</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Free Plan: Limited features for 1 user and 3 social accounts.</p>
+            <p>Essentials: $15/month (1 user, 8 social accounts).</p>
+            <p>Team: $65/month (2 users, 10 social accounts).</p>
+            <p>Agency: $99/month (3 users, 25 social accounts).</p>
+            <p><a href="https://buffer.com/pricing" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>3. Later</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Free Plan: Limited features for 1 user and 4 social profiles.</p>
+            <p>Starter: $15/month (1 user, 1 social set).</p>
+            <p>Growth: $25/month (1 user, 2 social sets).</p>
+            <p>Advanced: $40/month (1 user, 6 social sets).</p>
+            <p><a href="https://later.com/pricing/" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>4. SocialBee</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Bootstrap: $19/month (1 user, 5 social accounts).</p>
+            <p>Accelerate: $39/month (1 user, 10 social accounts).</p>
+            <p>Pro: $79/month (1 user, 15 social accounts).</p>
+            <p>Agency: $149/month (3 users, 20 social accounts).</p>
+            <p><a href="https://socialbee.io/pricing/" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>5. CoSchedule</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Marketing Calendar: Starts at $29/month (1 user).</p>
+            <p>Marketing Suite: Starts at $49/month (1 user, includes additional features).</p>
+            <p>Custom pricing for larger teams and agencies.</p>
+            <p><a href="https://coschedule.com/pricing" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>6. Agorapulse</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Free Trial: 28-day free trial available.</p>
+            <p>Pro: $79/month (1 user, 10 social profiles).</p>
+            <p>Premium: $159/month (2 users, 20 social profiles).</p>
+            <p>Agency: $249/month (3 users, 30 social profiles).</p>
+            <p><a href="https://www.agorapulse.com/pricing" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>7. Zoho Social</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Free Plan: Limited features for 1 brand.</p>
+            <p>Standard: $10/month per brand (1 user).</p>
+            <p>Professional: $25/month per brand (1 user).</p>
+            <p>Agency: $50/month per brand (up to 5 users).</p>
+            <p><a href="https://www.zoho.com/social/pricing.html" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>8. Sendible</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>Free Trial: 14-day free trial available.</p>
+            <p>Starter: $29/month (1 user, 4 social accounts).</p>
+            <p>Traction: $89/month (1 user, 8 social accounts).</p>
+            <p>Growth: $199/month (1 user, 16 social accounts).</p>
+            <p>Custom pricing for larger teams.</p>
+            <p><a href="https://www.sendible.com/pricing" target="_blank">Website</a></p>
+        </div>
+
+        <div class="card">
+            <h2>9. MeetEdgar</h2>
+            <p><strong>Pricing:</strong></p>
+            <p>$49/month (1 user, unlimited social accounts).</p>
+            <p>30-day free trial available.</p>
+            <p><a href="https://meetedgar.com/pricing" target="_blank">Website</a></p>
+        </div>
+    </div>
+    <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footerRow">
+        <div class="footerLinks">
+          <a href="/dream">Own The Stack</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/terms.html">Terms</a>
+          <a href="/refund.html">Refund Policy</a>
+        </div>
+        <div>
+          © <span id="yr"></span> DEAD APP CORP • ShortyPro
+        </div>
+        <div class="socialMedia">
+          <a href="https://www.facebook.com/profile.php?id=61587277436466" target="_blank" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://x.com/shortypro2" target="_blank" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://instagram.com/shortypro2" target="_blank" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/111775077" target="_blank" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .socialMedia {
+      margin-top: 10px;
+    }
+    .socialMedia a {
+      margin-right: 15px;
+      color: #000; /* Change to your desired color */
+      text-decoration: none;
+      font-size: 20px; /* Adjust size as needed */
+    }
+    .socialMedia a:hover {
+      color: #007bff; /* Change color on hover */
+    }
+  </style>
+</body>
+</html>
