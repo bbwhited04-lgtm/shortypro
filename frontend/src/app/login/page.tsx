@@ -50,7 +50,8 @@ export default function SignInPage() {
 <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600">
   <div className="mx-auto flex min-h-screen max-w-[520px] flex-col justify-center px-6 py-10">
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+        <div className="rounded-2xl bg-white p-8 shadow-xl"
+>
           {/* Logo */}
           <div className="mb-6 flex items-center gap-2">
             {/* Replace with your real logo */}
@@ -153,7 +154,7 @@ export default function SignInPage() {
             <div className="h-px flex-1 bg-slate-200" />
           </div>
 
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-4">
             <IconButton label="Amazon" onClick={() => handleProviderSignIn("amazon")}>a</IconButton>
             <IconButton label="Apple" onClick={() => handleProviderSignIn("apple")}></IconButton>
             <IconButton label="Facebook" onClick={() => handleProviderSignIn("facebook")}>f</IconButton>
@@ -192,7 +193,7 @@ function IconButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="flex h-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-50"
+      className="flex h-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-lg font-semibold shadow-sm hover:scale-[1.03] transition"
     >
       {children}
     </button>
