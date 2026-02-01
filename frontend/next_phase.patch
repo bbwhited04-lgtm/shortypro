@@ -1,0 +1,898 @@
+diff --git a/src/app/(app)/dashboard/analytics/page.tsx b/src/app/(app)/dashboard/analytics/page.tsx
+index 09e3ea6..6e4325e 100644
+--- a/src/app/(app)/dashboard/analytics/page.tsx
++++ b/src/app/(app)/dashboard/analytics/page.tsx
+@@ -1,3 +1,6 @@
++"use client";
++
++import { useEffect, useMemo, useState } from "react";
+ import { Section } from "@/components/dashboard/Cards";
+ 
+ type Metric = {
+@@ -42,6 +45,98 @@ function PlaceholderChart({ title }: { title: string }) {
+ }
+ 
+ export default function AnalyticsPage() {
++  const [funnelsCount, setFunnelsCount] = useState<number>(0);
++  const [groupsCount, setGroupsCount] = useState<number>(0);
++  const [accountsCount, setAccountsCount] = useState<number>(0);
++  const [scheduledFilled, setScheduledFilled] = useState<number>(0);
++  const [scheduledTotal, setScheduledTotal] = useState<number>(0);
++
++  useEffect(() => {
++    // Magna Hive funnels
++    try {
++      const funnels = JSON.parse(localStorage.getItem("magna_hive_funnels_v1") || "[]");
++      setFunnelsCount(Array.isArray(funnels) ? funnels.length : 0);
++    } catch {
++      setFunnelsCount(0);
++    }
++
++    // Chatterly groups + accounts
++    try {
++      const groups = JSON.parse(localStorage.getItem("chatterly_groups_v1") || "[]");
++      setGroupsCount(Array.isArray(groups) ? groups.length : 0);
++    } catch {
++      setGroupsCount(0);
++    }
++    try {
++      const accounts = JSON.parse(localStorage.getItem("chatterly_accounts_v1") || "[]");
++      setAccountsCount(Array.isArray(accounts) ? accounts.length : 0);
++    } catch {
++      setAccountsCount(0);
++    }
++
++    // Chatterly schedule store
++    try {
++      const store = JSON.parse(localStorage.getItem("chatterly_schedule_v1") || "{}");
++      const allSlots: Array<{ title?: string }> = Object.values(store || {}).flat() as any;
++      const total = Array.isArray(allSlots) ? allSlots.length : 0;
++      const filled = Array.isArray(allSlots)
++        ? allSlots.filter((s) => (s?.title || "").toString().trim().length > 0).length
++        : 0;
++      setScheduledTotal(total);
++      setScheduledFilled(filled);
++    } catch {
++      setScheduledTotal(0);
++      setScheduledFilled(0);
++    }
++  }, []);
++
++  const snapshot: Metric[] = useMemo(
++    () => [
++      { label: "Funnels built", value: String(funnelsCount), delta: "Magna Hive", tone: "violet" },
++      { label: "Groups", value: String(groupsCount), delta: "Chatterly", tone: "blue" },
++      { label: "Accounts", value: String(accountsCount), delta: "Imported", tone: "green" },
++      {
++        label: "Schedule filled",
++        value: `${scheduledFilled}/${scheduledTotal}`,
++        delta: "Weekly slots",
++        tone: "amber",
++      },
++    ],
++    [funnelsCount, groupsCount, accountsCount, scheduledFilled, scheduledTotal]
++  );
++
++  function exportScheduleCSV() {
++    try {
++      const groups = JSON.parse(localStorage.getItem("chatterly_groups_v1") || "[]");
++      const store = JSON.parse(localStorage.getItem("chatterly_schedule_v1") || "{}");
++      const groupNameById = new Map<string, string>();
++      if (Array.isArray(groups)) {
++        groups.forEach((g: any) => groupNameById.set(g.id, g.name));
++      }
++      const rows: string[] = ["group_id,group_name,day,time,title"]; // header
++      Object.entries(store || {}).forEach(([groupId, slots]) => {
++        const gname = groupNameById.get(groupId) || "";
++        (slots as any[]).forEach((s) => {
++          const day = (s?.day || "").toString().replaceAll("\"", "\"\"");
++          const time = (s?.time || "").toString().replaceAll("\"", "\"\"");
++          const title = (s?.title || "").toString().replaceAll("\"", "\"\"");
++          rows.push(`"${groupId}","${gname}","${day}","${time}","${title}"`);
++        });
++      });
++      const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
++      const url = URL.createObjectURL(blob);
++      const a = document.createElement("a");
++      a.href = url;
++      a.download = "chatterly_schedule.csv";
++      document.body.appendChild(a);
++      a.click();
++      a.remove();
++      URL.revokeObjectURL(url);
++    } catch {
++      alert("Unable to export schedule yet.");
++    }
++  }
++
+   // NOTE: These are placeholders. Once social accounts are connected, swap these
+   // values for real metrics from your backend.
+   const overview: Metric[] = [
+@@ -56,6 +151,26 @@ export default function AnalyticsPage() {
+   return (
+     <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+       <div className="space-y-6">
++      <Section
++        variant="dark"
++        title="Snapshot"
++        desc="Quick, useful counters pulled from your local app state (funnels + groups + schedule)."
++        right={
++          <button
++            onClick={exportScheduleCSV}
++            className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
++          >
++            Export schedule CSV
++          </button>
++        }
++      >
++        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
++          {snapshot.map((m) => (
++            <PastelCard key={m.label} m={m} />
++          ))}
++        </div>
++      </Section>
++
+       <Section variant="dark" title="Analytics" desc="Clean, simple dashboards (no clutter).">
+         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+           {overview.map((m) => (
+diff --git a/src/app/(app)/dashboard/scheduler/page.tsx b/src/app/(app)/dashboard/scheduler/page.tsx
+index 849dd92..05a5eb3 100644
+--- a/src/app/(app)/dashboard/scheduler/page.tsx
++++ b/src/app/(app)/dashboard/scheduler/page.tsx
+@@ -1,143 +1,259 @@
+ "use client";
+ 
+-import { useMemo, useState } from "react";
++import Link from "next/link";
++import { useEffect, useMemo, useState } from "react";
+ import { Section } from "@/components/dashboard/Cards";
+ 
+-type Slot = { day: string; time: string; title?: string };
++type Platform = "tiktok" | "instagram" | "facebook" | "youtube";
++type Group = { id: string; name: string; createdAt: number };
++type Account = {
++  id: string;
++  platform: Platform;
++  label: string;
++  handle: string;
++  groupId: string | null;
++  importedAt: number;
++};
++
++type Slot = { day: string; time: string; title: string };
++
++const STORAGE = {
++  groups: "chatterly_groups_v1",
++  accounts: "chatterly_accounts_v1",
++  schedule: "chatterly_schedule_v1",
++};
+ 
+ const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+ const times = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
+ 
++function uid() {
++  return Math.random().toString(36).slice(2) + Date.now().toString(36);
++}
++
++function safeParse<T>(raw: string | null, fallback: T): T {
++  try {
++    if (!raw) return fallback;
++    return JSON.parse(raw) as T;
++  } catch {
++    return fallback;
++  }
++}
++
++function loadGroups(): Group[] {
++  return safeParse<Group[]>(localStorage.getItem(STORAGE.groups), []);
++}
++
++function loadAccounts(): Account[] {
++  return safeParse<Account[]>(localStorage.getItem(STORAGE.accounts), []);
++}
++
++type ScheduleStore = Record<string, Slot[]>; // groupId -> slots
++
++function defaultSlots(): Slot[] {
++  return days.flatMap((d) => times.map((t) => ({ day: d, time: t, title: "" })));
++}
++
++function loadSchedule(): ScheduleStore {
++  return safeParse<ScheduleStore>(localStorage.getItem(STORAGE.schedule), {});
++}
++
++function saveSchedule(store: ScheduleStore) {
++  localStorage.setItem(STORAGE.schedule, JSON.stringify(store));
++}
++
+ export default function SchedulerPage() {
+-  const [platforms, setPlatforms] = useState({
+-    tiktok: true,
+-    instagram: true,
+-    facebook: false,
+-    youtube: true,
+-  });
+-
+-  const [slots, setSlots] = useState<Slot[]>(
+-    days.flatMap((d) =>
+-      times.map((t) => ({
+-        day: d,
+-        time: t,
+-        title: "",
+-      }))
+-    )
++  const [groups, setGroups] = useState<Group[]>([]);
++  const [accounts, setAccounts] = useState<Account[]>([]);
++  const [activeGroupId, setActiveGroupId] = useState<string>("");
++
++  const [store, setStore] = useState<ScheduleStore>({});
++  const [slots, setSlots] = useState<Slot[]>(defaultSlots());
++
++  useEffect(() => {
++    const g = loadGroups();
++    const a = loadAccounts();
++    const s = loadSchedule();
++    setGroups(g);
++    setAccounts(a);
++    setStore(s);
++
++    const fallbackGroup = g[0]?.id || "";
++    const initialGroup = fallbackGroup;
++    setActiveGroupId(initialGroup);
++    setSlots(s[initialGroup] ?? defaultSlots());
++  }, []);
++
++  // When active group changes, swap the table
++  useEffect(() => {
++    if (!activeGroupId) {
++      setSlots(defaultSlots());
++      return;
++    }
++    setSlots(store[activeGroupId] ?? defaultSlots());
++  }, [activeGroupId, store]);
++
++  const activeGroup = useMemo(
++    () => groups.find((g) => g.id === activeGroupId) || null,
++    [groups, activeGroupId]
++  );
++
++  const assignedAccounts = useMemo(
++    () => accounts.filter((a) => a.groupId === activeGroupId),
++    [accounts, activeGroupId]
+   );
+ 
+-  const connectedCount = useMemo(
+-    () => Object.values(platforms).filter(Boolean).length,
+-    [platforms]
++  const filledCount = useMemo(
++    () => slots.filter((s) => (s.title || "").trim().length > 0).length,
++    [slots]
+   );
+ 
+-  const fillWeek = () => {
++  function persist(nextSlots: Slot[]) {
++    if (!activeGroupId) return;
++    const updated: ScheduleStore = { ...store, [activeGroupId]: nextSlots };
++    setStore(updated);
++    saveSchedule(updated);
++  }
++
++  function fillWeek() {
+     const sample = [
+-      "Cute cat compilation #1",
+-      "Quick tip: captions that pop",
++      "Hook template #1",
+       "Before/after edit",
++      "Quick tip: captions that pop",
+       "Behind the scenes",
+-      "Story hook template",
+-      "Bloopers",
+       "FAQ answer",
++      "Bloopers",
++      "Story hook remix",
+     ];
+-    setSlots((prev) =>
+-      prev.map((s, idx) => ({
+-        ...s,
+-        title: sample[idx % sample.length],
+-      }))
+-    );
+-  };
++    const next = slots.map((s, idx) => ({ ...s, title: sample[idx % sample.length] }));
++    setSlots(next);
++    persist(next);
++  }
+ 
+   return (
+     <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+       <div className="space-y-6">
+-      <Section
+-        title="Platforms"
+-        desc="Toggle where you want to schedule posts."
+-        variant="dark"
+-        right={<div className="text-xs text-zinc-400">{connectedCount} enabled</div>}
+-      >
+-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+-          {[
+-            ["tiktok", "TikTok"],
+-            ["instagram", "Instagram"],
+-            ["facebook", "Facebook"],
+-            ["youtube", "YouTube Shorts"],
+-          ].map(([key, label]) => {
+-            const k = key as keyof typeof platforms;
+-            const on = platforms[k];
+-            return (
+-              <button
+-                key={key}
+-                onClick={() => setPlatforms((p) => ({ ...p, [k]: !p[k] }))}
+-                className={[
+-                  "rounded-xl border p-4 text-left transition",
+-                  on
+-                    ? "border-zinc-700 bg-zinc-900 text-zinc-100"
+-                    : "border-zinc-800 bg-zinc-900/40 hover:bg-zinc-800/60",
+-                ].join(" ")}
++        <Section
++          title="Chatterly Scheduler"
++          desc="Schedule by group (brand/page). Keep it simple: pick the group, fill the week, done."
++          variant="dark"
++          right={
++            <Link
++              href="/dashboard/settings"
++              className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
++            >
++              Manage connections
++            </Link>
++          }
++        >
++          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
++            <div className="md:col-span-2">
++              <div className="text-xs text-zinc-400">Active group</div>
++              <select
++                value={activeGroupId}
++                onChange={(e) => setActiveGroupId(e.target.value)}
++                className="mt-1 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
+               >
+-                <div className="font-medium">{label}</div>
+-                <div className={["mt-1 text-sm", on ? "text-zinc-300" : "text-zinc-400"].join(" ")}>
+-                  {on ? "Enabled" : "Disabled"}
++                {groups.map((g) => (
++                  <option key={g.id} value={g.id}>
++                    {g.name}
++                  </option>
++                ))}
++                {!groups.length ? <option value="">No groups found</option> : null}
++              </select>
++            </div>
++            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
++              <div className="text-xs text-zinc-400">Status</div>
++              <div className="mt-1 text-base font-semibold text-zinc-100">
++                {activeGroup ? activeGroup.name : "—"}
++              </div>
++              <div className="mt-2 text-xs text-zinc-400">
++                {assignedAccounts.length} accounts assigned
++              </div>
++              <div className="mt-1 text-xs text-zinc-400">
++                {filledCount}/{slots.length} slots filled
++              </div>
++            </div>
++          </div>
++
++          <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
++            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
++              <div>
++                <div className="text-sm font-semibold text-zinc-100">Posting targets</div>
++                <div className="mt-1 text-xs text-zinc-400">
++                  Accounts assigned to this group will receive scheduled posts.
+                 </div>
+-              </button>
+-            );
+-          })}
+-        </div>
+-        <div className="mt-3 text-xs text-zinc-400">
+-          TODO: wire real OAuth connections + posting APIs.
+-        </div>
+-      </Section>
+-
+-      <Section
+-        title="Weekly schedule"
+-        desc="Drag-and-drop comes next. For now, quickly fill a week of posts."
+-        variant="dark"
+-        right={
+-          <button
+-            onClick={fillWeek}
+-            className="rounded-xl border border-zinc-800 bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500"
+-          >
+-            Auto-fill week
+-          </button>
+-        }
+-      >
+-        <div className="overflow-auto rounded-xl border border-zinc-800">
+-          <table className="min-w-[720px] w-full text-sm">
+-            <thead className="bg-zinc-950/60 text-left text-xs text-zinc-400">
+-              <tr>
+-                <th className="px-4 py-3">Day</th>
+-                <th className="px-4 py-3">Time</th>
+-                <th className="px-4 py-3">Post title</th>
+-              </tr>
+-            </thead>
+-            <tbody>
+-              {slots.map((s, idx) => (
+-                <tr key={idx} className="border-t border-zinc-800">
+-                  <td className="px-4 py-3 font-medium">{s.day}</td>
+-                  <td className="px-4 py-3 text-zinc-400">{s.time}</td>
+-                  <td className="px-4 py-3">
+-                    <input
+-                      value={s.title || ""}
+-                      onChange={(e) => {
+-                        const val = e.target.value;
+-                        setSlots((prev) => prev.map((p, i) => (i === idx ? { ...p, title: val } : p)));
+-                      }}
+-                      placeholder="e.g., Hook template #3"
+-                      className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-zinc-600"
+-                    />
+-                  </td>
++              </div>
++              <div className="flex flex-wrap gap-2">
++                {assignedAccounts.slice(0, 6).map((a) => (
++                  <span
++                    key={a.id}
++                    className="rounded-full border border-zinc-700 bg-zinc-950 px-3 py-1 text-xs text-zinc-200"
++                  >
++                    {a.label}
++                  </span>
++                ))}
++                {assignedAccounts.length > 6 ? (
++                  <span className="rounded-full border border-zinc-700 bg-zinc-950 px-3 py-1 text-xs text-zinc-400">
++                    +{assignedAccounts.length - 6} more
++                  </span>
++                ) : null}
++                {!assignedAccounts.length ? (
++                  <span className="text-xs text-zinc-400">No assigned accounts yet.</span>
++                ) : null}
++              </div>
++            </div>
++          </div>
++        </Section>
++
++        <Section
++          title="Weekly schedule"
++          desc="Fill in post titles for the week. Drag/drop and auto-generation hooks come next."
++          variant="dark"
++          right={
++            <button
++              onClick={fillWeek}
++              className="rounded-xl border border-zinc-800 bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500"
++            >
++              Auto-fill week
++            </button>
++          }
++        >
++          <div className="overflow-auto rounded-xl border border-zinc-800">
++            <table className="min-w-[720px] w-full text-sm">
++              <thead className="bg-zinc-950/60 text-left text-xs text-zinc-400">
++                <tr>
++                  <th className="px-4 py-3">Day</th>
++                  <th className="px-4 py-3">Time</th>
++                  <th className="px-4 py-3">Post title</th>
+                 </tr>
+-              ))}
+-            </tbody>
+-          </table>
+-        </div>
+-        <div className="mt-3 text-xs text-zinc-400">
+-          TODO: map slots to generated shorts + schedule jobs.
+-        </div>
+-      </Section>
++              </thead>
++              <tbody>
++                {slots.map((s, idx) => (
++                  <tr key={`${s.day}-${s.time}-${idx}`} className="border-t border-zinc-800">
++                    <td className="px-4 py-3 font-medium">{s.day}</td>
++                    <td className="px-4 py-3 text-zinc-400">{s.time}</td>
++                    <td className="px-4 py-3">
++                      <input
++                        value={s.title}
++                        onChange={(e) => {
++                          const val = e.target.value;
++                          const next = slots.map((p, i) => (i === idx ? { ...p, title: val } : p));
++                          setSlots(next);
++                          persist(next);
++                        }}
++                        placeholder="e.g., Hook template #3"
++                        className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-zinc-600"
++                      />
++                    </td>
++                  </tr>
++                ))}
++              </tbody>
++            </table>
++          </div>
++          <div className="mt-3 text-xs text-zinc-400">
++            V0 stores schedules locally. Next: map slots to generated shorts and schedule background jobs.
++          </div>
++        </Section>
+       </div>
+     </div>
+   );
+diff --git a/src/app/(app)/dashboard/settings/page.tsx b/src/app/(app)/dashboard/settings/page.tsx
+index 3cd50b6..8e20dc2 100644
+--- a/src/app/(app)/dashboard/settings/page.tsx
++++ b/src/app/(app)/dashboard/settings/page.tsx
+@@ -1,60 +1,339 @@
+ "use client";
+ 
+-import { useState } from "react";
++import Link from "next/link";
++import { useEffect, useMemo, useState } from "react";
+ import { Section } from "@/components/dashboard/Cards";
+ 
++type Platform = "tiktok" | "instagram" | "facebook" | "youtube";
++type Group = { id: string; name: string; createdAt: number };
++type Account = {
++  id: string;
++  platform: Platform;
++  label: string;
++  handle: string;
++  groupId: string | null;
++  importedAt: number;
++};
++
++const STORAGE = {
++  groups: "chatterly_groups_v1",
++  accounts: "chatterly_accounts_v1",
++};
++
++function uid() {
++  return Math.random().toString(36).slice(2) + Date.now().toString(36);
++}
++
++function safeParse<T>(raw: string | null, fallback: T): T {
++  try {
++    if (!raw) return fallback;
++    return JSON.parse(raw) as T;
++  } catch {
++    return fallback;
++  }
++}
++
++function loadGroups(): Group[] {
++  return safeParse<Group[]>(localStorage.getItem(STORAGE.groups), []);
++}
++
++function saveGroups(groups: Group[]) {
++  localStorage.setItem(STORAGE.groups, JSON.stringify(groups));
++}
++
++function loadAccounts(): Account[] {
++  return safeParse<Account[]>(localStorage.getItem(STORAGE.accounts), []);
++}
++
++function saveAccounts(accts: Account[]) {
++  localStorage.setItem(STORAGE.accounts, JSON.stringify(accts));
++}
++
++function platformLabel(p: Platform) {
++  switch (p) {
++    case "tiktok":
++      return "TikTok";
++    case "instagram":
++      return "Instagram";
++    case "facebook":
++      return "Facebook";
++    case "youtube":
++      return "YouTube";
++  }
++}
++
++function mockAccounts(platform: Platform): Omit<Account, "groupId">[] {
++  const now = Date.now();
++  const presets: Record<Platform, Array<{ label: string; handle: string }>> = {
++    tiktok: [
++      { label: "ShortyPro", handle: "@shortypro" },
++      { label: "DEAD APP CORP", handle: "@deadappcorp" },
++    ],
++    instagram: [
++      { label: "ShortyPro", handle: "@shortypro" },
++      { label: "Magna Hive", handle: "@magnahive" },
++    ],
++    facebook: [
++      { label: "ShortyPro Page", handle: "ShortyPro" },
++      { label: "Viral Dead Engine", handle: "Viral Dead Engine" },
++    ],
++    youtube: [
++      { label: "ShortyPro", handle: "ShortyPro" },
++      { label: "Chatterly", handle: "Chatterly" },
++    ],
++  };
++  return presets[platform].map((p) => ({
++    id: `${platform}_${uid()}`,
++    platform,
++    label: p.label,
++    handle: p.handle,
++    importedAt: now,
++  }));
++}
++
+ export default function SettingsPage() {
+   const [name, setName] = useState("Billy");
+   const [email, setEmail] = useState("billy@deadapp.info");
+ 
++  const [groups, setGroups] = useState<Group[]>([]);
++  const [accounts, setAccounts] = useState<Account[]>([]);
++  const [newGroupName, setNewGroupName] = useState("");
++
++  useEffect(() => {
++    const g = loadGroups();
++    const a = loadAccounts();
++    // Seed a default group if none exist so the UI never feels empty.
++    if (!g.length) {
++      const seeded: Group[] = [{ id: uid(), name: "Default", createdAt: Date.now() }];
++      setGroups(seeded);
++      saveGroups(seeded);
++    } else {
++      setGroups(g);
++    }
++    setAccounts(a);
++  }, []);
++
++  const groupsById = useMemo(() => {
++    const map = new Map<string, Group>();
++    groups.forEach((g) => map.set(g.id, g));
++    return map;
++  }, [groups]);
++
++  const connectedPlatforms = useMemo(() => {
++    const set = new Set<Platform>();
++    accounts.forEach((a) => set.add(a.platform));
++    return set;
++  }, [accounts]);
++
++  function addGroup() {
++    const trimmed = newGroupName.trim();
++    if (!trimmed) return;
++    const next: Group = { id: uid(), name: trimmed, createdAt: Date.now() };
++    const updated = [next, ...groups];
++    setGroups(updated);
++    saveGroups(updated);
++    setNewGroupName("");
++  }
++
++  function deleteGroup(groupId: string) {
++    const updatedGroups = groups.filter((g) => g.id !== groupId);
++    setGroups(updatedGroups);
++    saveGroups(updatedGroups);
++    // Unassign accounts from deleted group
++    const updatedAccounts = accounts.map((a) => (a.groupId === groupId ? { ...a, groupId: null } : a));
++    setAccounts(updatedAccounts);
++    saveAccounts(updatedAccounts);
++  }
++
++  function importPlatform(platform: Platform) {
++    const incoming = mockAccounts(platform);
++    const existingKeys = new Set(accounts.map((a) => `${a.platform}:${a.handle}`));
++    const toAdd: Account[] = incoming
++      .filter((i) => !existingKeys.has(`${i.platform}:${i.handle}`))
++      .map((i) => ({ ...i, groupId: null }));
++    const updated = [...toAdd, ...accounts];
++    setAccounts(updated);
++    saveAccounts(updated);
++  }
++
++  function setAccountGroup(accountId: string, groupId: string | null) {
++    const updated = accounts.map((a) => (a.id === accountId ? { ...a, groupId } : a));
++    setAccounts(updated);
++    saveAccounts(updated);
++  }
++
+   return (
+     <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+       <div className="space-y-6">
+-      <Section variant="dark" title="Account" desc="Basic profile settings.">
+-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+-          <div>
+-            <div className="text-xs text-zinc-400">Name</div>
+-            <input
+-              value={name}
+-              onChange={(e) => setName(e.target.value)}
+-              className="mt-1 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
+-            />
++        <Section variant="dark" title="Account" desc="Basic profile settings.">
++          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
++            <div>
++              <div className="text-xs text-zinc-400">Name</div>
++              <input
++                value={name}
++                onChange={(e) => setName(e.target.value)}
++                className="mt-1 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
++              />
++            </div>
++            <div>
++              <div className="text-xs text-zinc-400">Email</div>
++              <input
++                value={email}
++                onChange={(e) => setEmail(e.target.value)}
++                className="mt-1 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
++              />
++            </div>
+           </div>
+-          <div>
+-            <div className="text-xs text-zinc-400">Email</div>
++          <div className="mt-3 text-xs text-zinc-400">TODO: wire save to backend.</div>
++        </Section>
++
++        <Section
++          variant="dark"
++          title="Groups"
++          desc="Create simple posting groups (brands/pages). Assign imported accounts to a group once, then schedule by group."
++          right={
++            <Link
++              href="/dashboard/scheduler"
++              className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
++            >
++              Go to Scheduler
++            </Link>
++          }
++        >
++          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+             <input
+-              value={email}
+-              onChange={(e) => setEmail(e.target.value)}
+-              className="mt-1 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
++              value={newGroupName}
++              onChange={(e) => setNewGroupName(e.target.value)}
++              placeholder="e.g., ShortyPro / Dead App / Viral Dead"
++              className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-zinc-600"
+             />
++            <button
++              onClick={addGroup}
++              className="rounded-xl border border-zinc-800 bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
++            >
++              Add group
++            </button>
++          </div>
++
++          <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
++            {groups.map((g) => (
++              <div
++                key={g.id}
++                className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/40 p-4"
++              >
++                <div>
++                  <div className="font-medium">{g.name}</div>
++                  <div className="mt-1 text-xs text-zinc-400">
++                    {accounts.filter((a) => a.groupId === g.id).length} accounts assigned
++                  </div>
++                </div>
++                <button
++                  onClick={() => deleteGroup(g.id)}
++                  className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
++                >
++                  Delete
++                </button>
++              </div>
++            ))}
++          </div>
++
++          <div className="mt-3 text-xs text-zinc-400">
++            Groups are stored locally for now (localStorage). Next step: persist to your DB.
+           </div>
+-        </div>
+-        <div className="mt-3 text-xs text-zinc-400">TODO: wire save to backend.</div>
+-      </Section>
+-
+-      <Section variant="dark" title="Social connections" desc="Connect accounts so ShortyPro can post on your behalf.">
+-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+-          {[
+-            ["TikTok", true],
+-            ["Instagram", true],
+-            ["Facebook", false],
+-            ["YouTube", true],
+-          ].map(([p, connected]) => (
+-            <div key={p as string} className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
++        </Section>
++
++        <Section
++          variant="dark"
++          title="Social connections"
++          desc="V0 flow: connect/import all accounts once, then assign them to a group for posting. OAuth comes next."
++        >
++          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
++            {(
++              [
++                { p: "tiktok" as const, label: "TikTok" },
++                { p: "instagram" as const, label: "Instagram" },
++                { p: "facebook" as const, label: "Facebook" },
++                { p: "youtube" as const, label: "YouTube" },
++              ]
++            ).map(({ p, label }) => {
++              const connected = connectedPlatforms.has(p);
++              return (
++                <div
++                  key={p}
++                  className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/40 p-4"
++                >
++                  <div>
++                    <div className="font-medium">{label}</div>
++                    <div className="mt-1 text-sm text-zinc-400">
++                      {connected ? "Imported" : "Not imported"}
++                    </div>
++                  </div>
++                  <button
++                    onClick={() => importPlatform(p)}
++                    className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
++                  >
++                    {connected ? "Import more" : "Import accounts"}
++                  </button>
++                </div>
++              );
++            })}
++          </div>
++
++          <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
++            <div className="flex items-center justify-between gap-3">
+               <div>
+-                <div className="font-medium">{p as string}</div>
+-                <div className="mt-1 text-sm text-zinc-400">
+-                  {connected ? "Connected" : "Not connected"}
++                <div className="text-sm font-semibold text-zinc-100">Imported accounts</div>
++                <div className="mt-1 text-xs text-zinc-400">
++                  Assign each account to a group once. Scheduler uses the group to post everywhere.
+                 </div>
+               </div>
+-              <button className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800">
+-                {connected ? "Reconnect" : "Connect"}
+-              </button>
++              <div className="text-xs text-zinc-400">{accounts.length} total</div>
+             </div>
+-          ))}
+-        </div>
+-        <div className="mt-3 text-xs text-zinc-400">TODO: wire OAuth flows.</div>
+-      </Section>
++
++            <div className="mt-4 overflow-auto rounded-xl border border-zinc-800">
++              <table className="min-w-[720px] w-full text-sm">
++                <thead className="bg-zinc-950/60 text-left text-xs text-zinc-400">
++                  <tr>
++                    <th className="px-4 py-3">Platform</th>
++                    <th className="px-4 py-3">Account</th>
++                    <th className="px-4 py-3">Handle</th>
++                    <th className="px-4 py-3">Group</th>
++                  </tr>
++                </thead>
++                <tbody>
++                  {accounts.map((a) => (
++                    <tr key={a.id} className="border-t border-zinc-800">
++                      <td className="px-4 py-3 font-medium">{platformLabel(a.platform)}</td>
++                      <td className="px-4 py-3 text-zinc-100">{a.label}</td>
++                      <td className="px-4 py-3 text-zinc-400">{a.handle}</td>
++                      <td className="px-4 py-3">
++                        <select
++                          value={a.groupId ?? ""}
++                          onChange={(e) => setAccountGroup(a.id, e.target.value || null)}
++                          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-600"
++                        >
++                          <option value="">Unassigned</option>
++                          {groups.map((g) => (
++                            <option key={g.id} value={g.id}>
++                              {g.name}
++                            </option>
++                          ))}
++                        </select>
++                      </td>
++                    </tr>
++                  ))}
++                  {!accounts.length ? (
++                    <tr>
++                      <td className="px-4 py-6 text-zinc-400" colSpan={4}>
++                        No accounts yet. Click “Import accounts” above.
++                      </td>
++                    </tr>
++                  ) : null}
++                </tbody>
++              </table>
++            </div>
++          </div>
++        </Section>
+       </div>
+     </div>
+   );
