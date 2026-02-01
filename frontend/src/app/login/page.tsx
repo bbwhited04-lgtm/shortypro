@@ -47,8 +47,9 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      <div className="mx-auto flex min-h-screen max-w-[520px] flex-col justify-center px-6 py-10">
+<div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600">
+  <div className="mx-auto flex min-h-screen max-w-[520px] flex-col justify-center px-6 py-10">
+
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
           {/* Logo */}
           <div className="mb-6 flex items-center gap-2">
