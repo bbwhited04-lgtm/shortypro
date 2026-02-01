@@ -1,228 +1,314 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Branding Guidelines | DEAD APP CORP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Tailwind CDN (safe for static pages) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Branding Guidelines • DEAD APP CORP</title>
+  <meta name="theme-color" content="#0b0f19" />
   <style>
-    :root {
-      --primary: #0f172a;     /* slate-900 */
-      --accent: #2563eb;      /* blue-600 */
-      --soft: #f8fafc;        /* slate-50 */
+    :root{
+      --bg:#0b0f19;
+      --card:rgba(255,255,255,.06);
+      --text:#e8eefc;
+      --muted:rgba(232,238,252,.70);
+      --line:rgba(255,255,255,.12);
+      --accent:#ff4fd8;
+      --accent2:#49d7ff;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --shadow2:0 10px 30px rgba(0,0,0,.25);
+      --max:1120px;
     }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(900px 520px at 20% -10%, rgba(73,215,255,.18), transparent 60%),
+        radial-gradient(900px 520px at 85% -5%, rgba(255,79,216,.14), transparent 60%),
+        var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
+
+    .topbar{
+      position:sticky;top:0;z-index:30;
+      backdrop-filter:blur(14px);
+      background:rgba(11,15,25,.72);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;gap:14px;flex-wrap:wrap;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.2px}
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:var(--shadow2);
+      display:inline-block;
+    }
+    .navlinks{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .navlinks a{
+      color:rgba(232,238,252,.86);
+      font-weight:800;font-size:14px;
+      padding:8px 10px;border-radius:12px;
+    }
+    .navlinks a:hover{background:rgba(255,255,255,.06)}
+
+    .section{padding:44px 0}
+    h1{margin:0 0 10px;font-size:34px;letter-spacing:-.6px}
+    h2{margin:0 0 10px;font-size:22px;letter-spacing:-.3px}
+    p{margin:0;color:var(--muted);line-height:1.65}
+    ul{margin:10px 0 0;padding-left:18px;color:rgba(232,238,252,.78)}
+    li{margin:8px 0;line-height:1.5}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width:980px){.grid2,.grid3{grid-template-columns:1fr}}
+
+    .card{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow2);
+    }
+    .small{font-size:13px;color:rgba(232,238,252,.66)}
+    .logoGrid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width:980px){.logoGrid{grid-template-columns:1fr}}
+    .logoTile{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.22);
+      border-radius:16px;
+      padding:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logoTile img{
+      height:44px;
+      max-width:170px;
+      object-fit:contain;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:12px;
+      padding:8px;
+    }
+    .note{font-size:12px;color:rgba(232,238,252,.60);margin-top:12px}
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.20);
+      padding:22px 0;
+      color:rgba(232,238,252,.70);
+    }
+    .footerRow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .footerLinks{display:flex;gap:10px;flex-wrap:wrap}
+    .footerLinks a{
+      padding:8px 10px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+    }
+    .footerLinks a:hover{background:rgba(255,255,255,.08)}
+    .socialMedia{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .socialMedia a{
+      width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:14px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:rgba(232,238,252,.78);
+    }
+    .socialMedia a:hover{background:rgba(255,255,255,.08);color:rgba(232,238,252,.92)}
+    .ico{width:18px;height:18px;display:block}
   </style>
 </head>
 
-<body class="bg-[var(--soft)] text-slate-800">
-
-<!-- Header -->
-<header class="bg-[var(--primary)] text-white">
-  <div class="max-w-6xl mx-auto px-6 py-8">
-    <h1 class="text-3xl font-bold">Brand Guidelines</h1>
-    <p class="text-slate-300 mt-2">
-      DEAD APP CORP & DBA Products
-    </p>
-  </div>
-</header>
-
-<!-- Content -->
-<main class="max-w-6xl mx-auto px-6 py-12 space-y-16">
-
-  <!-- Brand Overview -->
-  <section>
-    <h2 class="text-2xl font-semibold mb-4">Brand Overview</h2>
-    <p class="max-w-3xl text-lg">
-      DEAD APP CORP builds modern, trustworthy platforms that automate,
-      simplify, and responsibly handle sensitive digital workflows.
-      Our products prioritize clarity, compliance, and user confidence.
-    </p>
-  </section>
-
-  <!-- Voice & Tone -->
-  <section>
-    <h2 class="text-2xl font-semibold mb-4">Voice & Tone</h2>
-    <ul class="grid md:grid-cols-2 gap-6">
-      <li class="bg-white p-6 rounded-xl shadow">
-        <h3 class="font-semibold mb-2">We Are</h3>
-        <ul class="list-disc list-inside text-slate-600">
-          <li>Clear & direct</li>
-          <li>Professional, not corporate</li>
-          <li>Trust-focused</li>
-          <li>Human & supportive</li>
-        </ul>
-      </li>
-      <li class="bg-white p-6 rounded-xl shadow">
-        <h3 class="font-semibold mb-2">We Are Not</h3>
-        <ul class="list-disc list-inside text-slate-600">
-          <li>Flashy or hype-driven</li>
-          <li>Overly technical</li>
-          <li>Casual with serious data</li>
-          <li>Vague or gimmicky</li>
-        </ul>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Color Palette -->
-  <section>
-    <h2 class="text-2xl font-semibold mb-6">Color Palette</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="rounded-xl p-6 text-white" style="background:#0f172a">
-        <p class="font-semibold">Primary</p>
-        <p class="opacity-80">#0f172a</p>
-      </div>
-      <div class="rounded-xl p-6 text-white" style="background:#2563eb">
-        <p class="font-semibold">Accent</p>
-        <p class="opacity-80">#2563eb</p>
-      </div>
-      <div class="rounded-xl p-6 border bg-white">
-        <p class="font-semibold">Background</p>
-        <p class="text-slate-600">#f8fafc</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Logos -->
-  <section>
-    <h2 class="text-2xl font-semibold mb-4">Logos</h2>
-    <p class="mb-6 text-slate-600">
-      Use approved logos only. Do not stretch, recolor, or add effects.
-    </p>
-<div class="grid md:grid-cols-3 gap-6">
-  <div class="bg-white p-6 rounded-xl shadow text-center">
-    <p class="font-semibold mb-4">Primary Logos</p>
-
-    <div class="flex flex-wrap items-center justify-center gap-4">
-      <a href="https://shortypro.com/shortypro/deadappcorp-logo.png" target="_blank">
-        <img
-          src="https://shortypro.com/shortypro/deadappcorp-logo.png"
-          alt="Dead App Corp logo"
-          class="h-16 max-w-[240px] object-contain bg-white p-2 rounded-lg border shadow-sm"
-        />
-      </a>
-
-      <a href="https://shortypro.com/shortypro/aichatupgrade2.png" target="_blank">
-        <img
-          src="https://shortypro.com/shortypro/aichatupgrade2.png"
-          alt="AI Chat logo"
-          class="h-16 max-w-[240px] object-contain bg-white p-2 rounded-lg border shadow-sm"
-        />
-      </a>
-
-      <a href="https://shortypro.com/shortypro/magnahive-logo.png" target="_blank">
-        <img
-          src="https://shortypro.com/shortypro/magnahive-logo.png"
-          alt="Magna Hive logo"
-          class="h-16 max-w-[240px] object-contain bg-white p-2 rounded-lg border shadow-sm"
-        />
-      </a>
-
-      <a href="https://shortypro.com/shortypro/chatterly-logo.png" target="_blank">
-        <img
-          src="https://shortypro.com/shortypro/chatterly-logo.png"
-          alt="Chatterly logo"
-          class="h-16 max-w-[240px] object-contain bg-white p-2 rounded-lg border shadow-sm"
-        />
-      </a>
-
-      <a href="https://shortypro.com/shortypro/viraldeadengine-logo.png" target="_blank">
-        <img
-          src="https://shortypro.com/shortypro/viraldeadengine-logo.png"
-          alt="Viral Dead Engine logo"
-          class="h-16 max-w-[240px] object-contain bg-white p-2 rounded-lg border shadow-sm"
-        />
-      </a>
-    </div>
-  </div>
-</div>
-
-
-      <div class="bg-white p-6 rounded-xl shadow text-center">
-        <p class="font-semibold mb-2">Icon / Avatar</p>
-        <div class="h-24 flex items-center justify-center text-slate-400">
-          Icon Placeholder
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <span class="logo" aria-hidden="true"></span>
+          <span>Branding</span>
         </div>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow text-center">
-        <p class="font-semibold mb-2">Monochrome</p>
-        <div class="h-24 flex items-center justify-center text-slate-400">
-          Mono Placeholder
+        <div class="navlinks">
+          <a href="/index.html">Home</a>
+          <a href="/pricing.html">Competitor Pricing</a>
+          <a href="/privacy.html">Privacy</a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Copy Examples -->
-  <section>
-    <h2 class="text-2xl font-semibold mb-4">Approved Copy Examples</h2>
-    <div class="bg-white p-6 rounded-xl shadow max-w-4xl">
-      <p class="font-semibold mb-2">Short Tagline</p>
-      <p class="italic text-slate-600">
-        “Automated tools built for clarity, trust, and scale.”
-      </p>
+  <section class="section">
+    <div class="container">
+      <h1>Brand Guidelines</h1>
+      <p class="small">DEAD APP CORP & DBA Products</p>
 
-      <hr class="my-4">
+      <div style="height:14px"></div>
 
-      <p class="font-semibold mb-2">Product Description</p>
-      <p class="text-slate-600">
-        Our platforms help individuals and organizations manage digital
-        workflows responsibly, securely, and without unnecessary complexity.
-      </p>
+      <div class="card">
+        <h2>Brand Overview</h2>
+        <p>
+          DEAD APP CORP builds modern, trustworthy platforms that automate, simplify,
+          and responsibly handle sensitive digital workflows. Our products prioritize clarity,
+          compliance, and user confidence.
+        </p>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Voice & Tone — We Are</h2>
+          <ul>
+            <li>Clear & direct</li>
+            <li>Professional, not corporate</li>
+            <li>Trust-focused</li>
+            <li>Human & supportive</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Voice & Tone — We Are Not</h2>
+          <ul>
+            <li>Flashy or hype-driven</li>
+            <li>Overly technical</li>
+            <li>Casual with serious data</li>
+            <li>Vague or gimmicky</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="card">
+        <h2>Color Palette</h2>
+        <div class="grid3" style="margin-top:12px">
+          <div class="card" style="background:#0f172a;border-color:rgba(255,255,255,.14)">
+            <div style="font-weight:950">Primary</div>
+            <div class="small">#0f172a</div>
+          </div>
+          <div class="card" style="background:#2563eb;border-color:rgba(255,255,255,.14)">
+            <div style="font-weight:950">Accent</div>
+            <div class="small">#2563eb</div>
+          </div>
+          <div class="card">
+            <div style="font-weight:950">Background</div>
+            <div class="small">#0b0f19</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="card">
+        <h2>Logos</h2>
+        <p class="small">Use approved logos only. Do not stretch, recolor, or add effects.</p>
+
+        <div class="logoGrid">
+          <a class="logoTile" href="https://shortypro.com/shortypro/deadappcorp-logo.png" target="_blank" rel="noopener noreferrer">
+            <img src="https://shortypro.com/shortypro/deadappcorp-logo.png" alt="DEAD APP CORP logo">
+            <div>
+              <div style="font-weight:950">DEAD APP CORP</div>
+              <div class="small">Primary company mark</div>
+            </div>
+          </a>
+
+          <a class="logoTile" href="https://shortypro.com/shortypro/magnahive-logo.png" target="_blank" rel="noopener noreferrer">
+            <img src="https://shortypro.com/shortypro/magnahive-logo.png" alt="Magna Hive logo">
+            <div>
+              <div style="font-weight:950">Magna Hive</div>
+              <div class="small">Funnels</div>
+            </div>
+          </a>
+
+          <a class="logoTile" href="https://shortypro.com/shortypro/chatterly-logo.png" target="_blank" rel="noopener noreferrer">
+            <img src="https://shortypro.com/shortypro/chatterly-logo.png" alt="Chatterly logo">
+            <div>
+              <div style="font-weight:950">Chatterly</div>
+              <div class="small">AI assistant & posting calendar</div>
+            </div>
+          </a>
+
+          <a class="logoTile" href="https://shortypro.com/shortypro/viraldeadengine-logo.png" target="_blank" rel="noopener noreferrer">
+            <img src="https://shortypro.com/shortypro/viraldeadengine-logo.png" alt="Viral Dead Engine logo">
+            <div>
+              <div style="font-weight:950">Viral Dead Engine</div>
+              <div class="small">Growth engine</div>
+            </div>
+          </a>
+
+          <a class="logoTile" href="https://shortypro.com/shortypro/aichatupgrade2.png" target="_blank" rel="noopener noreferrer">
+            <img src="https://shortypro.com/shortypro/aichatupgrade2.png" alt="AI Chat logo">
+            <div>
+              <div style="font-weight:950">AI Chat</div>
+              <div class="small">Brand visual for AI features</div>
+            </div>
+          </a>
+        </div>
+
+        <p class="note">
+          Tip: Use PNG on web, and keep clear padding around each logo. Don’t apply shadows or filters to the artwork.
+        </p>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="card">
+        <h2>Approved Copy Examples</h2>
+        <p><strong>Short Tagline</strong></p>
+        <p class="small" style="margin-top:6px; font-style:italic">“Automated tools built for clarity, trust, and scale.”</p>
+
+        <div style="height:12px"></div>
+
+        <p><strong>Product Description</strong></p>
+        <p class="small" style="margin-top:6px">
+          Our platforms help individuals and organizations manage digital workflows responsibly,
+          securely, and without unnecessary complexity.
+        </p>
+      </div>
+
     </div>
   </section>
 
-</main>
-
-  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footerRow">
         <div class="footerLinks">
+          <a href="/index.html">Home</a>
           <a href="/dream">Own The Stack</a>
+          <a href="/pricing.html">Competitor Pricing</a>
+          <a href="/branding.html">Branding</a>
           <a href="/privacy.html">Privacy</a>
           <a href="/terms.html">Terms</a>
           <a href="/refund.html">Refund Policy</a>
-          <a href="/pricing.html">Competitor Pricing</a>
         </div>
-        <div>
-          © <span id="yr"></span> DEAD APP CORP • ShortyPro
-        </div>
-        <div class="socialMedia">
-          <a href="https://www.facebook.com/profile.php?id=61587277436466" target="_blank" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
+
+        <div>© <span id="yr"></span> DEAD APP CORP • ShortyPro</div>
+
+        <div class="socialMedia" aria-label="Social links">
+          <a href="https://www.facebook.com/profile.php?id=61587277436466" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.1V12h2.1V9.8c0-2.1 1.2-3.3 3.1-3.3.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.3V12h2.2l-.4 2.9h-1.8v7A10 10 0 0 0 22 12z"/></svg>
           </a>
-          <a href="https://x.com/shortypro2" target="_blank" aria-label="Twitter">
-            <i class="fab fa-twitter"></i>
+          <a href="https://x.com/shortypro2" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.5l-5.1-6.6L5.6 22H2.5l7.3-8.4L2 2h6.7l4.6 6L18.9 2zm-1.1 18h1.7L7.8 3.9H6L17.8 20z"/></svg>
           </a>
-          <a href="https://instagram.com/shortypro2" target="_blank" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
+          <a href="https://instagram.com/shortypro2" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2zM18 6.3a.9.9 0 1 1-.9.9.9.9 0 0 1 .9-.9z"/></svg>
           </a>
-          <a href="https://www.linkedin.com/company/111775077" target="_blank" aria-label="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
+          <a href="https://www.linkedin.com/company/111775077" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.4 23.5h4.2V7.9H.4v15.6zM8.2 7.9h4v2.1h.1c.6-1.1 2-2.3 4.2-2.3 4.5 0 5.4 3 5.4 6.9v8.9h-4.2v-7.9c0-1.9 0-4.3-2.6-4.3s-3 2-3 4.1v8.1H8.2V7.9z"/></svg>
           </a>
         </div>
       </div>
     </div>
   </footer>
 
-  <style>
-    .socialMedia {
-      margin-top: 10px;
-    }
-    .socialMedia a {
-      margin-right: 15px;
-      color: #000; /* Change to your desired color */
-      text-decoration: none;
-      font-size: 20px; /* Adjust size as needed */
-    }
-    .socialMedia a:hover {
-      color: #007bff; /* Change color on hover */
-    }
-  </style>
-
+  <script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
 </body>
 </html>
