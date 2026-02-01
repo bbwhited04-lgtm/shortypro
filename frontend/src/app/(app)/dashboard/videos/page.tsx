@@ -51,7 +51,8 @@ export default function VideosPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+      <div className="space-y-6">
       <Section
         title="Upload video"
         desc="Drop in a long video. We’ll generate short clips automatically."
@@ -59,20 +60,21 @@ export default function VideosPage() {
           <button
             onClick={fakeUpload}
             disabled={!fileName}
-            className="rounded-xl bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-40"
+            className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800 disabled:opacity-40"
           >
             Upload
           </button>
         }
+        variant="dark"
       >
         <div className="flex flex-col gap-3 md:flex-row md:items-center">
           <input
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
             placeholder="Type a filename to simulate upload (e.g., mypodcast.mp4)"
-            className="w-full rounded-xl border border-neutral-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-300"
+            className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-zinc-600"
           />
-          <div className="text-xs text-neutral-500">
+          <div className="text-xs text-zinc-400">
             (Real file upload wiring point)
           </div>
         </div>
@@ -85,21 +87,22 @@ export default function VideosPage() {
           <button
             onClick={generateShorts}
             disabled={!canGenerate}
-            className="rounded-xl bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-40"
+            className="rounded-xl border border-zinc-800 bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-40"
           >
             Generate
           </button>
         }
+        variant="dark"
       >
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           {["Fast cuts", "Story / captions", "Podcast highlights"].map((style) => (
             <button
               key={style}
-              className="rounded-xl border border-neutral-200 bg-white p-4 text-left hover:bg-neutral-50"
+              className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 text-left hover:bg-zinc-800/60 transition"
               onClick={() => {}}
             >
               <div className="font-medium">{style}</div>
-              <div className="mt-1 text-sm text-neutral-600">
+              <div className="mt-1 text-sm text-zinc-400">
                 Tune pacing + captions to match this format.
               </div>
             </button>
@@ -107,10 +110,10 @@ export default function VideosPage() {
         </div>
       </Section>
 
-      <Section title="Your library" desc="Track uploads and generated shorts.">
-        <div className="overflow-hidden rounded-xl border border-neutral-200">
+      <Section title="Your library" desc="Track uploads and generated shorts." variant="dark">
+        <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950/40">
           <table className="w-full text-sm">
-            <thead className="bg-neutral-50 text-left text-xs text-neutral-600">
+            <thead className="bg-zinc-950/70 text-left text-xs text-zinc-400">
               <tr>
                 <th className="px-4 py-3">Video</th>
                 <th className="px-4 py-3">Status</th>
@@ -120,34 +123,35 @@ export default function VideosPage() {
             </thead>
             <tbody>
               {videos.map((v) => (
-                <tr key={v.id} className="border-t border-neutral-200">
+                <tr key={v.id} className="border-t border-zinc-800">
                   <td className="px-4 py-3 font-medium">{v.title}</td>
                   <td className="px-4 py-3">
                     <span
                       className={[
                         "inline-flex items-center rounded-full px-2 py-1 text-xs",
                         v.status === "ready"
-                          ? "bg-green-50 text-green-700"
+                          ? "bg-emerald-500/15 text-emerald-200 border border-emerald-500/30"
                           : v.status === "processing"
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-neutral-100 text-neutral-700",
+                          ? "bg-amber-500/15 text-amber-200 border border-amber-500/30"
+                          : "bg-zinc-800/60 text-zinc-200 border border-zinc-700",
                       ].join(" ")}
                     >
                       {v.status}
                     </span>
                   </td>
                   <td className="px-4 py-3">{v.shorts}</td>
-                  <td className="px-4 py-3 text-neutral-600">{v.createdAt}</td>
+                  <td className="px-4 py-3 text-zinc-400">{v.createdAt}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <div className="mt-3 text-xs text-neutral-500">
+        <div className="mt-3 text-xs text-zinc-400">
           TODO: wire to backend (upload → process → store clips → list).
         </div>
       </Section>
+      </div>
     </div>
   );
 }

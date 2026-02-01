@@ -10,19 +10,21 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border bg-white p-4">
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="mt-2 text-sm text-neutral-700">{children}</div>
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+      <div className="text-sm font-semibold text-zinc-100">{title}</div>
+      <div className="mt-2 text-sm text-zinc-300">{children}</div>
     </div>
   );
 }
 
 export default function HelpPage() {
   return (
-    <div className="space-y-6">
+    <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+      <div className="space-y-6">
       <Section
         title="Help"
         desc="Quick-start guides + a ready-to-record CapCut script."
+        variant="dark"
       >
         {/* Top two cards */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -150,6 +152,7 @@ Built by DEAD APP CORP.`}
           </div>
         </Card>
       </Section>
+      </div>
     </div>
   );
 }

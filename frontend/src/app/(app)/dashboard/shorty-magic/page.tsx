@@ -69,7 +69,8 @@ export default function ShortyMagicPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+      <div className="space-y-6">
       <div className="flex items-center gap-4">
         <div className="relative h-14 w-14 shrink-0">
           <Image
@@ -81,18 +82,18 @@ export default function ShortyMagicPage() {
           />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">Shorty Magic</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-2xl font-bold text-zinc-100">Shorty Magic</h1>
+          <p className="text-sm text-zinc-400">
             Paste a link or upload a video → generate 10 shorts → push to calendar queue.
           </p>
         </div>
       </div>
 
-      <section className="rounded-3xl border p-5 space-y-4">
+      <section className="rounded-3xl border border-zinc-800 bg-zinc-900/40 p-5 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>
             <div className="font-semibold">Step 1 — Choose input</div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-zinc-400">
               YouTube link or MP4 upload.
             </div>
           </div>
@@ -101,8 +102,8 @@ export default function ShortyMagicPage() {
             <button
               type="button"
               onClick={() => setMode("url")}
-              className={`rounded-xl border px-3 py-2 text-sm transition ${
-                mode === "url" ? "bg-muted" : "hover:bg-muted"
+              className={`rounded-xl border border-zinc-800 px-3 py-2 text-sm transition ${
+                mode === "url" ? "bg-zinc-800/60" : "bg-zinc-950 hover:bg-zinc-800/40"
               }`}
             >
               Link
@@ -110,8 +111,8 @@ export default function ShortyMagicPage() {
             <button
               type="button"
               onClick={() => setMode("upload")}
-              className={`rounded-xl border px-3 py-2 text-sm transition ${
-                mode === "upload" ? "bg-muted" : "hover:bg-muted"
+              className={`rounded-xl border border-zinc-800 px-3 py-2 text-sm transition ${
+                mode === "upload" ? "bg-zinc-800/60" : "bg-zinc-950 hover:bg-zinc-800/40"
               }`}
             >
               Upload
@@ -126,7 +127,7 @@ export default function ShortyMagicPage() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://youtube.com/watch?v=..."
-              className="w-full rounded-xl border px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500"
             />
           </div>
         ) : (
@@ -136,10 +137,10 @@ export default function ShortyMagicPage() {
               type="file"
               accept="video/mp4,video/*"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className="w-full rounded-xl border px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
             />
             {file && (
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs text-zinc-400">
                 Selected: {file.name} ({Math.round(file.size / 1024 / 1024)} MB)
               </div>
             )}
@@ -147,10 +148,10 @@ export default function ShortyMagicPage() {
         )}
       </section>
 
-      <section className="rounded-3xl border p-5 space-y-4">
+      <section className="rounded-3xl border border-zinc-800 bg-zinc-900/40 p-5 space-y-4">
         <div>
           <div className="font-semibold">Step 2 — Overlay text (optional)</div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-zinc-400">
             Default caption overlay for generated shorts.
           </div>
         </div>
@@ -159,38 +160,38 @@ export default function ShortyMagicPage() {
           value={overlayText}
           onChange={(e) => setOverlayText(e.target.value)}
           placeholder="e.g., '3 mistakes everyone makes…'"
-          className="w-full rounded-xl border px-3 py-2 text-sm"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500"
         />
 
         <button
           type="button"
           disabled={!canSubmit}
           onClick={startJob}
-          className="rounded-2xl border px-4 py-3 text-sm font-semibold hover:bg-muted transition disabled:opacity-50"
+          className="rounded-2xl border border-zinc-800 bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-500 transition disabled:opacity-50"
         >
           {busy ? "Generating…" : "Generate 10 Shorts"}
         </button>
       </section>
 
       {job && (
-        <section className="rounded-3xl border p-5 space-y-3">
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-900/40 p-5 space-y-3">
           <div className="flex items-center justify-between">
             <div className="font-semibold">Job status</div>
-            <span className="text-sm text-muted-foreground">{job.status}</span>
+            <span className="text-sm text-zinc-400">{job.status}</span>
           </div>
 
           {job.error && <div className="text-sm text-red-600">{job.error}</div>}
 
           {job.shorts && job.shorts.length > 0 && (
             <div className="space-y-2">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-zinc-400">
                 Generated shorts (stub results for now):
               </div>
               <div className="grid gap-2 md:grid-cols-2">
                 {job.shorts.map((s) => (
-                  <div key={s.id} className="rounded-2xl border p-4">
-                    <div className="font-semibold">{s.title}</div>
-                    <div className="text-sm text-muted-foreground">{s.durationSec}s</div>
+                  <div key={s.id} className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
+                    <div className="font-semibold text-zinc-100">{s.title}</div>
+                    <div className="text-sm text-zinc-400">{s.durationSec}s</div>
                   </div>
                 ))}
               </div>
@@ -198,6 +199,7 @@ export default function ShortyMagicPage() {
           )}
         </section>
       )}
+      </div>
     </div>
   );
 }

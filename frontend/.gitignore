@@ -20,3 +20,13 @@ frontend.zip
 frontend.zip
 *.zip
 
+# archives
+*.zip
+
+# ignore zips
+*.zip
+
+
+# ignore zips
+*.zip
+

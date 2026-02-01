@@ -25,8 +25,9 @@ const openPortal = async () => {
 };
 
   return (
-    <div className="space-y-6">
-      <Section title="Plan" desc="Pick the plan that matches your posting volume.">
+    <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+      <div className="space-y-6">
+      <Section variant="dark" title="Plan" desc="Pick the plan that matches your posting volume.">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           {[
             ["Starter", "For getting consistent", "10 shorts / week"],
@@ -41,15 +42,15 @@ const openPortal = async () => {
                 className={[
                   "rounded-2xl border p-5 text-left transition",
                   selected
-                    ? "border-neutral-900 bg-neutral-900 text-white"
-                    : "border-neutral-200 bg-white hover:bg-neutral-50",
+                    ? "border-zinc-700 bg-zinc-900 text-zinc-100"
+                    : "border-zinc-800 bg-zinc-900/40 hover:bg-zinc-800/60",
                 ].join(" ")}
               >
                 <div className="text-lg font-semibold">{name}</div>
-                <div className={["mt-1 text-sm", selected ? "text-white/80" : "text-neutral-600"].join(" ")}>
+                <div className={["mt-1 text-sm", selected ? "text-zinc-200" : "text-zinc-400"].join(" ")}>
                   {tagline}
                 </div>
-                <div className={["mt-4 text-xs", selected ? "text-white/70" : "text-neutral-500"].join(" ")}>
+                <div className={["mt-4 text-xs", selected ? "text-zinc-300" : "text-zinc-400"].join(" ")}>
                   Included: {limit}
                 </div>
               </button>
@@ -60,24 +61,24 @@ const openPortal = async () => {
         <div className="mt-4 flex flex-col gap-2 md:flex-row">
           <button
             onClick={startCheckout}
-            className="rounded-xl bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-800"
+            className="rounded-xl border border-zinc-800 bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
           >
             Upgrade / Subscribe
           </button>
           <button
             onClick={openPortal}
-            className="rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm hover:bg-neutral-50"
+            className="rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
           >
             Manage billing
           </button>
         </div>
 
-        <div className="mt-3 text-xs text-neutral-500">
+        <div className="mt-3 text-xs text-zinc-400">
           TODO: Replace plan labels + limits with your real pricing. Wire Stripe checkout + portal.
         </div>
       </Section>
 
-      <Section title="Usage" desc="Placeholder counters — swap with real metrics from your backend.">
+      <Section variant="dark" title="Usage" desc="Placeholder counters — swap with real metrics from your backend.">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {[
             ["Shorts generated", "18 / 50"],
@@ -85,13 +86,14 @@ const openPortal = async () => {
             ["Scheduled", "12 / 200"],
             ["Storage", "1.2 GB / 10 GB"],
           ].map(([k, v]) => (
-            <div key={k} className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-              <div className="text-xs text-neutral-500">{k}</div>
+            <div key={k} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+              <div className="text-xs text-zinc-400">{k}</div>
               <div className="mt-1 text-lg font-semibold">{v}</div>
             </div>
           ))}
         </div>
       </Section>
+      </div>
     </div>
   );
 }

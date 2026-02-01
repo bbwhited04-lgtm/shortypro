@@ -160,7 +160,8 @@ export default function MagnaHivePage() {
   }
 
   return (
-   <div className="relative mx-auto max-w-6xl px-6 py-10 text-slate-900">
+    <div className="min-h-[75vh] w-full rounded-3xl bg-zinc-950 text-zinc-100 border border-zinc-800 p-4 shadow-[0_30px_80px_rgba(0,0,0,.35)]">
+   <div className="relative mx-auto max-w-6xl px-4 py-6 text-zinc-100">
       {/* Ambient background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-24 left-1/2 h-72 w-[680px] -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
@@ -527,6 +528,7 @@ export default function MagnaHivePage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
